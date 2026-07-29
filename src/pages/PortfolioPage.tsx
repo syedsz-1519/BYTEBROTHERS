@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { PROJECTS, Project } from '../data/studioData';
 import { ProjectCard } from '../components/ProjectCard';
-import { Search, Filter, Layers, Bookmark } from 'lucide-react';
+import { Search, Filter, Layers, Bookmark, Tag, X, Sparkles } from 'lucide-react';
 import { getBookmarkedProjects } from '../utils/offlineCache';
 
 interface PortfolioPageProps {
@@ -13,9 +13,19 @@ export const PortfolioPage: React.FC<PortfolioPageProps> = ({ onSelectProject })
   const [leadFilter, setLeadFilter] = useState<'All' | 'Syed' | 'Hamid'>('All');
   const [categoryFilter, setCategoryFilter] = useState<'All' | 'Client Project' | 'Personal Project'>('All');
   const [typeFilter, setTypeFilter] = useState<string>('All');
+  const [selectedTag, setSelectedTag] = useState<string>('All');
   const [bookmarksOnly, setBookmarksOnly] = useState(false);
 
   const bookmarkedIds = getBookmarkedProjects();
+
+  // Extract all unique technology/category tags from all projects
+  const availableTechTags = useMemo(() => {
+    const tagSet = new Set<string>();
+    PROJECTS.forEach((p) => {
+      p.tags.forEach((t) => tagSet.add(t));
+    });
+    return Array.from(tagSet);
+  }, []);
 
   const filteredProjects = useMemo(() => {
     return PROJECTS.filter((p) => {
@@ -23,6 +33,9 @@ export const PortfolioPage: React.FC<PortfolioPageProps> = ({ onSelectProject })
       if (categoryFilter !== 'All' && p.category !== categoryFilter) return false;
       if (typeFilter !== 'All' && p.type !== typeFilter) return false;
       if (bookmarksOnly && !bookmarkedIds.includes(p.id)) return false;
+      if (selectedTag !== 'All' && !p.tags.some((t) => t.toLowerCase() === selectedTag.toLowerCase())) {
+        return false;
+      }
 
       if (searchQuery.trim()) {
         const query = searchQuery.toLowerCase();
@@ -34,7 +47,7 @@ export const PortfolioPage: React.FC<PortfolioPageProps> = ({ onSelectProject })
 
       return true;
     });
-  }, [searchQuery, leadFilter, categoryFilter, typeFilter, bookmarksOnly, bookmarkedIds]);
+  }, [searchQuery, leadFilter, categoryFilter, typeFilter, selectedTag, bookmarksOnly, bookmarkedIds]);
 
   const industryTypes = ['All', 'Logistics', 'Education', 'Corporate', 'Retail', 'Engineering'];
 
@@ -117,6 +130,25 @@ export const PortfolioPage: React.FC<PortfolioPageProps> = ({ onSelectProject })
             <span>Saved Offline ({bookmarkedIds.length})</span>
           </button>
         </div>
+
+        {/* Active Technology Tag Filter Pill (if selected) */}
+        {selectedTag !== 'All' && (
+          <div className="p-3 rounded-xl border border-blue-500/30 bg-blue-500/10 text-blue-300 font-mono text-xs flex items-center justify-between gap-2">
+            <div className="flex items-center gap-2">
+              <Tag className="h-4 w-4 text-blue-400 shrink-0" />
+              <span>
+                Filtered by technology tag: <strong className="text-white font-semibold">{selectedTag}</strong> ({filteredProjects.length} matching project{filteredProjects.length === 1 ? '' : 's'})
+              </span>
+            </div>
+            <button
+              onClick={() => setSelectedTag('All')}
+              className="flex items-center gap-1 text-[11px] text-blue-400 hover:text-white transition-colors shrink-0 px-2.5 py-1 rounded bg-blue-500/20 border border-blue-400/30"
+            >
+              <X className="h-3 w-3" />
+              <span>Clear Tag Filter</span>
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Projects Grid */}
@@ -127,7 +159,7 @@ export const PortfolioPage: React.FC<PortfolioPageProps> = ({ onSelectProject })
             No projects matched your filters
           </div>
           <p className="text-xs text-[var(--text-muted)]">
-            Try adjusting your search terms or clearing lead filters.
+            Try adjusting your search terms, technology tags, or clearing lead filters.
           </p>
           <button
             onClick={() => {
@@ -135,20 +167,94 @@ export const PortfolioPage: React.FC<PortfolioPageProps> = ({ onSelectProject })
               setLeadFilter('All');
               setCategoryFilter('All');
               setTypeFilter('All');
+              setSelectedTag('All');
               setBookmarksOnly(false);
             }}
             className="px-4 py-2 rounded-lg bg-blue-600 text-white font-mono text-xs"
           >
-            Reset Filters
+            Reset All Filters
           </button>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredProjects.map((project) => (
-            <ProjectCard key={project.id} project={project} onSelect={onSelectProject} />
+            <ProjectCard
+              key={project.id}
+              project={project}
+              onSelect={onSelectProject}
+              onSelectTag={(tag) => setSelectedTag(tag === selectedTag ? 'All' : tag)}
+              activeTag={selectedTag}
+            />
           ))}
         </div>
       )}
+
+      {/* Dynamic Category & Technology Tags Section (Below Project Cards) */}
+      <section className="pt-8 border-t border-[var(--border-color)] space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="space-y-1">
+            <div className="font-mono text-[11px] text-blue-400 font-bold uppercase tracking-wider flex items-center gap-1.5">
+              <Tag className="h-3.5 w-3.5" />
+              <span>FILTER BY TECHNOLOGY TAGS</span>
+            </div>
+            <h2 className="font-display font-bold text-lg text-[var(--text-primary)]">
+              Explore Works by Specialized Stack &amp; Skill
+            </h2>
+          </div>
+          {selectedTag !== 'All' && (
+            <button
+              onClick={() => setSelectedTag('All')}
+              className="px-3 py-1.5 rounded-lg bg-blue-500/10 text-blue-400 border border-blue-500/30 font-mono text-xs hover:bg-blue-500/20 transition-colors flex items-center gap-1.5 self-start sm:self-auto"
+            >
+              <X className="h-3.5 w-3.5" />
+              <span>Show All Technologies</span>
+            </button>
+          )}
+        </div>
+
+        <div className="p-5 rounded-2xl border border-[var(--border-color)] bg-[var(--bg-surface)] space-y-3">
+          <p className="text-xs text-[var(--text-secondary)] leading-relaxed">
+            Click any tag below to filter the showcase directly by technology or architectural standard:
+          </p>
+          <div className="flex flex-wrap items-center gap-2">
+            <button
+              onClick={() => setSelectedTag('All')}
+              className={`px-3 py-1.5 rounded-lg font-mono text-xs border transition-all ${
+                selectedTag === 'All'
+                  ? 'bg-blue-600 text-white border-blue-500 font-bold shadow-md shadow-blue-500/20'
+                  : 'bg-[var(--bg-primary)] text-[var(--text-secondary)] border-[var(--border-color)] hover:text-[var(--text-primary)] hover:border-blue-400/50'
+              }`}
+            >
+              All Tech Stack ({PROJECTS.length})
+            </button>
+            {availableTechTags.map((tag) => {
+              const isSelected = selectedTag.toLowerCase() === tag.toLowerCase();
+              const count = PROJECTS.filter((p) => p.tags.some((t) => t.toLowerCase() === tag.toLowerCase())).length;
+              return (
+                <button
+                  key={tag}
+                  onClick={() => setSelectedTag(isSelected ? 'All' : tag)}
+                  className={`px-3 py-1.5 rounded-lg font-mono text-xs border transition-all flex items-center gap-1.5 ${
+                    isSelected
+                      ? 'bg-blue-600 text-white border-blue-500 font-bold shadow-md shadow-blue-500/20'
+                      : 'bg-[var(--bg-primary)] text-[var(--text-secondary)] border-[var(--border-color)] hover:text-blue-400 hover:border-blue-400/50'
+                  }`}
+                >
+                  <span>{tag}</span>
+                  <span
+                    className={`text-[10px] px-1.5 py-0.2 rounded-full font-sans ${
+                      isSelected ? 'bg-white/25 text-white' : 'bg-[var(--bg-container)] text-[var(--text-muted)]'
+                    }`}
+                  >
+                    {count}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      </section>
     </div>
   );
 };
+

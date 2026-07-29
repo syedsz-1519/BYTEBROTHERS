@@ -81,6 +81,8 @@ export const AiEstimatorModal: React.FC<AiEstimatorModalProps> = ({
                   onChange={(e) => setProjectType(e.target.value)}
                   className="w-full px-3 py-2 rounded-lg border border-[var(--border-color)] bg-[var(--bg-primary)] text-xs text-[var(--text-primary)] focus:outline-none focus:border-blue-500"
                 >
+                  <option value="Webflow Enterprise Platform">Webflow Enterprise Platform</option>
+                  <option value="Figma to Webflow Migration">Figma to Webflow Migration</option>
                   <option value="Custom Web Application">Custom Web Application</option>
                   <option value="E-commerce Storefront">E-commerce Storefront</option>
                   <option value="Executive Portfolio">Executive Portfolio</option>

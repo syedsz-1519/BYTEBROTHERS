@@ -51,32 +51,48 @@ app.post('/api/ai/estimate', async (req, res) => {
   try {
     const { projectType, budget, details } = req.body;
 
+    const isWebflow = projectType?.toLowerCase().includes('webflow');
+    const defaultStack = isWebflow
+      ? ['Webflow Enterprise', 'Client-First v2 (Finsweet)', 'Custom JS / GSAP', 'Webflow CMS API', 'Relume Library']
+      : ['React', 'TypeScript', 'Tailwind CSS', 'Vite', 'Express'];
+
     const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {
       return res.status(200).json({
         success: true,
         isFallback: true,
         estimate: {
-          recommendedStack: ['React', 'TypeScript', 'Tailwind CSS', 'Vite', 'Express'],
-          estimatedTimeline: '3-5 Weeks',
-          architecturalStrategy: `Bespoke ${projectType || 'Web Application'} architecture focused on sub-second render performance, zero bloat, and PWA offline caching.`,
-          keyMilestones: [
-            'Week 1: High-fidelity Figma blueprint & wireframing',
-            'Week 2-3: Core React UI & state persistence engine',
-            'Week 4: API integration & V8 performance tuning',
-            'Week 5: Production launch & offline SW verification'
-          ]
+          recommendedStack: defaultStack,
+          estimatedTimeline: '2-4 Weeks',
+          architecturalStrategy: isWebflow
+            ? `Enterprise Webflow architecture utilizing Client-First v2 class structures, 100% pixel-perfect Figma translation, dynamic Webflow CMS schemas, and custom GSAP micro-interactions.`
+            : `Bespoke ${projectType || 'Web Application'} architecture focused on sub-second render performance, zero bloat, and PWA offline caching.`,
+          keyMilestones: isWebflow
+            ? [
+                'Week 1: Figma design audit & Client-First styleguide setup',
+                'Week 2: Webflow DOM construction & responsive breakpoint tuning',
+                'Week 3: Webflow CMS relational schemas & custom JS module binding',
+                'Week 4: 100/100 Lighthouse audit & CMS video handoff training'
+              ]
+            : [
+                'Week 1: High-fidelity Figma blueprint & wireframing',
+                'Week 2-3: Core React UI & state persistence engine',
+                'Week 4: API integration & V8 performance tuning',
+                'Week 5: Production launch & offline SW verification'
+              ]
         }
       });
     }
 
     const ai = new GoogleGenAI({ apiKey });
-    const prompt = `You are the lead AI Architectural Advisor for "Byte Brothers", a elite boutique digital engineering studio founded by Syed (Front-end Craftsman, single-file efficiency expert) and Hamid Kamal (Technical Systems Architect).
+    const prompt = `You are the lead AI Architectural Advisor for "Byte Brothers", an elite boutique digital engineering studio founded by Syed (Front-end Craftsman, Webflow & single-file efficiency expert) and Hamid Kamal (Technical Systems Architect).
 
 Client Request Overview:
 - Project Type: ${projectType || 'Custom Business Web Application'}
 - Target Budget Range: ${budget || '$5,000 - $15,000'}
 - Details / Vision: ${details || 'High performance web app with responsive UI'}
+
+Special Studio Mastery: Byte Brothers are world-class Webflow Enterprise pioneers utilizing Client-First v2 (Finsweet), custom JS/GSAP extensions, Webflow CMS API, and 100/100 Lighthouse performance.
 
 Provide a JSON output matching this structure strictly (no markdown fence, raw JSON only):
 {

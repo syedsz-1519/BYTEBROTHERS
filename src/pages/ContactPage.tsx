@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { savePendingInquiry, useOnlineStatus } from '../utils/offlineCache';
 import { useNotifications } from '../utils/notifications';
 import { 
@@ -11,7 +11,9 @@ import {
   Phone, 
   Clock, 
   ShieldCheck,
-  Loader2
+  Loader2,
+  Save,
+  Trash2
 } from 'lucide-react';
 
 interface ContactPageProps {
@@ -19,19 +21,81 @@ interface ContactPageProps {
   attachedSpec?: string;
 }
 
+const DRAFT_STORAGE_KEY = 'bytebrothers_contact_draft';
+
 export const ContactPage: React.FC<ContactPageProps> = ({ onOpenAiEstimator, attachedSpec }) => {
   const isOnline = useOnlineStatus();
   const { triggerPushAlert } = useNotifications();
 
-  const [fullName, setFullName] = useState('');
-  const [email, setEmail] = useState('');
-  const [whatsapp, setWhatsapp] = useState('');
-  const [projectType, setProjectType] = useState('Custom Business Website');
-  const [budget, setBudget] = useState('$5,000 - $15,000');
-  const [referral, setReferral] = useState('Search / Referral');
-  const [details, setDetails] = useState('');
+  // Load saved draft on initial render
+  const initialDraft = useMemo(() => {
+    try {
+      const saved = localStorage.getItem(DRAFT_STORAGE_KEY);
+      if (saved) {
+        return JSON.parse(saved);
+      }
+    } catch (e) {
+      console.warn('Unable to load contact draft from localStorage:', e);
+    }
+    return null;
+  }, []);
+
+  const [fullName, setFullName] = useState<string>(initialDraft?.fullName || '');
+  const [email, setEmail] = useState<string>(initialDraft?.email || '');
+  const [whatsapp, setWhatsapp] = useState<string>(initialDraft?.whatsapp || '');
+  const [projectType, setProjectType] = useState<string>(initialDraft?.projectType || 'Custom Business Website');
+  const [budget, setBudget] = useState<string>(initialDraft?.budget || '$5,000 - $15,000');
+  const [referral, setReferral] = useState<string>(initialDraft?.referral || 'Search / Referral');
+  const [details, setDetails] = useState<string>(initialDraft?.details || '');
   const [submitting, setSubmitting] = useState(false);
   const [submittedMessage, setSubmittedMessage] = useState<string | null>(null);
+
+  const [hasRestoredDraft, setHasRestoredDraft] = useState<boolean>(() => {
+    return Boolean(
+      initialDraft &&
+        (initialDraft.fullName ||
+          initialDraft.email ||
+          initialDraft.whatsapp ||
+          initialDraft.details)
+    );
+  });
+
+  const [isSaved, setIsSaved] = useState(false);
+
+  // Auto-save form draft to localStorage whenever fields change
+  useEffect(() => {
+    const hasData = Boolean(fullName || email || whatsapp || details);
+    if (hasData) {
+      const draftObj = {
+        fullName,
+        email,
+        whatsapp,
+        projectType,
+        budget,
+        referral,
+        details,
+        savedAt: Date.now()
+      };
+      localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(draftObj));
+      setIsSaved(true);
+    } else {
+      localStorage.removeItem(DRAFT_STORAGE_KEY);
+      setIsSaved(false);
+    }
+  }, [fullName, email, whatsapp, projectType, budget, referral, details]);
+
+  const clearDraft = () => {
+    setFullName('');
+    setEmail('');
+    setWhatsapp('');
+    setProjectType('Custom Business Website');
+    setBudget('$5,000 - $15,000');
+    setReferral('Search / Referral');
+    setDetails('');
+    setHasRestoredDraft(false);
+    localStorage.removeItem(DRAFT_STORAGE_KEY);
+    setIsSaved(false);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -64,6 +128,9 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onOpenAiEstimator, att
         'Your submission was cached locally and queued for auto-sync.',
         'inquiry'
       );
+      // Clear draft after successful queue
+      localStorage.removeItem(DRAFT_STORAGE_KEY);
+      setHasRestoredDraft(false);
       return;
     }
 
@@ -85,7 +152,9 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onOpenAiEstimator, att
           `New submission received from ${fullName} for ${projectType}`,
           'inquiry'
         );
-        // Reset form
+        // Clear draft & reset form
+        localStorage.removeItem(DRAFT_STORAGE_KEY);
+        setHasRestoredDraft(false);
         setFullName('');
         setEmail('');
         setWhatsapp('');
@@ -100,6 +169,8 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onOpenAiEstimator, att
       setSubmittedMessage(
         'Server unreachable: Inquiry saved to offline cache and queued for sync.'
       );
+      localStorage.removeItem(DRAFT_STORAGE_KEY);
+      setHasRestoredDraft(false);
     }
   };
 
@@ -138,6 +209,23 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onOpenAiEstimator, att
             <div className="p-3 rounded-xl border border-amber-500/30 bg-amber-500/10 text-amber-400 font-mono text-xs flex items-center gap-2">
               <WifiOff className="h-4 w-4 shrink-0" />
               <span>Offline Mode: Submissions will queue in local storage &amp; sync when online.</span>
+            </div>
+          )}
+
+          {hasRestoredDraft && (
+            <div className="p-3 rounded-xl border border-blue-500/30 bg-blue-500/10 text-blue-300 font-mono text-xs flex items-center justify-between gap-2">
+              <div className="flex items-center gap-2">
+                <Save className="h-4 w-4 shrink-0 text-blue-400" />
+                <span>Message draft restored from your browser's local storage.</span>
+              </div>
+              <button
+                type="button"
+                onClick={clearDraft}
+                className="flex items-center gap-1 text-[11px] text-blue-400 hover:text-white transition-colors shrink-0 px-2 py-0.5 rounded bg-blue-500/20"
+              >
+                <Trash2 className="h-3 w-3" />
+                <span>Discard</span>
+              </button>
             </div>
           )}
 
@@ -202,6 +290,8 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onOpenAiEstimator, att
                   onChange={(e) => setProjectType(e.target.value)}
                   className="w-full px-3 py-2 rounded-lg border border-[var(--border-color)] bg-[var(--bg-primary)] text-xs text-[var(--text-primary)] focus:outline-none focus:border-blue-500"
                 >
+                  <option value="Webflow Enterprise Platform">Webflow Enterprise Platform</option>
+                  <option value="Figma to Webflow Migration">Figma to Webflow Migration</option>
                   <option value="Custom Business Website">Custom Business Website</option>
                   <option value="Portfolio Site">Portfolio Site</option>
                   <option value="E-commerce Build">E-commerce Build</option>
@@ -280,6 +370,22 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onOpenAiEstimator, att
                 </>
               )}
             </button>
+
+            {isSaved && (
+              <div className="flex items-center justify-between text-[11px] font-mono text-[var(--text-muted)] pt-1">
+                <span className="flex items-center gap-1.5 text-emerald-400">
+                  <Save className="h-3 w-3" />
+                  <span>Draft auto-saved to local storage</span>
+                </span>
+                <button
+                  type="button"
+                  onClick={clearDraft}
+                  className="hover:text-[var(--text-primary)] transition-colors underline"
+                >
+                  Clear draft
+                </button>
+              </div>
+            )}
           </form>
         </div>
 

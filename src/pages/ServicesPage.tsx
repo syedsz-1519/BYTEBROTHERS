@@ -8,7 +8,12 @@ import {
   Clock, 
   CheckCircle2, 
   Terminal, 
-  ArrowRight 
+  ArrowRight,
+  Globe,
+  Zap,
+  Layers,
+  Sparkles,
+  Cpu
 } from 'lucide-react';
 
 interface ServicesPageProps {
@@ -24,6 +29,8 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
 
   const getServiceIcon = (name: string) => {
     switch (name) {
+      case 'Globe':
+        return <Globe className="h-6 w-6 text-blue-400" />;
       case 'Code':
         return <Code className="h-6 w-6 text-blue-400" />;
       case 'Palette':
@@ -115,6 +122,92 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
           </div>
         ))}
       </div>
+
+      {/* WEBFLOW POWERHOUSE SPOTLIGHT SECTION */}
+      <section className="relative overflow-hidden rounded-3xl border border-blue-500/40 bg-gradient-to-br from-blue-950/40 via-[var(--bg-surface)] to-indigo-950/30 p-8 sm:p-12 space-y-10 shadow-2xl">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8 border-b border-blue-500/20 pb-8">
+          <div className="space-y-3 max-w-2xl">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/20 border border-blue-400/40 font-mono text-xs font-bold text-blue-300">
+              <Globe className="h-4 w-4 text-cyan-400" />
+              <span>WEBFLOW ENTERPRISE CENTER OF EXCELLENCE</span>
+            </div>
+            <h2 className="font-display font-bold text-3xl sm:text-4xl text-white">
+              The Most Powerful Webflow Platform Architecture
+            </h2>
+            <p className="text-sm text-blue-100/80 leading-relaxed">
+              We bridge the gap between high-end visual development in Webflow and custom enterprise engineering. From 100% Client-First CSS systems to embedded React applications and custom JavaScript hooks, we build Webflow experiences at an unmatched level of speed, security, and motion.
+            </p>
+          </div>
+
+          <div className="flex flex-col sm:flex-row lg:flex-col gap-3 shrink-0">
+            <button
+              onClick={onOpenContactModal}
+              className="px-6 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-sans text-xs font-bold uppercase tracking-wider transition-all shadow-lg hover:shadow-blue-500/25 flex items-center justify-center gap-2"
+            >
+              <span>Build Webflow Site</span>
+              <ArrowRight className="h-4 w-4" />
+            </button>
+            <button
+              onClick={onOpenAiEstimator}
+              className="px-6 py-3 rounded-xl bg-blue-500/10 hover:bg-blue-500/20 text-cyan-300 border border-cyan-500/40 font-mono text-xs font-medium transition-colors flex items-center justify-center gap-2"
+            >
+              <Sparkles className="h-4 w-4" />
+              <span>Estimate Webflow Project</span>
+            </button>
+          </div>
+        </div>
+
+        {/* 4 Pillars of Webflow Mastery */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="p-5 rounded-2xl border border-blue-500/20 bg-[var(--bg-primary)]/80 space-y-3">
+            <div className="p-2.5 rounded-xl bg-blue-500/10 text-cyan-400 w-fit border border-blue-500/30">
+              <Layers className="h-5 w-5" />
+            </div>
+            <h3 className="font-display font-bold text-base text-white">
+              Client-First v2 System
+            </h3>
+            <p className="text-xs text-[var(--text-secondary)] leading-relaxed">
+              Standardized class naming (Finsweet methodology) ensuring clean, maintainable Webflow structures for your marketing team.
+            </p>
+          </div>
+
+          <div className="p-5 rounded-2xl border border-blue-500/20 bg-[var(--bg-primary)]/80 space-y-3">
+            <div className="p-2.5 rounded-xl bg-indigo-500/10 text-indigo-400 w-fit border border-indigo-500/30">
+              <Cpu className="h-5 w-5" />
+            </div>
+            <h3 className="font-display font-bold text-base text-white">
+              Custom JS &amp; GSAP Physics
+            </h3>
+            <p className="text-xs text-[var(--text-secondary)] leading-relaxed">
+              We extend Webflow native limits using custom JavaScript modules, GSAP smooth scrolling, WebSockets, and custom APIs.
+            </p>
+          </div>
+
+          <div className="p-5 rounded-2xl border border-blue-500/20 bg-[var(--bg-primary)]/80 space-y-3">
+            <div className="p-2.5 rounded-xl bg-emerald-500/10 text-emerald-400 w-fit border border-emerald-500/30">
+              <Zap className="h-5 w-5" />
+            </div>
+            <h3 className="font-display font-bold text-base text-white">
+              100/100 Lighthouse Speed
+            </h3>
+            <p className="text-xs text-[var(--text-secondary)] leading-relaxed">
+              Zero asset bloat, optimized image formats, responsive typography scales, and clean HTML semantics for top SEO rank.
+            </p>
+          </div>
+
+          <div className="p-5 rounded-2xl border border-blue-500/20 bg-[var(--bg-primary)]/80 space-y-3">
+            <div className="p-2.5 rounded-xl bg-cyan-500/10 text-cyan-400 w-fit border border-cyan-500/30">
+              <CheckCircle2 className="h-5 w-5" />
+            </div>
+            <h3 className="font-display font-bold text-base text-white">
+              Figma-to-Webflow 1:1
+            </h3>
+            <p className="text-xs text-[var(--text-secondary)] leading-relaxed">
+              Pixel-perfect translation from Figma design components directly into responsive, fluid Webflow layouts.
+            </p>
+          </div>
+        </div>
+      </section>
 
       {/* Interactive Workflow Framework */}
       <section className="p-8 rounded-3xl border border-[var(--border-color)] bg-[var(--bg-surface)] space-y-8">

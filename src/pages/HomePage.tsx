@@ -36,16 +36,16 @@ export const HomePage: React.FC<HomePageProps> = ({
           {/* Eyebrow Tag */}
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/30 text-[11px] font-mono text-blue-400">
             <Terminal className="h-3.5 w-3.5" />
-            <span>[ BOUTIQUE DIGITAL STUDIO ]</span>
+            <span>[ WEBFLOW ENTERPRISE &amp; FULL-STACK STUDIO ]</span>
           </div>
 
           {/* Main Display Heading */}
           <div className="space-y-4 max-w-4xl">
             <h1 className="font-display text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-[var(--text-primary)] leading-[1.08]">
-              WE BUILD <span className="text-blue-500 underline decoration-blue-500/40 underline-offset-8">HIGH-PERFORMANCE</span> DIGITAL PRODUCTS
+              WE BUILD <span className="text-blue-500 underline decoration-blue-500/40 underline-offset-8">HIGH-PERFORMANCE</span> WEBFLOW &amp; WEB APPS
             </h1>
             <p className="text-base sm:text-lg text-[var(--text-secondary)] leading-relaxed max-w-2xl">
-              Founded by <strong className="text-[var(--text-primary)] font-semibold">Syed</strong> &amp; <strong className="text-[var(--text-primary)] font-semibold">Hamid Kamal</strong>. Crafting bespoke web applications, high-conversion storefronts, and custom software systems with sub-second execution.
+              Founded by <strong className="text-[var(--text-primary)] font-semibold">Syed</strong> &amp; <strong className="text-[var(--text-primary)] font-semibold">Hamid Kamal</strong>. Crafting Webflow Enterprise platforms, bespoke React web applications, and Client-First digital systems with sub-second execution.
             </p>
           </div>
 

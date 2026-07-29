@@ -71,7 +71,7 @@ export const FOUNDERS: Founder[] = [
       github: 'https://github.com',
       linkedin: 'https://linkedin.com'
     },
-    specialties: ['Frontend Architecture', 'Motion Design', 'Micro-interactions', 'V8 Optimization']
+    specialties: ['Frontend Architecture', 'Webflow Enterprise & Interactions', 'Figma-to-Webflow Engine', 'V8 Optimization']
   },
   {
     id: 'hamid',
@@ -89,7 +89,7 @@ export const FOUNDERS: Founder[] = [
       github: 'https://github.com',
       linkedin: 'https://linkedin.com'
     },
-    specialties: ['Distributed Systems', 'Cloud Native', 'API Protocols', 'Data Security']
+    specialties: ['Distributed Systems', 'Webflow CMS Architecture', 'Cloud Native', 'API Protocols']
   }
 ];
 
@@ -121,6 +121,25 @@ export const TECHNICAL_TENETS: TechnicalTenet[] = [
 ];
 
 export const PROJECTS: Project[] = [
+  {
+    id: 'webflow-apex-enterprise',
+    title: 'Nexus Webflow Enterprise',
+    category: 'Client Project',
+    type: 'Webflow Enterprise',
+    year: '2024',
+    lead: 'Both',
+    description: 'Ultra-high performance Webflow Enterprise platform featuring Client-First v2 architecture, custom GSAP interaction physics, dynamic CMS filters, and custom React embedded tools.',
+    image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=80',
+    tags: ['Webflow Enterprise', 'Client-First v2', 'Custom GSAP JS', 'Webflow CMS API', 'Relume UI'],
+    metrics: '100/100 Lighthouse • 3.4x Conversion',
+    status: 'Live',
+    demoType: 'standard',
+    details: {
+      challenge: 'Client required an enterprise SaaS Webflow site capable of managing 1,000+ relational CMS articles, zero layout shift, and complex custom calculator widgets.',
+      solution: 'Engineered a modular Webflow architecture built on Client-First v2 standards with embedded lightweight TypeScript modules and instant marketing editor access.',
+      stack: ['Webflow Enterprise', 'Client-First CSS', 'Custom JS / GSAP', 'Webflow CMS API', 'Relume Library']
+    }
+  },
   {
     id: 'ali-logistics',
     title: 'Ali Logistics',
@@ -247,6 +266,23 @@ export const PROJECTS: Project[] = [
 ];
 
 export const SERVICES: Service[] = [
+  {
+    id: 'webflow-enterprise',
+    title: 'Webflow Enterprise & Hybrid Systems',
+    subtitle: 'FIGMA-TO-WEBFLOW ARCHITECTURE',
+    description: 'Elite Webflow development featuring Client-First v2 class architecture, complex relational CMS schemas, custom JS/GSAP interaction hooks, and 100/100 Lighthouse performance.',
+    badge: 'Flagship Specialization',
+    estTime: '2-5 Weeks',
+    iconName: 'Globe',
+    features: [
+      '1:1 Figma to Webflow pixel precision',
+      'Client-First v2 class naming architecture',
+      'Custom JS, GSAP & Webflow CMS API',
+      '100/100 Lighthouse speed & SEO optimization',
+      'Lottie & Webflow Interaction physics',
+      'Complete team CMS handoff & video guide'
+    ]
+  },
   {
     id: 'custom-websites',
     title: 'Custom Business Websites',

@@ -66,18 +66,20 @@ export const AboutPage: React.FC = () => {
           </h3>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 font-mono text-xs">
+        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3 font-mono text-xs">
           {[
+            { name: 'Webflow Enterprise', role: 'Visual Architecture' },
+            { name: 'Client-First v2', role: 'CSS Class System' },
             { name: 'React 19', role: 'UI Framework' },
             { name: 'TypeScript', role: 'Type Safety' },
+            { name: 'GSAP / Motion', role: 'Physics & Motion' },
             { name: 'Tailwind CSS v4', role: 'Styling' },
-            { name: 'Motion', role: 'Animation' },
             { name: 'Express / Node', role: 'Server API' },
             { name: 'Service Worker', role: 'Offline PWA Cache' }
           ].map((item) => (
             <div key={item.name} className="p-3 rounded-lg border border-[var(--border-color)] bg-[var(--bg-container)] text-center space-y-1">
-              <div className="font-bold text-[var(--text-primary)]">{item.name}</div>
-              <div className="text-[10px] text-[var(--text-muted)]">{item.role}</div>
+              <div className="font-bold text-[var(--text-primary)] text-[11px] truncate">{item.name}</div>
+              <div className="text-[9px] text-[var(--text-muted)] truncate">{item.role}</div>
             </div>
           ))}
         </div>
