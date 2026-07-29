@@ -1,0 +1,161 @@
+import express from 'express';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { GoogleGenAI } from '@google/genai';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const app = express();
+const PORT = 3000;
+
+app.use(express.json());
+
+// In-memory store for received contact inquiries
+const inquiriesQueue: any[] = [];
+
+// API Routes
+app.get('/api/health', (req, res) => {
+  res.json({
+    status: 'ok',
+    studio: 'Byte Brothers',
+    founders: ['Syed', 'Hamid Kamal'],
+    version: '4.0.2',
+    timestamp: new Date().toISOString()
+  });
+});
+
+app.post('/api/inquiry', (req, res) => {
+  const inquiryData = req.body;
+  inquiryData.receivedAt = new Date().toISOString();
+  inquiryData.status = 'Queued for Syed & Hamid Review';
+  inquiriesQueue.push(inquiryData);
+
+  res.json({
+    success: true,
+    message: 'Inquiry received successfully and queued for review.',
+    id: `inq_${Date.now()}`,
+    data: inquiryData
+  });
+});
+
+app.get('/api/inquiries', (req, res) => {
+  res.json({
+    count: inquiriesQueue.length,
+    inquiries: inquiriesQueue
+  });
+});
+
+// AI Architectural Estimator via Gemini API
+app.post('/api/ai/estimate', async (req, res) => {
+  try {
+    const { projectType, budget, details } = req.body;
+
+    const apiKey = process.env.GEMINI_API_KEY;
+    if (!apiKey) {
+      return res.status(200).json({
+        success: true,
+        isFallback: true,
+        estimate: {
+          recommendedStack: ['React', 'TypeScript', 'Tailwind CSS', 'Vite', 'Express'],
+          estimatedTimeline: '3-5 Weeks',
+          architecturalStrategy: `Bespoke ${projectType || 'Web Application'} architecture focused on sub-second render performance, zero bloat, and PWA offline caching.`,
+          keyMilestones: [
+            'Week 1: High-fidelity Figma blueprint & wireframing',
+            'Week 2-3: Core React UI & state persistence engine',
+            'Week 4: API integration & V8 performance tuning',
+            'Week 5: Production launch & offline SW verification'
+          ]
+        }
+      });
+    }
+
+    const ai = new GoogleGenAI({ apiKey });
+    const prompt = `You are the lead AI Architectural Advisor for "Byte Brothers", a elite boutique digital engineering studio founded by Syed (Front-end Craftsman, single-file efficiency expert) and Hamid Kamal (Technical Systems Architect).
+
+Client Request Overview:
+- Project Type: ${projectType || 'Custom Business Web Application'}
+- Target Budget Range: ${budget || '$5,000 - $15,000'}
+- Details / Vision: ${details || 'High performance web app with responsive UI'}
+
+Provide a JSON output matching this structure strictly (no markdown fence, raw JSON only):
+{
+  "recommendedStack": ["string", "string"],
+  "estimatedTimeline": "string",
+  "architecturalStrategy": "string",
+  "keyMilestones": ["string", "string", "string", "string"],
+  "founderNote": "string"
+}`;
+
+    const response = await ai.models.generateContent({
+      model: 'gemini-2.5-flash',
+      contents: prompt
+    });
+
+    const text = response.text || '';
+    let parsedJson;
+    try {
+      const cleanJson = text.replace(/```json/g, '').replace(/```/g, '').trim();
+      parsedJson = JSON.parse(cleanJson);
+    } catch {
+      parsedJson = {
+        recommendedStack: ['React', 'TypeScript', 'Tailwind CSS', 'Express', 'Vite'],
+        estimatedTimeline: '4 Weeks',
+        architecturalStrategy: text,
+        keyMilestones: [
+          'Phase 1: Architecture & UI Systems',
+          'Phase 2: Core Engineering',
+          'Phase 3: QA & Performance Benchmarking',
+          'Phase 4: Production Deployment'
+        ],
+        founderNote: 'Syed & Hamid will conduct a 1-on-1 discovery session to validate this proposal.'
+      };
+    }
+
+    res.json({
+      success: true,
+      estimate: parsedJson
+    });
+  } catch (error: any) {
+    console.error('Gemini API Estimate Error:', error);
+    res.status(200).json({
+      success: true,
+      isFallback: true,
+      estimate: {
+        recommendedStack: ['React 19', 'TypeScript', 'Tailwind CSS v4', 'Express', 'PWA Offline Cache'],
+        estimatedTimeline: '3-6 Weeks',
+        architecturalStrategy: 'Single-file component modularity, V8 execution optimization, and offline IndexedDB persistence.',
+        keyMilestones: [
+          'Sprint 1: UI System & Motion Engine',
+          'Sprint 2: Service Worker & Cache Strategy',
+          'Sprint 3: Real-time Notification Engine',
+          'Sprint 4: Edge Deployment'
+        ],
+        founderNote: 'Our founders Syed and Hamid will review your submission personally.'
+      }
+    });
+  }
+});
+
+async function startServer() {
+  if (process.env.NODE_ENV !== 'production') {
+    const { createServer: createViteServer } = await import('vite');
+    const vite = await createViteServer({
+      server: { middlewareMode: true },
+      appType: 'spa'
+    });
+    app.use(vite.middlewares);
+  } else {
+    const distPath = path.join(process.cwd(), 'dist');
+    app.use(express.static(distPath));
+    app.get('*', (req, res) => {
+      res.sendFile(path.join(distPath, 'index.html'));
+    });
+  }
+
+  app.listen(PORT, '0.0.0.0', () => {
+    console.log(`[Byte Brothers] Server running on http://0.0.0.0:${PORT}`);
+  });
+}
+
+startServer();

@@ -1,0 +1,6 @@
+{
+  "name": "Byte Brothers",
+  "description": "Boutique web engineering studio showcase with portfolio, services, offline caching, theme toggle, and real-time push notifications.",
+  "requestFramePermissions": ["notifications"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,87 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  --color-studio-bg: #131315;
+  --color-studio-surface: #16161A;
+  --color-studio-stroke: #27272A;
+  --color-studio-text: #e5e1e4;
+  --color-studio-muted: #A1A1AA;
+  --color-studio-blue: #3B82F6;
+  --color-studio-blue-light: #adc6ff;
+}
+
+@layer base {
+  :root {
+    --bg-primary: #131315;
+    --bg-surface: #16161A;
+    --bg-container: #1b1b1d;
+    --bg-elevated: #201f21;
+    --border-color: #27272A;
+    --text-primary: #e5e1e4;
+    --text-secondary: #A1A1AA;
+    --text-muted: #71717A;
+    --accent-blue: #3B82F6;
+    --accent-glow: rgba(59, 130, 246, 0.15);
+  }
+
+  html.light {
+    --bg-primary: #f8f9fa;
+    --bg-surface: #ffffff;
+    --bg-container: #f1f3f5;
+    --bg-elevated: #e9ecef;
+    --border-color: #e2e8f0;
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --text-muted: #64748b;
+    --accent-blue: #2563eb;
+    --accent-glow: rgba(37, 99, 235, 0.12);
+  }
+
+  body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+  }
+}
+
+/* Custom scrollbar & interactive glow utilities */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+.font-display {
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+.font-mono {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.studio-grid-pattern {
+  background-size: 32px 32px;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+}
+
+.light .studio-grid-pattern {
+  background-image: 
+    linear-gradient(to right, rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
+}
+
