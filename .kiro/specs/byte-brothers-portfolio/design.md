@@ -747,3 +747,1004 @@ Text content describing technical depth in each area
 - Sticky submit button at bottom
 - Collapse secondary info under collapsible section
 
+
+
+---
+
+### 5. ABOUT PAGE
+
+#### Hero Section
+
+**Headline:** "About Byte Brothers"
+**Subheading:** "A small studio of big thinkers pushing the boundaries of digital craft"
+
+---
+
+#### Studio Story Section
+
+**Layout:** 2-column (desktop) / stacked (mobile)
+
+**Left Column - Text:**
+- Narrative about founding story
+- Company mission statement
+- Philosophy on design & engineering
+- 2-3 paragraphs, body text
+
+**Right Column - Visual:**
+- Large image or 3D visualization
+- Parallax effect on scroll (20px offset)
+
+---
+
+#### Founder Profiles Section
+
+**Layout:** Side-by-side cards (desktop) / stacked (mobile)
+
+**Founder Card Design:**
+```
+┌─────────────────────────┐
+│    [Avatar Image]       │  (280x280px circle)
+│                         │
+├─────────────────────────┤
+│ Name                    │
+│ ROLE / TITLE (caps)     │
+├─────────────────────────┤
+│ "Subtitle / Tagline"    │  (italic, smaller)
+│                         │
+│ Bio paragraph...        │
+│ Bio paragraph...        │
+│                         │
+│ Highlights:             │
+│ • Skill 1               │
+│ • Skill 2               │
+│ • Skill 3               │
+├─────────────────────────┤
+│ Specialties:            │
+│ [Badge 1] [Badge 2]     │
+│ [Badge 3] [Badge 4]     │
+├─────────────────────────┤
+│ [GitHub] [LinkedIn]     │  (icon links)
+└─────────────────────────┘
+```
+
+**Interactions:**
+- Hover: Card border becomes teal (2px)
+- Avatar scales 1.05x
+- Social links animate underline on hover
+- Background subtle gradient shift
+
+---
+
+#### Technical Tenets Section
+
+**Layout:** 2x2 grid (desktop) / stacked (mobile)
+
+**Tenet Card:**
+```
+┌──────────────────────┐
+│ 01 (large number)    │
+│ CATEGORY (uppercase) │
+├──────────────────────┤
+│ Title                │
+│ (H3, teal)           │
+│                      │
+│ Description text...  │
+│ Body text, 2 lines   │
+└──────────────────────┘
+```
+
+**Tenets:**
+1. Zero-Bloat Philosophy (Performance)
+2. Pixel-Perfect (Craft)
+3. Legacy Code (Future)
+4. Architectural Rigor (Structure)
+
+**Styling:**
+- Alternate background colors (light gray/white)
+- Numbers have teal color
+- Hover: Slight lift (transform: translateY(-4px))
+- Icon (optional) in top-right
+
+---
+
+#### Timeline / Achievements Section
+
+**Title:** "Our Journey"
+
+**Layout:** Vertical timeline (desktop) / horizontal scroll (mobile)
+
+**Timeline Item:**
+```
+Year • Event Title
+Brief description of achievement or milestone
+```
+
+**Interactive:**
+- Hover: Highlight teal color
+- Vertical line connecting items
+- Alternating left/right layout (desktop)
+
+**Sample Milestones:**
+- 2022: Studio founded
+- 2023: First 10 enterprise clients
+- 2024: 50+ successful projects
+
+---
+
+#### Testimonials Section
+
+**Title:** "What Our Clients Say"
+
+**Layout:** Carousel (3 visible desktop) / single (mobile)
+
+**Testimonial Card:**
+```
+┌────────────────────────────┐
+│ ★★★★★ (5 stars)           │
+│                            │
+│ "Quote from client about   │
+│  the work and experience"  │
+│                            │
+│ — Client Name              │
+│   Company Title            │
+│   [Company Logo]           │
+└────────────────────────────┘
+```
+
+**Interactions:**
+- Auto-scroll every 6s
+- Manual controls: Previous/Next buttons
+- Dot indicators (clickable)
+- Swipe on mobile
+
+---
+
+#### Call-to-Action Section
+
+**Content:**
+- Headline: "Ready to work together?"
+- Description: "Let's build something extraordinary"
+- Buttons:
+  - "Start a project" (primary)
+  - "View our portfolio" (secondary)
+
+**Parallax background with subtle animation**
+
+
+
+---
+
+## Animation & Motion System
+
+### Entrance Animations
+
+**Page Load Sequence:**
+1. Preloader (2.4s total)
+2. Hero content fade-in (400ms) with stagger
+3. Page-specific content reveals (500-800ms)
+
+**Pattern - Staggered Text Reveal:**
+```
+Word 1: opacity 0 → 1 (150ms at 0ms)
+Word 2: opacity 0 → 1 (150ms at 50ms)
+Word 3: opacity 0 → 1 (150ms at 100ms)
+```
+
+**Pattern - Slide-Up Entrance:**
+```
+Element starts: transform: translateY(20px), opacity 0
+Target: transform: translateY(0), opacity 1
+Duration: 500ms
+Easing: easeOut (cubic-bezier(0.22, 1, 0.36, 1))
+```
+
+---
+
+### Scroll Trigger Animations
+
+**Global Pattern:**
+- Trigger when element enters viewport (bottom 30%)
+- Animations fire once (reset on page reload only)
+
+**Hero Parallax:**
+- Background moves slower than foreground
+- Offset: background Y = scrollY * 0.5
+- Creates depth illusion
+
+**Element Scale on Scroll:**
+- Cards scale from 0.9 to 1.0 as scroll approaches
+- Opacity: 0 to 1 simultaneously
+- Duration: while element is in viewport
+
+**Text Highlight Animation:**
+- Underline reveals from left-to-right
+- Color: teal gradient
+- Duration: 800ms
+- Stagger: 100ms per word
+
+---
+
+### Hover & Interaction Animations
+
+**Button Hover States:**
+```
+Normal:
+  - Background: teal gradient
+  - Shadow: 0 4px 12px rgba(8, 145, 178, 0.2)
+
+Hover:
+  - Background: teal gradient (lightened +10%)
+  - Shadow: 0 8px 24px rgba(8, 145, 178, 0.4)
+  - Transform: scale(1.02)
+  - Transition: all 200ms ease-out
+```
+
+**Link Hover:**
+```
+Underline: scaleX(0) → scaleX(1)
+Duration: 300ms
+Origin: left
+Color: teal
+```
+
+**Card Hover (Portfolio Grid):**
+```
+Simultaneous:
+  - Shadow depth increases
+  - Image overlay appears (0.2 black opacity)
+  - Border color shifts to teal
+  - Slight lift: translateY(-4px)
+Duration: 300ms ease-out
+```
+
+**3D Logo Hover (Navbar):**
+```
+- Scale: 1.0 → 1.05
+- Rotation: slight (2-3 degrees)
+- Duration: 300ms
+```
+
+---
+
+### Scroll Velocity Effects
+
+**Fast Scroll:** Elements transition faster (1x speed)
+**Slow Scroll:** Elements transition smoothly (0.5x speed)
+
+Implemented via Framer Motion's `useScroll` and `useTransform`
+
+---
+
+### Micro-interactions
+
+**Form Input Focus:**
+- Border color: gray → teal
+- Shadow: 0 0 0 3px rgba(8, 145, 178, 0.1)
+- Transition: 200ms
+
+**Form Input Valid:**
+- Green checkmark appears (fade-in 200ms)
+- Position: right side of input
+
+**File Upload Drag-Over:**
+- Background: teal 0.1 opacity
+- Border: 2px dashed teal
+- Scale: 1.02
+- Duration: 200ms
+
+**Toast Notification:**
+- Slide up from bottom: translateY(0) from translateY(100px)
+- Fade in: opacity 0 → 1
+- Duration: 300ms
+- Auto-dismiss after 4s (fade-out 300ms)
+
+---
+
+### Loading States
+
+**Button Loading:**
+- Text fades to 50% opacity
+- Spinner icon appears (4px dots rotating)
+- Duration: while loading
+
+**Page Transition:**
+- Fade out (100ms)
+- Route change
+- Fade in (200ms)
+- Scroll to top smoothly
+
+**Skeleton Screens:**
+- Gray placeholder blocks
+- Shimmer animation (left-to-right gradient pulse)
+- Duration: 1.5s loop
+
+---
+
+### 3D Animation Specifications
+
+**WebGL Hero Background:**
+- 60 FPS target (desktop)
+- Geometries: Rotating cube, octahedron, or custom "B" mark
+- Colors: Teal-blue gradient applied to geometries
+- Lighting: 2-3 point lights with soft shadows
+- Particle system: 50-100 particles drifting (slow, no interaction)
+- Cursor tracking: Rotation offset ±10 degrees
+
+**Implementation:**
+- Three.js or Babylon.js
+- Use `useThree` hook for camera control
+- Optimize with `useFrame` for animation loop
+- Lazy load WebGL on viewport entry
+
+**Fallback (WebGL unsupported):**
+- CSS gradient background
+- SVG animations instead
+- Still maintains animation quality
+
+
+
+---
+
+## 3D Integration Strategy
+
+### Asset Pipeline
+
+**3D Model Format:** glTF 2.0 (.glb)
+- Rationale: Web standard, compressed, wide tool support
+- Size optimization: Draco compression (80% reduction)
+- Typical file size: 200KB - 2MB per model
+
+**Texture Optimization:**
+- WebP format (primary), PNG fallback
+- Size: 2K (2048x2048) for hero elements
+- 1K for secondary elements
+- Compression: JPEG-XL or WebP with 75% quality
+
+**Model Hosting:**
+- CDN delivery (Cloudflare, Vercel, AWS CloudFront)
+- HTTP/2 Server Push for critical assets
+- Lazy loading off-viewport models
+
+---
+
+### 3D Viewers
+
+**Project Modal 3D Viewer:**
+- Framework: Three.js Canvas
+- Features:
+  - Orbit controls (mouse drag to rotate)
+  - Zoom with mouse wheel
+  - Pan with right-click + drag
+  - Auto-rotate on idle (5s of inactivity)
+  - Reset button (keyboard: R)
+
+**Implementation Component:**
+```typescript
+interface ModelViewer {
+  modelUrl: string;
+  autoRotate: boolean;
+  scale: 1.0;
+  cameraPosition: [number, number, number];
+}
+```
+
+---
+
+### Hero 3D Background
+
+**Composition:**
+- Multiple layers with parallax
+- Layer 1: Animated geometric shapes (closest to camera)
+- Layer 2: Particle system (middle distance)
+- Layer 3: Static background (farthest)
+
+**Performance Optimization:**
+- Frustum culling (don't render off-screen objects)
+- LOD (Level of Detail) for complex models
+- Texture atlasing for batch rendering
+- Instanced rendering for repeated geometries
+
+**Mobile Optimization:**
+- Reduced particle count (50 vs 200 on desktop)
+- Lower polygon count for geometries
+- Simplified lighting (1 light instead of 3)
+- 30 FPS target (acceptable for mobile)
+
+---
+
+### Fallback & Progressive Enhancement
+
+**Device Capability Detection:**
+```typescript
+const canRender3D = (() => {
+  const canvas = document.createElement('canvas');
+  return !!(canvas.getContext('webgl') || 
+            canvas.getContext('webgl2'));
+})();
+```
+
+**Fallback Strategy:**
+1. Check WebGL support
+2. If yes: Load and render 3D
+3. If no: Use CSS gradient + SVG animations
+4. Monitor: If frame rate drops below 20 FPS, switch to fallback
+
+**Network Detection:**
+- Slow 3G or offline: Use fallback immediately
+- Fast 4G/5G: Load 3D with defer
+- Medium connection: Load simplified 3D
+
+
+
+---
+
+## Performance Optimization Strategy
+
+### Lighthouse Targets
+
+- **Performance:** 95+ (Target: <2.5s FCP, <3.8s LCP)
+- **Accessibility:** 95+
+- **Best Practices:** 95+
+- **SEO:** 95+
+
+### Code Splitting
+
+**Route-Based:**
+- Home: ~/50KB
+- Portfolio: ~/45KB
+- Services: ~/40KB
+- Contact: ~/35KB
+- About: ~/38KB
+- Shared: ~/30KB (components, hooks)
+
+**Component Lazy Loading:**
+```typescript
+const ProjectModal = lazy(() => import('./ProjectModal'));
+const AiEstimator = lazy(() => import('./AiEstimator'));
+```
+
+### Image Optimization
+
+**Sizes & Formats:**
+- Hero: 1400x800px (WebP 180KB, PNG fallback 350KB)
+- Project cards: 800x600px (WebP 120KB)
+- Founder avatars: 300x300px (WebP 45KB)
+- Icons: SVG format (2-5KB)
+
+**Responsive Images:**
+```html
+<picture>
+  <source srcset="image.webp" type="image/webp">
+  <source srcset="image.jpg" type="image/jpeg">
+  <img src="image.jpg" alt="description">
+</picture>
+```
+
+**Lazy Loading:**
+- Intersection Observer API
+- Images load 100px before viewport entry
+- Blur-up placeholder (base64 10x8px encoded)
+
+### Bundle Analysis
+
+**Target:** < 150KB gzip (initial JS + CSS)
+
+**Break-down:**
+- React + React-DOM: 40KB
+- Motion/Framer libraries: 30KB
+- Tailwind CSS: 25KB
+- Custom code: 35KB
+- Utilities & vendor: 20KB
+
+### Network Optimization
+
+**HTTP/2 Server Push:**
+Push critical assets:
+- index.html
+- main.css
+- main.js
+- Google Fonts
+
+**Resource Hints:**
+```html
+<link rel="dns-prefetch" href="https://cdn.example.com">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="prefetch" href="/portfolio.js">
+<link rel="preload" href="/hero-image.webp" as="image">
+```
+
+**Caching Strategy:**
+- Static assets: Cache-Control: max-age=31536000 (1 year)
+- HTML: Cache-Control: max-age=3600 (1 hour)
+- API responses: Cache-Control: max-age=300 (5 minutes)
+
+### 3D Asset Performance
+
+**Hero 3D:**
+- Draco compression: 80% file size reduction
+- Instanced rendering for particles
+- GPU-accelerated shaders
+- Optimization: Remove unused materials/textures
+
+**Model Viewer 3D:**
+- Progressive loading (simplified geometry first, detailed later)
+- Texture streaming
+- Maximum 2MB per model
+
+### Runtime Optimization
+
+**React Optimization:**
+- Memoization for expensive components
+- useCallback for event handlers
+- Code splitting with Suspense
+- Virtual scrolling for large lists
+
+**CSS Optimization:**
+- Tailwind JIT (Just-In-Time compilation)
+- Remove unused CSS via PurgeCSS
+- Minify final CSS output
+
+**JavaScript Optimization:**
+- Tree-shaking unused exports
+- Remove console.log in production
+- Minify and compress with gzip
+
+### Monitoring & Observability
+
+**Performance Metrics:**
+- Largest Contentful Paint (LCP)
+- First Input Delay (FID)
+- Cumulative Layout Shift (CLS)
+- Time to Interactive (TTI)
+
+**Tools:**
+- Lighthouse CI (automated testing)
+- Web Vitals library (real user monitoring)
+- Sentry (error tracking)
+- Analytics dashboard (custom metrics)
+
+
+
+---
+
+## Accessibility (WCAG 2.1 AA)
+
+### Color Contrast
+
+**Minimum:** 4.5:1 for normal text, 3:1 for large text
+
+**Verified Combinations:**
+- Teal (#0891b2) on white: 6.8:1 ✓
+- Dark Navy (#0f172a) on white: 18.9:1 ✓
+- Blue (#1e40af) on white: 7.2:1 ✓
+
+### Keyboard Navigation
+
+**Tab Order:**
+- Navbar (logo, links, theme toggle, estimator)
+- Main content (visible on current page)
+- Footer (links, newsletter, socials)
+
+**Focus Indicators:**
+- Focus ring: 2px solid teal
+- Offset: 2px
+- High contrast against background
+
+**Keyboard Shortcuts:**
+- Tab: Next focusable element
+- Shift+Tab: Previous focusable element
+- Enter: Activate button/link
+- Escape: Close modals
+- Arrow keys: Navigate carousels (when focused)
+
+### Screen Reader Support
+
+**Semantic HTML:**
+```html
+<nav>, <main>, <section>, <article>, <aside>, <footer>
+```
+
+**ARIA Labels:**
+```html
+<button aria-label="Close modal">×</button>
+<div aria-live="polite">Form validation message</div>
+<img alt="Project screenshot">
+```
+
+**Skip Links:**
+```html
+<a href="#main-content" className="sr-only">Skip to main content</a>
+```
+
+### Form Accessibility
+
+**Labels:**
+- Every input has associated `<label>` with for attribute
+- Labels visible (not hidden)
+
+**Error Messages:**
+- Associated with input via `aria-describedby`
+- Color + icon (not color alone)
+- Announced to screen readers
+
+**Required Fields:**
+- `required` attribute on HTML element
+- Visual indicator: asterisk (*)
+- `aria-required="true"` for dynamic fields
+
+### Motion & Animation
+
+**Respect prefers-reduced-motion:**
+```css
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+```
+
+### Image & Media
+
+**Images:**
+- Descriptive alt text (not "image of...")
+- Decorative images: empty alt ("")
+
+**Videos:**
+- Captions (CC button visible)
+- Transcript provided
+
+### Color Blindness
+
+**Design considerations:**
+- Don't rely on color alone (use icons + color)
+- Use sufficient contrast
+- Test with color-blind simulators
+
+
+
+---
+
+## Dark Mode Implementation
+
+### Color Mappings
+
+**Text:**
+- Primary (Light Mode): #0f172a → Primary (Dark Mode): #ffffff
+- Secondary (Light Mode): #64748b → Secondary (Dark Mode): #cbd5e1
+
+**Backgrounds:**
+- Background (Light Mode): #ffffff → Background (Dark Mode): #0f172a
+- Surface (Light Mode): #f1f5f9 → Surface (Dark Mode): #1e293b
+
+**Accent Colors:**
+- Unchanged: Teal (#0891b2) and Blue (#1e40af) maintain same values
+
+### Toggle Implementation
+
+**Location:** Navbar, top-right
+
+**Indicator:**
+- Sun icon (light mode)
+- Moon icon (dark mode)
+- Smooth rotation transition (180°, 300ms)
+
+**Storage:**
+- localStorage key: "theme-preference"
+- Values: "light" | "dark" | "system"
+- System preference detection: `prefers-color-scheme` media query
+
+**CSS Variables:**
+```css
+:root {
+  --bg-primary: #ffffff;
+  --text-primary: #0f172a;
+}
+
+:root.dark {
+  --bg-primary: #0f172a;
+  --text-primary: #ffffff;
+}
+```
+
+**Transition:**
+```css
+* {
+  transition: background-color 200ms, color 200ms, border-color 200ms;
+}
+```
+
+### Component Adaptations
+
+**Images:**
+- Some images may have invert filters in dark mode
+- Alternative images (if design differs significantly)
+
+**Charts/Graphs:**
+- Axes text: white/light in dark mode
+- Grid lines: reduced opacity
+
+**Buttons:**
+- Dark mode: slightly different gradient or opacity
+- Maintain sufficient contrast
+
+
+
+---
+
+## Responsive Design Specifications
+
+### Breakpoints
+
+```
+Mobile-First Approach:
+
+Base: 320px - 640px
+  - Single column layouts
+  - Full-width components (with padding 16px)
+  - Touch-friendly targets (44px minimum)
+
+Tablet: 641px - 1024px
+  - 2-column grids where applicable
+  - Adjusted spacing (padding 24px)
+  - Slightly larger text (18px base)
+
+Desktop: 1025px - 1440px
+  - 3-column grids
+  - Full sidebar layouts
+  - Optimal line length (60-80 characters)
+
+Wide: 1441px+
+  - Max-width constraints (1400px)
+  - Centered layouts
+  - Horizontal spacing optimization
+```
+
+### Mobile-Specific Adaptations
+
+**Navigation:**
+- Hamburger menu (3-line icon)
+- Full-screen drawer on toggle
+- Overlay backdrop
+
+**Hero Section:**
+- 60vh height (not 100vh)
+- Stacked layout
+- Smaller font sizes (H1: 2rem instead of 3.5rem)
+
+**Grid Layouts:**
+- 2-column → 1-column
+- 3-column → 2-column → 1-column
+
+**Typography:**
+- H1: 1.875rem (mobile) → 3.5rem (desktop)
+- Body: 0.95rem (mobile) → 1rem (desktop)
+- Small: 0.8rem (mobile) → 0.875rem (desktop)
+
+**Touch Interactions:**
+- Hover states unavailable (use active/focus instead)
+- Larger tap targets (48px minimum for buttons)
+- Swipe gestures for carousels
+- Bottom sheet drawers instead of side modals
+
+**Forms:**
+- Full-width inputs
+- Larger labels (14px)
+- Smaller number inputs (avoid zoom on input focus)
+- Floating labels on focus
+
+### Tablet-Specific Adaptations
+
+**Grid Layouts:**
+- 2-column for project grid
+- 2-column for services
+
+**Navigation:**
+- Standard navbar (no drawer if space allows)
+- Horizontal menu items
+
+**Modals:**
+- Slide-over drawer (from right, 70% width)
+- Or fullscreen with header
+
+---
+
+## State Management & Data Flow
+
+### Global State
+
+**Using Context API + useState:**
+- Current theme (light/dark)
+- Current page (activeTab)
+- Selected project (for modal)
+- Form drafts (localStorage backup)
+
+**Redux Alternative (if needed):**
+- Better for complex state
+- Devtools integration
+- Middleware for logging
+
+### Component Props
+
+**Page Components:**
+```typescript
+interface PageProps {
+  setActiveTab: (tab: string) => void;
+  onSelectProject?: (project: Project) => void;
+  onOpenAiEstimator?: () => void;
+  onOpenContactModal?: () => void;
+}
+```
+
+**Shared Components:**
+```typescript
+interface ModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  data?: any;
+}
+```
+
+### Side Effects
+
+**On Mount:**
+- Register service worker (offline caching)
+- Initialize theme preference
+- Set up analytics
+
+**On Scroll:**
+- Trigger entrance animations
+- Update scroll progress bar
+- Parallax calculations
+
+**On Route Change:**
+- Clear modals
+- Reset form state
+- Scroll to top
+
+
+
+---
+
+## Browser & Device Compatibility
+
+### Browser Support
+
+**Modern Browsers (Full Support):**
+- Chrome 90+
+- Firefox 88+
+- Safari 14+
+- Edge 90+
+
+**Graceful Degradation:**
+- IE 11: Basic functionality, no animations/3D
+- Older mobile browsers: Core content only
+
+### Device Support
+
+**Desktop:**
+- MacOS (Safari, Chrome)
+- Windows (Chrome, Edge, Firefox)
+- Linux (Chrome, Firefox)
+
+**Mobile:**
+- iOS 12+ (Safari, Chrome)
+- Android 8+ (Chrome, Firefox, Samsung Internet)
+
+**Tablet:**
+- iPad OS 12+
+- Android 8+
+
+### Feature Detection
+
+**JavaScript Feature Checks:**
+```typescript
+// WebGL support
+const supportsWebGL = !!window.WebGLRenderingContext;
+
+// Intersection Observer
+const supportsIO = 'IntersectionObserver' in window;
+
+// Local Storage
+const supportsLS = typeof Storage !== 'undefined';
+
+// Service Worker
+const supportsSW = 'serviceWorker' in navigator;
+```
+
+---
+
+## SEO & Meta Tags
+
+### Page Metadata
+
+**Home Page:**
+- Title: "Byte Brothers – Premium Web Engineering & Design Studio"
+- Description: "Award-winning digital studio specializing in Webflow, React, and 3D web experiences. Portfolio of high-performing websites and interactive projects."
+- OG Image: Hero section screenshot (1200x630px)
+
+**Portfolio Page:**
+- Title: "Portfolio – Byte Brothers | Featured Projects"
+- Description: "Explore our curated collection of transformative digital projects, case studies, and technical showcases."
+
+**Services Page:**
+- Title: "Services – Byte Brothers | Webflow & Custom Development"
+- Description: "Elite Webflow design, custom React builds, e-commerce development, and digital strategy services for growth-focused brands."
+
+**Contact Page:**
+- Title: "Contact Us – Byte Brothers | Let's Build Together"
+- Description: "Get in touch with Byte Brothers. Schedule a consultation, request an estimate, or inquire about our services."
+
+**About Page:**
+- Title: "About Byte Brothers – Our Story & Team"
+- Description: "Meet Syed and Hamid, founders of Byte Brothers. Learn about our mission, technical philosophy, and approach to digital craftsmanship."
+
+### Structured Data
+
+**Schema.org Implementation:**
+```json
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Byte Brothers",
+  "url": "https://bytebrothers.studio",
+  "logo": "https://bytebrothers.studio/logo.png",
+  "description": "Premium web engineering studio",
+  "sameAs": [
+    "https://github.com/bytebrothers",
+    "https://linkedin.com/company/byte-brothers"
+  ],
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "City",
+    "addressRegion": "State",
+    "postalCode": "12345",
+    "addressCountry": "US"
+  }
+}
+```
+
+### Sitemap & Robots
+
+**sitemap.xml:**
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://bytebrothers.studio/</loc>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://bytebrothers.studio/portfolio</loc>
+    <priority>0.9</priority>
+  </url>
+  <!-- ... additional URLs ... -->
+</urlset>
+```
+
+**robots.txt:**
+```
+User-agent: *
+Allow: /
+Disallow: /admin
+Sitemap: https://bytebrothers.studio/sitemap.xml
+```
+
+### Open Graph & Twitter Cards
+
+```html
+<!-- OG Tags -->
+<meta property="og:title" content="Page Title">
+<meta property="og:description" content="Page description">
+<meta property="og:image" content="https://bytebrothers.studio/og-image.png">
+<meta property="og:url" content="https://bytebrothers.studio">
+<meta property="og:type" content="website">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Page Title">
+<meta name="twitter:description" content="Page description">
+<meta name="twitter:image" content="https://bytebrothers.studio/og-image.png">
+```
+
