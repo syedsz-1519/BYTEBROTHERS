@@ -3,6 +3,7 @@ import { motion } from 'motion/react';
 import { PROJECTS, FOUNDERS, TECHNICAL_TENETS } from '../data/studioData';
 import { ProjectCard } from '../components/ProjectCard';
 import { FounderCard } from '../components/FounderCard';
+import { Hero } from '../components/hero/Hero';
 import { 
   ArrowRight, 
   Sparkles, 
@@ -63,86 +64,14 @@ export const HomePage: React.FC<HomePageProps> = ({
 
   return (
     <div className="space-y-24 pb-16">
-      {/* Hero Section */}
-      <section className="relative pt-10 lg:pt-16 studio-grid-pattern">
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-8"
-        >
-          {/* Eyebrow Badge */}
-          <div className="flex flex-wrap items-center gap-3">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/30 text-[11px] font-mono text-blue-400">
-              <Terminal className="h-3.5 w-3.5 text-cyan-400" />
-              <span>[ WEBFLOW ENTERPRISE &amp; FULL-STACK STUDIO ]</span>
-            </div>
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-[11px] font-mono text-emerald-400">
-              <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
-              <span>SYSTEM LATENCY: {pingLatency}ms</span>
-            </div>
-          </div>
-
-          {/* Main Display Heading */}
-          <div className="space-y-5 max-w-4xl">
-            <h1 className="font-display text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-[var(--text-primary)] leading-[1.08]">
-              WE BUILD <span className="text-blue-500 underline decoration-blue-500/40 underline-offset-8">HIGH-PERFORMANCE</span> WEBFLOW &amp; WEB APPS
-            </h1>
-            <p className="text-base sm:text-lg text-[var(--text-secondary)] leading-relaxed max-w-2xl">
-              Founded by <strong className="text-[var(--text-primary)] font-semibold">Syed</strong> &amp; <strong className="text-[var(--text-primary)] font-semibold">Hamid Kamal</strong>. Crafting Webflow Enterprise platforms, bespoke React web applications, and Client-First digital systems with sub-second execution.
-            </p>
-          </div>
-
-          {/* CTA Buttons */}
-          <div className="flex flex-wrap items-center gap-3 pt-2">
-            <button
-              onClick={() => {
-                setActiveTab('portfolio');
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-              }}
-              className="px-6 py-3 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-sans text-xs font-semibold tracking-wide transition-all shadow-md hover:shadow-blue-500/20 flex items-center gap-2"
-            >
-              <span>EXPLORE PORTFOLIO</span>
-              <ArrowRight className="h-4 w-4" />
-            </button>
-
-            <button
-              onClick={onOpenContactModal}
-              className="px-6 py-3 rounded-lg border border-[var(--border-color)] bg-[var(--bg-surface)] hover:bg-[var(--bg-container)] text-[var(--text-primary)] font-sans text-xs font-semibold tracking-wide transition-colors"
-            >
-              SCHEDULE DISCOVERY
-            </button>
-
-            <button
-              onClick={onOpenAiEstimator}
-              className="px-4 py-3 rounded-lg bg-blue-500/10 hover:bg-blue-500/20 text-blue-400 border border-blue-500/30 font-mono text-xs font-medium transition-colors flex items-center gap-1.5"
-            >
-              <Sparkles className="h-4 w-4 text-cyan-400" />
-              <span>TRY AI ESTIMATOR</span>
-            </button>
-          </div>
-
-          {/* Key Metrics Strip */}
-          <div className="pt-10 grid grid-cols-2 md:grid-cols-4 gap-4 border-t border-[var(--border-color)]">
-            <div className="p-4 rounded-xl border border-[var(--border-color)] bg-[var(--bg-surface)]/60">
-              <div className="font-mono text-[10px] text-[var(--text-muted)] uppercase">Founding Partners</div>
-              <div className="font-display font-bold text-lg text-[var(--text-primary)] mt-1">Syed &amp; Hamid</div>
-            </div>
-            <div className="p-4 rounded-xl border border-[var(--border-color)] bg-[var(--bg-surface)]/60">
-              <div className="font-mono text-[10px] text-[var(--text-muted)] uppercase">Webflow Mastery</div>
-              <div className="font-display font-bold text-lg text-blue-400 mt-1">Client-First v2</div>
-            </div>
-            <div className="p-4 rounded-xl border border-[var(--border-color)] bg-[var(--bg-surface)]/60">
-              <div className="font-mono text-[10px] text-[var(--text-muted)] uppercase">Lighthouse Score</div>
-              <div className="font-display font-bold text-lg text-emerald-400 mt-1">100 / 100 Speed</div>
-            </div>
-            <div className="p-4 rounded-xl border border-[var(--border-color)] bg-[var(--bg-surface)]/60">
-              <div className="font-mono text-[10px] text-[var(--text-muted)] uppercase">V8 Render Latency</div>
-              <div className="font-display font-bold text-lg text-cyan-400 mt-1">&lt; 20ms Target</div>
-            </div>
-          </div>
-        </motion.div>
-      </section>
+      {/* 3D Awwwards-Level Hero Section */}
+      <Hero 
+        onOpenRfq={onOpenContactModal}
+        onExploreServices={() => {
+          setActiveTab('services');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }}
+      />
 
       {/* 3D WEBSITE WORKFLOW & PROFIT BLUEPRINT BANNER */}
       <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
