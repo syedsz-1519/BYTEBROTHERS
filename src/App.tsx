@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ThemeProvider } from './context/ThemeContext';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
+import { Preloader } from './components/Preloader';
 import { ScrollProgressBar } from './components/ScrollProgressBar';
 import { ProjectModal } from './components/ProjectModal';
 import { AiEstimatorModal } from './components/AiEstimatorModal';
@@ -10,6 +11,7 @@ import { AboutPage } from './pages/AboutPage';
 import { PortfolioPage } from './pages/PortfolioPage';
 import { ServicesPage } from './pages/ServicesPage';
 import { ContactPage } from './pages/ContactPage';
+import { WorkflowGuidePage } from './pages/WorkflowGuidePage';
 import { Project } from './data/studioData';
 import { registerServiceWorker, useOnlineStatus } from './utils/offlineCache';
 import { WifiOff } from 'lucide-react';
@@ -19,6 +21,7 @@ function AppContent() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [aiEstimatorOpen, setAiEstimatorOpen] = useState<boolean>(false);
   const [attachedSpec, setAttachedSpec] = useState<string | undefined>(undefined);
+  const [showPreloader, setShowPreloader] = useState<boolean>(true);
 
   const isOnline = useOnlineStatus();
 
@@ -40,6 +43,9 @@ function AppContent() {
 
   return (
     <div className="min-h-screen flex flex-col bg-[var(--bg-primary)] text-[var(--text-primary)] transition-colors duration-300">
+      {/* White Brothers Preloader on initial load */}
+      {showPreloader && <Preloader onComplete={() => setShowPreloader(false)} />}
+
       {/* Scroll Progress Bar at top of viewport */}
       <ScrollProgressBar />
 
@@ -84,6 +90,16 @@ function AppContent() {
 
         {activeTab === 'services' && (
           <ServicesPage
+            onOpenContactModal={() => {
+              setActiveTab('contact');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            onOpenAiEstimator={() => setAiEstimatorOpen(true)}
+          />
+        )}
+
+        {activeTab === 'workflow-guide' && (
+          <WorkflowGuidePage
             onOpenContactModal={() => {
               setActiveTab('contact');
               window.scrollTo({ top: 0, behavior: 'smooth' });

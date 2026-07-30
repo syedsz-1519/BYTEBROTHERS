@@ -1,173 +1,114 @@
-import React, { useEffect, useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
+import { Sparkles, ArrowRight, ShieldCheck } from 'lucide-react';
 
 interface PreloaderProps {
-  isLoading: boolean
-  onLoadingComplete: () => void
+  onComplete?: () => void;
 }
 
-export const Preloader: React.FC<PreloaderProps> = ({
-  isLoading,
-  onLoadingComplete,
-}) => {
-  const [progress, setProgress] = useState(0)
+export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
+  const [progress, setProgress] = useState(0);
+  const [isFinished, setIsFinished] = useState(false);
 
   useEffect(() => {
-    if (!isLoading) return
-
-    // Simulate loading progress
     const interval = setInterval(() => {
       setProgress((prev) => {
-        if (prev >= 90) {
-          clearInterval(interval)
-          return prev
+        if (prev >= 100) {
+          clearInterval(interval);
+          setTimeout(() => {
+            setIsFinished(true);
+            if (onComplete) onComplete();
+          }, 400);
+          return 100;
         }
-        return prev + Math.random() * 30
-      })
-    }, 200)
+        // Smooth logarithmic progress increment
+        const diff = Math.max(1, Math.floor((100 - prev) * 0.15));
+        return Math.min(100, prev + diff);
+      });
+    }, 40);
 
-    return () => clearInterval(interval)
-  }, [isLoading])
-
-  useEffect(() => {
-    if (progress >= 100) {
-      const timer = setTimeout(() => {
-        onLoadingComplete()
-      }, 300)
-      return () => clearTimeout(timer)
-    }
-  }, [progress, onLoadingComplete])
+    return () => clearInterval(interval);
+  }, [onComplete]);
 
   return (
     <AnimatePresence>
-      {isLoading && (
+      {!isFinished && (
         <motion.div
+          key="preloader"
           initial={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.5 }}
-          className="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-slate-950 via-blue-950 to-slate-900"
+          exit={{ opacity: 0, y: -20 }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          className="fixed inset-0 z-50 flex flex-col items-center justify-between bg-[#08090a] text-white p-8 sm:p-12 select-none overflow-hidden"
         >
-          {/* Main Container */}
-          <div className="flex flex-col items-center gap-12">
-            {/* Logo Animation */}
-            <motion.div
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.6 }}
-              className="relative"
-            >
-              {/* Byte Brothers Text - Single Clear Line Animation */}
-              <div className="relative h-32 flex items-center justify-center">
-                {/* Animated line drawing effect */}
-                <svg
-                  className="absolute"
-                  width="280"
-                  height="80"
-                  viewBox="0 0 280 80"
-                  fill="none"
-                >
-                  {/* "Byte Brothers" text rendered as a single stroke path */}
-                  <motion.text
-                    x="140"
-                    y="50"
-                    textAnchor="middle"
-                    fontSize="48"
-                    fontWeight="700"
-                    fill="none"
-                    stroke="url(#lineGradient)"
-                    strokeWidth="2"
-                    letterSpacing="2"
-                    initial={{ strokeDashoffset: 500 }}
-                    animate={{ strokeDashoffset: 0 }}
-                    transition={{ duration: 2, ease: 'easeInOut' }}
-                    style={{ strokeDasharray: 500 }}
-                  >
-                    Byte Brothers
-                  </motion.text>
-
-                  <defs>
-                    <linearGradient
-                      id="lineGradient"
-                      x1="0%"
-                      y1="0%"
-                      x2="100%"
-                      y2="0%"
-                    >
-                      <stop
-                        offset="0%"
-                        stopColor="#0ea5e9"
-                        stopOpacity="1"
-                      />
-                      <stop
-                        offset="100%"
-                        stopColor="#06b6d4"
-                        stopOpacity="1"
-                      />
-                    </linearGradient>
-                  </defs>
-                </svg>
-
-                {/* Glow effect behind text */}
-                <motion.div
-                  className="absolute inset-0 blur-xl bg-gradient-to-r from-cyan-500 to-blue-500 opacity-20 rounded-full"
-                  animate={{
-                    scale: [1, 1.1, 1],
-                    opacity: [0.2, 0.3, 0.2],
-                  }}
-                  transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                  }}
-                />
-              </div>
-            </motion.div>
-
-            {/* Progress Bar */}
-            <div className="w-64 h-1 bg-slate-800 rounded-full overflow-hidden">
-              <motion.div
-                className="h-full bg-gradient-to-r from-cyan-400 via-blue-400 to-cyan-400"
-                initial={{ width: '0%' }}
-                animate={{ width: `${Math.min(progress, 100)}%` }}
-                transition={{ duration: 0.3 }}
-              />
+          {/* Subtle Grid Accent Background */}
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:4rem_4rem] pointer-events-none" />
+          
+          {/* Top Status */}
+          <div className="w-full max-w-5xl flex items-center justify-between text-xs font-mono text-zinc-500 z-10">
+            <div className="flex items-center gap-2">
+              <span className="h-2 w-2 rounded-full bg-emerald-400 animate-ping" />
+              <span>SYSTEM INITIALIZATION</span>
             </div>
-
-            {/* Progress Text */}
-            <motion.p
-              className="text-cyan-400 text-sm font-medium tracking-widest"
-              animate={{ opacity: [0.5, 1, 0.5] }}
-              transition={{ duration: 1.5, repeat: Infinity }}
-            >
-              {Math.round(Math.min(progress, 100))}%
-            </motion.p>
+            <span>V8 3D ENGINE v5.2</span>
           </div>
 
-          {/* Animated Background Elements */}
-          <motion.div
-            className="absolute top-20 left-10 w-72 h-72 bg-cyan-500 rounded-full mix-blend-multiply filter blur-3xl opacity-10"
-            animate={{
-              x: [0, 50, 0],
-              y: [0, 30, 0],
-            }}
-            transition={{
-              duration: 8,
-              repeat: Infinity,
-            }}
-          />
-          <motion.div
-            className="absolute bottom-20 right-10 w-72 h-72 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-10"
-            animate={{
-              x: [0, -50, 0],
-              y: [0, -30, 0],
-            }}
-            transition={{
-              duration: 8,
-              repeat: Infinity,
-              delay: 2,
-            }}
-          />
+          {/* Center Title & Clear Single Line */}
+          <div className="flex flex-col items-center justify-center text-center my-auto space-y-6 max-w-2xl z-10">
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.5 }}
+              className="space-y-3"
+            >
+              {/* Single Clear Line Title as requested */}
+              <h1 className="font-display text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-white uppercase">
+                WHITE BROTHERS
+              </h1>
+              
+              {/* Single Clear Accent Line */}
+              <div className="relative w-full h-[1px] bg-gradient-to-r from-transparent via-blue-500 to-transparent my-4">
+                <motion.div 
+                  className="absolute inset-0 bg-cyan-400 blur-sm"
+                  animate={{ opacity: [0.3, 0.9, 0.3] }}
+                  transition={{ duration: 1.5, repeat: Infinity }}
+                />
+              </div>
+
+              <p className="font-mono text-xs sm:text-sm text-zinc-400 tracking-wider uppercase">
+                3D Web Architecture • Webflow Enterprise • WebGL Systems
+              </p>
+            </motion.div>
+
+            {/* Progress Bar & Percentage */}
+            <div className="w-full max-w-md space-y-2 pt-4">
+              <div className="flex justify-between items-center text-xs font-mono text-zinc-400">
+                <span className="flex items-center gap-1.5">
+                  <Sparkles className="h-3.5 w-3.5 text-cyan-400" />
+                  <span>Loading Shader Matrices</span>
+                </span>
+                <span className="font-bold text-white">{progress}%</span>
+              </div>
+              <div className="h-1.5 w-full bg-zinc-800 rounded-full overflow-hidden p-0.5 border border-zinc-700/50">
+                <motion.div
+                  className="h-full bg-gradient-to-r from-blue-500 via-cyan-400 to-emerald-400 rounded-full"
+                  style={{ width: `${progress}%` }}
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Bottom Footnote */}
+          <div className="w-full max-w-5xl flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] font-mono text-zinc-500 z-10 border-t border-zinc-800/80 pt-4">
+            <div className="flex items-center gap-2">
+              <ShieldCheck className="h-3.5 w-3.5 text-blue-400" />
+              <span>STUDIO DIRECTORS: SYED &amp; HAMID KAMAL</span>
+            </div>
+            <div>
+              <span>PRECISION DIGITAL ENGINEERING © 2026</span>
+            </div>
+          </div>
         </motion.div>
       )}
     </AnimatePresence>
-  )
-}
+  );
+};

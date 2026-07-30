@@ -68,6 +68,7 @@ export const Navbar: React.FC<NavbarProps> = ({
     { id: 'about', label: 'About Studio' },
     { id: 'portfolio', label: 'Portfolio' },
     { id: 'services', label: 'Services' },
+    { id: 'workflow-guide', label: '3D Workflow' },
     { id: 'contact', label: 'Contact' }
   ];
 
@@ -82,16 +83,16 @@ export const Navbar: React.FC<NavbarProps> = ({
           }}
           className="flex items-center gap-3 text-left focus:outline-none group"
         >
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#18181b] dark:bg-white text-white dark:text-[#18181b] font-display font-bold text-lg shadow-sm transition-transform duration-200 group-hover:scale-105 border border-white/10">
-            B
+          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-blue-600 to-indigo-700 text-white font-display font-bold text-lg shadow-md transition-transform duration-200 group-hover:scale-105 border border-white/20">
+            W
           </div>
           <div>
             <div className="font-display font-bold tracking-tight text-base text-[var(--text-primary)] flex items-center gap-1.5">
-              BYTE BROTHERS
-              <span className="inline-block h-1.5 w-1.5 rounded-full bg-blue-500 animate-pulse"></span>
+              WHITE BROTHERS
+              <span className="inline-block h-1.5 w-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
             </div>
             <div className="font-mono text-[10px] tracking-widest text-[var(--text-muted)] uppercase">
-              Digital Architects
+              3D &amp; Webflow Architects
             </div>
           </div>
         </button>
