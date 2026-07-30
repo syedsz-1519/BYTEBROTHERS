@@ -10,8 +10,8 @@ export interface StudioNotification {
   link?: string;
 }
 
-const NOTIFICATIONS_KEY = 'byte_brothers_notifications';
-const PUSH_ENABLED_KEY = 'byte_brothers_push_enabled';
+const NOTIFICATIONS_KEY = 'white_brothers_notifications';
+const PUSH_ENABLED_KEY = 'white_brothers_push_enabled';
 
 const INITIAL_NOTIFICATIONS: StudioNotification[] = [
   {

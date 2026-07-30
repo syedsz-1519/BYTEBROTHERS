@@ -10,13 +10,13 @@ export const AboutPage: React.FC = () => {
       <div className="space-y-4 max-w-3xl border-b border-[var(--border-color)] pb-8">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/30 text-xs font-mono text-blue-400">
           <Terminal className="h-3.5 w-3.5" />
-          <span>// ABOUT BYTE BROTHERS</span>
+          <span>// ABOUT WHITE BROTHERS</span>
         </div>
         <h1 className="font-display font-bold text-4xl sm:text-5xl text-[var(--text-primary)]">
           Engineering Craftsmanship &amp; Architectural Rigor
         </h1>
         <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
-          Byte Brothers was founded with a singular conviction: digital web applications should be blistering fast, impeccably styled, and engineered for resilience.
+          White Brothers was founded with a singular conviction: digital web applications should be blistering fast, impeccably styled, and engineered for resilience.
         </p>
       </div>
 

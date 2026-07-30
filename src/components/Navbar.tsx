@@ -57,7 +57,7 @@ export const Navbar: React.FC<NavbarProps> = ({
     if (count > 0) {
       triggerPushAlert(
         'Offline Inquiries Synced',
-        `Successfully transmitted ${count} saved inquiry submission(s) to Byte Brothers servers!`,
+        `Successfully transmitted ${count} saved inquiry submission(s) to White Brothers servers!`,
         'inquiry'
       );
     }

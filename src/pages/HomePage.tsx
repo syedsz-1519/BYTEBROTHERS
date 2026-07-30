@@ -3,7 +3,6 @@ import { motion } from 'motion/react';
 import { PROJECTS, FOUNDERS, TECHNICAL_TENETS } from '../data/studioData';
 import { ProjectCard } from '../components/ProjectCard';
 import { FounderCard } from '../components/FounderCard';
-import { Cinematic3dHero } from '../components/Cinematic3dHero';
 import { 
   ArrowRight, 
   Sparkles, 
@@ -142,9 +141,6 @@ export const HomePage: React.FC<HomePageProps> = ({
               <div className="font-display font-bold text-lg text-cyan-400 mt-1">&lt; 20ms Target</div>
             </div>
           </div>
-
-          {/* Interactive Cinematic 3D Canvas Stage */}
-          <Cinematic3dHero />
         </motion.div>
       </section>
 
@@ -207,7 +203,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                 Bespoke Webflow Platforms &amp; Custom Web Applications
               </h2>
               <p className="text-xs sm:text-sm text-blue-100/80 leading-relaxed">
-                Whether you need a high-converting Webflow site built to Client-First v2 standards or a complex React/Node full-stack web app, Byte Brothers engineers end-to-end digital assets with zero compromise on performance or aesthetics.
+                Whether you need a high-converting Webflow site built to Client-First v2 standards or a complex React/Node full-stack web app, White Brothers engineers end-to-end digital assets with zero compromise on performance or aesthetics.
               </p>
             </div>
 
@@ -404,7 +400,7 @@ export const HomePage: React.FC<HomePageProps> = ({
               </div>
               <div>
                 <h3 className="font-display font-bold text-base text-[var(--text-primary)]">
-                  Byte Brothers System Diagnostics
+                  White Brothers System Diagnostics
                 </h3>
                 <p className="text-xs text-[var(--text-muted)] font-mono">
                   Live status check &amp; Webflow Client-First v2 engine verification

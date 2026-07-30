@@ -206,19 +206,6 @@ export const Cinematic3dHero: React.FC = () => {
         )}
       </div>
 
-      {/* Cinematic HUD Overlays */}
-      <div className="absolute top-4 left-4 right-4 flex items-center justify-between pointer-events-none z-10 font-mono text-[11px] text-blue-300">
-        <div className="flex items-center gap-2 bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-lg border border-blue-500/30">
-          <span className="h-2 w-2 rounded-full bg-cyan-400 animate-pulse" />
-          <span>CINEMATIC 3D SCROLL CAMERA</span>
-        </div>
-        <div className="hidden sm:flex items-center gap-3 bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-lg border border-blue-500/30">
-          <span>DEPTH SHIFT: {(scrollProgress * 100).toFixed(0)}%</span>
-          <span className="text-zinc-600">|</span>
-          <span>SHADERS: WebGL 2.0</span>
-        </div>
-      </div>
-
       {/* Bottom Info Banner */}
       <div className="p-6 bg-black/50 backdrop-blur-md border-t border-blue-500/20 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="space-y-1">

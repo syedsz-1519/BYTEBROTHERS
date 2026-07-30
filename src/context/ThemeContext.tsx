@@ -12,7 +12,7 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [theme, setThemeState] = useState<Theme>(() => {
-    const saved = localStorage.getItem('byte-brothers-theme');
+    const saved = localStorage.getItem('white-brothers-theme') || localStorage.getItem('byte-brothers-theme');
     if (saved === 'light' || saved === 'dark') return saved;
     return 'dark'; // Default dark mode as in screenshot
   });
@@ -26,7 +26,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       root.classList.remove('light');
       root.classList.add('dark');
     }
-    localStorage.setItem('byte-brothers-theme', theme);
+    localStorage.setItem('white-brothers-theme', theme);
   }, [theme]);
 
   const toggleTheme = () => {

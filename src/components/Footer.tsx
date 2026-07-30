@@ -14,11 +14,11 @@ export const Footer: React.FC<FooterProps> = ({ setActiveTab, onOpenContactModal
           {/* Brand Info */}
           <div className="md:col-span-5 space-y-4">
             <div className="flex items-center gap-3">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#18181b] dark:bg-white text-white dark:text-[#18181b] font-display font-bold text-base shadow-sm">
-                B
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-blue-600 to-indigo-700 text-white font-display font-bold text-base shadow-sm">
+                W
               </div>
               <span className="font-display font-bold tracking-tight text-lg text-[var(--text-primary)]">
-                BYTE BROTHERS
+                WHITE BROTHERS
               </span>
             </div>
             <p className="text-xs text-[var(--text-secondary)] leading-relaxed max-w-sm">
@@ -100,7 +100,7 @@ export const Footer: React.FC<FooterProps> = ({ setActiveTab, onOpenContactModal
         {/* Bottom Bar */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-[11px] text-[var(--text-muted)]">
           <div>
-            © {new Date().getFullYear()} Byte Brothers Digital Architecture. All rights reserved.
+            © {new Date().getFullYear()} White Brothers Digital Architecture. All rights reserved.
           </div>
           <div className="flex items-center gap-4">
             <span className="hover:text-[var(--text-secondary)] cursor-pointer">Offline Data Caching Protocol</span>
