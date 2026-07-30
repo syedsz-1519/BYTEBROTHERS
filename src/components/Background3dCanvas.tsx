@@ -1,28 +1,38 @@
 import React, { useEffect, useRef, useState } from 'react';
-import * as THREE from 'three';
-import { Layers, Eye, EyeOff, Zap } from 'lucide-react';
+import { Eye, EyeOff } from 'lucide-react';
+
+interface Point3D {
+  x: number;
+  y: number;
+  z: number;
+}
+
+interface Particle3D {
+  x: number;
+  y: number;
+  z: number;
+  size: number;
+  color: string;
+}
 
 export const Background3dCanvas: React.FC = () => {
-  const mountRef = useRef<HTMLDivElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [isEnabled, setIsEnabled] = useState<boolean>(true);
   const [fps, setFps] = useState<number>(60);
 
   useEffect(() => {
-    if (!isEnabled || !mountRef.current) return;
+    if (!isEnabled || !canvasRef.current) return;
 
-    const container = mountRef.current;
-    let width = window.innerWidth;
-    let height = window.innerHeight;
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
 
-    let scene: THREE.Scene;
-    let camera: THREE.PerspectiveCamera;
-    let renderer: THREE.WebGLRenderer;
-    let mainMesh: THREE.Mesh;
-    let outerMesh: THREE.Mesh;
-    let particleSystem: THREE.Points;
+    let width = (canvas.width = window.innerWidth);
+    let height = (canvas.height = window.innerHeight);
+
     let reqId: number;
 
-    // Smoothed state for ultra-smooth 60fps interpolation
+    // Smoothed state for interpolation
     let currentScroll = window.scrollY;
     let targetScroll = window.scrollY;
     let currentMouseX = 0;
@@ -33,191 +43,222 @@ export const Background3dCanvas: React.FC = () => {
     let frameCount = 0;
     let lastFpsTime = performance.now();
 
-    try {
-      scene = new THREE.Scene();
+    // 1. Generate Parametric Torus Knot 3D Vertices
+    const p = 2;
+    const q = 3;
+    const segments = 160;
+    const knotPoints: Point3D[] = [];
 
-      camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
-      camera.position.z = 7.5;
+    for (let i = 0; i < segments; i++) {
+      const phi = (i / segments) * Math.PI * 2;
+      const r = 1.2 + 0.5 * Math.sin(q * phi);
+      const x = r * Math.cos(p * phi) * 160;
+      const y = r * Math.sin(p * phi) * 160;
+      const z = 0.6 * Math.sin(q * phi) * 160;
+      knotPoints.push({ x, y, z });
+    }
 
-      renderer = new THREE.WebGLRenderer({
-        alpha: true,
-        antialias: true,
-        powerPreference: 'high-performance',
+    // 2. Generate Outer Icosahedron / Cage 3D Vertices
+    const phiConst = (1 + Math.sqrt(5)) / 2;
+    const cageScale = 260;
+    const baseIcosahedron: Point3D[] = [
+      { x: -1, y: phiConst, z: 0 },
+      { x: 1, y: phiConst, z: 0 },
+      { x: -1, y: -phiConst, z: 0 },
+      { x: 1, y: -phiConst, z: 0 },
+
+      { x: 0, y: -1, z: phiConst },
+      { x: 0, y: 1, z: phiConst },
+      { x: 0, y: -1, z: -phiConst },
+      { x: 0, y: 1, z: -phiConst },
+
+      { x: phiConst, y: 0, z: -1 },
+      { x: phiConst, y: 0, z: 1 },
+      { x: -phiConst, y: 0, z: -1 },
+      { x: -phiConst, y: 0, z: 1 },
+    ].map((pt) => ({
+      x: pt.x * cageScale,
+      y: pt.y * cageScale,
+      z: pt.z * cageScale,
+    }));
+
+    // 3. Generate Floating Space Starfield Particles
+    const particleCount = 200;
+    const particles: Particle3D[] = [];
+    for (let i = 0; i < particleCount; i++) {
+      particles.push({
+        x: (Math.random() - 0.5) * width * 1.5,
+        y: (Math.random() - 0.5) * height * 1.5,
+        z: (Math.random() - 0.5) * 800,
+        size: Math.random() * 1.8 + 0.5,
+        color: Math.random() > 0.5 ? 'rgba(56, 189, 248, ' : 'rgba(99, 102, 241, ',
       });
-      renderer.setSize(width, height);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
-      container.appendChild(renderer.domElement);
+    }
 
-      // 1. Core Glowing Wireframe TorusKnot
-      const knotGeom = new THREE.TorusKnotGeometry(1.4, 0.42, 140, 18);
-      const knotMat = new THREE.MeshPhysicalMaterial({
-        color: 0x0284c7, // Bright cyan-blue
-        wireframe: true,
-        roughness: 0.1,
-        metalness: 0.9,
-        emissive: 0x0369a1,
-        emissiveIntensity: 0.45,
-        transparent: true,
-        opacity: 0.85,
-      });
-      mainMesh = new THREE.Mesh(knotGeom, knotMat);
-      scene.add(mainMesh);
+    // Event Listeners
+    const handleMouseMove = (e: MouseEvent) => {
+      targetMouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+      targetMouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+    };
 
-      // 2. Outer Wireframe Geodesic/Icosahedron Cage
-      const cageGeom = new THREE.IcosahedronGeometry(2.8, 1);
-      const cageMat = new THREE.MeshStandardMaterial({
-        color: 0x06b6d4, // Cyan wireframe
-        wireframe: true,
-        transparent: true,
-        opacity: 0.3,
-      });
-      outerMesh = new THREE.Mesh(cageGeom, cageMat);
-      scene.add(outerMesh);
+    const handleScroll = () => {
+      targetScroll = window.scrollY;
+    };
 
-      // 3. Floating Space Stars / Particles
-      const particleCount = 450;
-      const positions = new Float32Array(particleCount * 3);
-      const colors = new Float32Array(particleCount * 3);
+    const handleResize = () => {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    };
 
-      for (let i = 0; i < particleCount; i++) {
-        positions[i * 3] = (Math.random() - 0.5) * 18;
-        positions[i * 3 + 1] = (Math.random() - 0.5) * 18;
-        positions[i * 3 + 2] = (Math.random() - 0.5) * 18;
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', handleResize);
 
-        colors[i * 3] = 0.1 + Math.random() * 0.3; // R
-        colors[i * 3 + 1] = 0.6 + Math.random() * 0.4; // G (Cyan accent)
-        colors[i * 3 + 2] = 0.9 + Math.random() * 0.1; // B
+    let isTabActive = true;
+    const handleVisibilityChange = () => {
+      isTabActive = !document.hidden;
+    };
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    let time = 0;
+
+    // 3D Point Rotation & Perspective Projection Helpers
+    const rotatePoint = (pt: Point3D, rotX: number, rotY: number, rotZ: number): Point3D => {
+      let x1 = pt.x * Math.cos(rotY) + pt.z * Math.sin(rotY);
+      let y1 = pt.y;
+      let z1 = -pt.x * Math.sin(rotY) + pt.z * Math.cos(rotY);
+
+      let x2 = x1;
+      let y2 = y1 * Math.cos(rotX) - z1 * Math.sin(rotX);
+      let z2 = y1 * Math.sin(rotX) + z1 * Math.cos(rotX);
+
+      let x3 = x2 * Math.cos(rotZ) - y2 * Math.sin(rotZ);
+      let y3 = x2 * Math.sin(rotZ) + y2 * Math.cos(rotZ);
+      let z3 = z2;
+
+      return { x: x3, y: y3, z: z3 };
+    };
+
+    const projectPoint = (pt: Point3D, offsetX: number, offsetY: number) => {
+      const perspective = 700;
+      const scale = perspective / (perspective + pt.z + 400);
+      return {
+        x: width / 2 + (pt.x + offsetX) * scale,
+        y: height / 2 + (pt.y + offsetY) * scale,
+        scale,
+      };
+    };
+
+    // Main Render Loop
+    const animate = () => {
+      reqId = requestAnimationFrame(animate);
+
+      if (!isTabActive) return;
+
+      // FPS tracking
+      frameCount++;
+      const now = performance.now();
+      if (now - lastFpsTime >= 1000) {
+        setFps(Math.round((frameCount * 1000) / (now - lastFpsTime)));
+        frameCount = 0;
+        lastFpsTime = now;
       }
 
-      const particleGeom = new THREE.BufferGeometry();
-      particleGeom.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-      particleGeom.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+      time += 0.012;
 
-      const particleMat = new THREE.PointsMaterial({
-        size: 0.04,
-        vertexColors: true,
-        transparent: true,
-        opacity: 0.8,
+      // Smooth Lerp target values
+      currentScroll += (targetScroll - currentScroll) * 0.05;
+      currentMouseX += (targetMouseX - currentMouseX) * 0.05;
+      currentMouseY += (targetMouseY - currentMouseY) * 0.05;
+
+      const scrollRatio = currentScroll / 1000;
+
+      ctx.clearRect(0, 0, width, height);
+
+      const offsetX = currentMouseX * 60;
+      const offsetY = currentMouseY * 60 - scrollRatio * 30;
+
+      // Render Floating Starfield Particles
+      particles.forEach((p) => {
+        const rotZ = time * 0.02 + scrollRatio * 0.1;
+        const pt = rotatePoint(p, time * 0.01, time * 0.015 + rotZ, 0);
+        const proj = projectPoint(pt, offsetX, offsetY);
+
+        if (proj.x >= 0 && proj.x <= width && proj.y >= 0 && proj.y <= height) {
+          ctx.beginPath();
+          ctx.arc(proj.x, proj.y, Math.max(0.5, p.size * proj.scale), 0, Math.PI * 2);
+          ctx.fillStyle = `${p.color}${Math.min(0.8, proj.scale * 0.8)})`;
+          ctx.fill();
+        }
       });
 
-      particleSystem = new THREE.Points(particleGeom, particleMat);
-      scene.add(particleSystem);
+      // Render Outer Icosahedron Cage Wireframe
+      const rotCageX = -time * 0.15 - scrollRatio * 0.5;
+      const rotCageY = time * 0.2 - scrollRatio * 0.8;
+      const projectedCage = baseIcosahedron.map((pt) => {
+        const rot = rotatePoint(pt, rotCageX, rotCageY, 0);
+        return projectPoint(rot, offsetX, offsetY);
+      });
 
-      // 4. Lighting
-      const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
-      scene.add(ambientLight);
-
-      const pointLight1 = new THREE.PointLight(0x38bdf8, 3.5, 25);
-      pointLight1.position.set(6, 6, 6);
-      scene.add(pointLight1);
-
-      const pointLight2 = new THREE.PointLight(0x6366f1, 2.5, 25);
-      pointLight2.position.set(-6, -6, -2);
-      scene.add(pointLight2);
-
-      // Event Listeners (Passive for high performance)
-      const handleMouseMove = (e: MouseEvent) => {
-        targetMouseX = (e.clientX / window.innerWidth - 0.5) * 2;
-        targetMouseY = (e.clientY / window.innerHeight - 0.5) * 2;
-      };
-
-      const handleScroll = () => {
-        targetScroll = window.scrollY;
-      };
-
-      window.addEventListener('mousemove', handleMouseMove, { passive: true });
-      window.addEventListener('scroll', handleScroll, { passive: true });
-
-      const handleResize = () => {
-        width = window.innerWidth;
-        height = window.innerHeight;
-        camera.aspect = width / height;
-        camera.updateProjectionMatrix();
-        renderer.setSize(width, height);
-      };
-
-      window.addEventListener('resize', handleResize);
-
-      // Pause render loop when tab is hidden to save battery & GPU
-      let isTabActive = true;
-      const handleVisibilityChange = () => {
-        isTabActive = !document.hidden;
-      };
-      document.addEventListener('visibilitychange', handleVisibilityChange);
-
-      const clock = new THREE.Clock();
-
-      // Main Render Loop
-      const animate = () => {
-        reqId = requestAnimationFrame(animate);
-
-        if (!isTabActive) return;
-
-        // FPS counter calculation
-        frameCount++;
-        const now = performance.now();
-        if (now - lastFpsTime >= 1000) {
-          setFps(Math.round((frameCount * 1000) / (now - lastFpsTime)));
-          frameCount = 0;
-          lastFpsTime = now;
+      ctx.strokeStyle = 'rgba(6, 182, 212, 0.15)';
+      ctx.lineWidth = 1;
+      for (let i = 0; i < projectedCage.length; i++) {
+        for (let j = i + 1; j < projectedCage.length; j++) {
+          const dx = projectedCage[i].x - projectedCage[j].x;
+          const dy = projectedCage[i].y - projectedCage[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 280) {
+            ctx.beginPath();
+            ctx.moveTo(projectedCage[i].x, projectedCage[i].y);
+            ctx.lineTo(projectedCage[j].x, projectedCage[j].y);
+            ctx.stroke();
+          }
         }
+      }
 
-        const elapsedTime = clock.getElapsedTime();
+      // Render Parametric TorusKnot Glow Wireframe
+      const rotKnotX = time * 0.35 + scrollRatio * 1.2;
+      const rotKnotY = time * 0.45 + scrollRatio * 1.6;
+      const projectedKnot = knotPoints.map((pt) => {
+        const rot = rotatePoint(pt, rotKnotX, rotKnotY, 0);
+        return projectPoint(rot, offsetX, offsetY);
+      });
 
-        // Smooth Lerp target values
-        currentScroll += (targetScroll - currentScroll) * 0.05;
-        currentMouseX += (targetMouseX - currentMouseX) * 0.05;
-        currentMouseY += (targetMouseY - currentMouseY) * 0.05;
+      ctx.beginPath();
+      ctx.strokeStyle = 'rgba(56, 189, 248, 0.6)';
+      ctx.lineWidth = 1.6;
 
-        const scrollRatio = currentScroll / 1000;
-
-        // Continuous & Scroll-Driven Transformations
-        if (mainMesh) {
-          mainMesh.rotation.x = elapsedTime * 0.25 + scrollRatio * 1.2;
-          mainMesh.rotation.y = elapsedTime * 0.35 + scrollRatio * 1.8;
+      for (let i = 0; i < projectedKnot.length; i++) {
+        if (i === 0) {
+          ctx.moveTo(projectedKnot[i].x, projectedKnot[i].y);
+        } else {
+          ctx.lineTo(projectedKnot[i].x, projectedKnot[i].y);
         }
+      }
+      ctx.closePath();
+      ctx.shadowBlur = 12;
+      ctx.shadowColor = '#0284c7';
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+    };
 
-        if (outerMesh) {
-          outerMesh.rotation.x = -elapsedTime * 0.15 - scrollRatio * 0.6;
-          outerMesh.rotation.y = elapsedTime * 0.2 - scrollRatio * 0.9;
-        }
+    animate();
 
-        if (particleSystem) {
-          particleSystem.rotation.y = elapsedTime * 0.04 + scrollRatio * 0.3;
-        }
-
-        // Camera Depth & Parallax Response
-        camera.position.z = 7.5 - Math.sin(scrollRatio * 0.8) * 1.8;
-        camera.position.x = currentMouseX * 0.6;
-        camera.position.y = -currentMouseY * 0.6 - scrollRatio * 0.5;
-        camera.lookAt(0, 0, 0);
-
-        renderer.render(scene, camera);
-      };
-
-      animate();
-
-      return () => {
-        cancelAnimationFrame(reqId);
-        window.removeEventListener('mousemove', handleMouseMove);
-        window.removeEventListener('scroll', handleScroll);
-        window.removeEventListener('resize', handleResize);
-        document.removeEventListener('visibilitychange', handleVisibilityChange);
-        if (renderer && renderer.domElement) {
-          renderer.domElement.remove();
-        }
-      };
-    } catch (err) {
-      console.warn('3D Background Context init error:', err);
-    }
+    return () => {
+      cancelAnimationFrame(reqId);
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleResize);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
   }, [isEnabled]);
 
   return (
     <>
       {/* Fixed Fullscreen 3D Background Canvas Layer */}
       {isEnabled && (
-        <div
-          ref={mountRef}
+        <canvas
+          ref={canvasRef}
           className="fixed inset-0 pointer-events-none z-0 opacity-40 dark:opacity-60 transition-opacity duration-1000 overflow-hidden"
           style={{ mixBlendMode: 'screen' }}
         />

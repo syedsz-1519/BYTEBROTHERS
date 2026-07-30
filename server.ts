@@ -1,3 +1,4 @@
+// Byte Brothers Studio Backend Server - Updated for Zero-Dependency 3D Canvas Engine
 import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
