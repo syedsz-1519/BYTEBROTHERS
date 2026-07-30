@@ -3,6 +3,7 @@ import { ThemeProvider } from './context/ThemeContext';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
 import { Preloader } from './components/Preloader';
+import { Background3dCanvas } from './components/Background3dCanvas';
 import { ScrollProgressBar } from './components/ScrollProgressBar';
 import { ProjectModal } from './components/ProjectModal';
 import { AiEstimatorModal } from './components/AiEstimatorModal';
@@ -42,7 +43,10 @@ function AppContent() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[var(--bg-primary)] text-[var(--text-primary)] transition-colors duration-300">
+    <div className="min-h-screen flex flex-col bg-[var(--bg-primary)] text-[var(--text-primary)] transition-colors duration-300 relative">
+      {/* 3D Wireframe Background Canvas */}
+      <Background3dCanvas />
+
       {/* White Brothers Preloader on initial load */}
       {showPreloader && <Preloader onComplete={() => setShowPreloader(false)} />}
 
