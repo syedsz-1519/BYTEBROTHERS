@@ -26,12 +26,12 @@ const CanvasLoader = () => {
 export const HeroCanvas = () => {
   return (
     <div className="absolute inset-0 z-0 h-full w-full bg-[#030712]">
-      {/* Fallback radial gradient background */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_60%,_rgba(6,24,44,0.7)_0%,_#030712_75%)]" />
+      {/* Radial background centered behind 3D workstation */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_65%,_rgba(15,23,42,0.85)_0%,_#030712_75%)]" />
       
       <Canvas
         shadows
-        camera={{ position: [0, 1.0, 9], fov: 38 }}
+        camera={{ position: [0, 1.5, 12.5], fov: 35 }}
         gl={{ preserveDrawingBuffer: true, antialias: true, alpha: true, toneMapping: 3 }}
         className="h-full w-full"
       >
@@ -39,10 +39,10 @@ export const HeroCanvas = () => {
 
           {/* ── Studio Lighting Rig ── */}
 
-          {/* Global fill — studio-grade ambient light */}
-          <ambientLight intensity={0.9} color="#e0eeff" />
+          {/* Bright ambient fill for native texture clarity */}
+          <ambientLight intensity={1.2} color="#ffffff" />
 
-          {/* Primary Key Light — overhead warm white light */}
+          {/* Primary Key Light — warm overhead light for desk setup */}
           <directionalLight 
             position={[0, 10, 8]} 
             intensity={2.2} 
@@ -50,25 +50,21 @@ export const HeroCanvas = () => {
             castShadow 
             shadow-mapSize={2048}
             shadow-camera-far={30}
-            shadow-camera-left={-10}
-            shadow-camera-right={10}
-            shadow-camera-top={10}
-            shadow-camera-bottom={-10}
           />
 
-          {/* Targeted Cyan Spotlight — focused on center workstation */}
+          {/* Targeted Cyan Accent Spotlight on the workstation */}
           <spotLight
             position={[0, 8, 6]}
             angle={0.6}
             penumbra={0.8}
-            intensity={5}
+            intensity={4}
             color="#00f0ff"
             castShadow
             shadow-mapSize={1024}
-            target-position={[0, -1.8, 0]}
+            target-position={[0, -1.5, 0]}
           />
 
-          {/* Magenta/Purple Rim Backlight */}
+          {/* Magenta Rim Backlight for edge separation */}
           <pointLight
             position={[-4, 4, -4]}
             intensity={3}
@@ -76,24 +72,16 @@ export const HeroCanvas = () => {
             distance={20}
           />
 
-          {/* Cyan fill from below */}
-          <pointLight
-            position={[0, -2, 2]}
-            intensity={1.5}
-            color="#22d3ee"
-            distance={8}
-          />
-
-          {/* ── Centered 3D Workstation ── */}
+          {/* ── Centered Front-Facing 3D Workstation ── */}
           <WorkstationScene />
 
           {/* ── Atmospheric Particles ── */}
-          <Sparkles count={80} scale={10} size={1.2} speed={0.3} opacity={0.25} color="#22d3ee" />
-          <Sparkles count={40} scale={12} size={2} speed={0.15} opacity={0.15} color="#a855f7" />
+          <Sparkles count={60} scale={10} size={1.2} speed={0.3} opacity={0.25} color="#22d3ee" />
+          <Sparkles count={30} scale={12} size={2} speed={0.15} opacity={0.15} color="#a855f7" />
 
-          {/* ── Shadow Floor ── */}
+          {/* ── Floor Shadow ── */}
           <ContactShadows 
-            position={[0, -2.5, 0]} 
+            position={[0, -2.2, 0]} 
             opacity={0.5} 
             scale={25} 
             blur={2.5} 

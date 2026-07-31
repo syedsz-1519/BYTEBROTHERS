@@ -36,7 +36,7 @@ export const HeroText: React.FC<HeroTextProps> = ({ onOpenRfq, onExploreServices
   const words = headline.split(" ");
 
   return (
-    <div className="pointer-events-none absolute inset-0 z-10 flex flex-col items-center justify-start pt-28 sm:pt-32 md:pt-36 px-4 sm:px-6 lg:px-8">
+    <div className="pointer-events-none absolute inset-0 z-10 flex flex-col items-center justify-start pt-24 sm:pt-32 md:pt-36 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl text-center space-y-4 sm:space-y-5 flex flex-col items-center">
         
         {/* Animated Eyebrow Badge */}
