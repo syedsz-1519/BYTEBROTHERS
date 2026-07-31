@@ -26,12 +26,12 @@ const CanvasLoader = () => {
 export const HeroCanvas = () => {
   return (
     <div className="absolute inset-0 z-0 h-full w-full bg-[#030712]">
-      {/* Fallback gradient background */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_70%_50%,_rgba(6,24,44,0.6)_0%,_#030712_70%)]" />
+      {/* Fallback radial gradient background */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_60%,_rgba(6,24,44,0.7)_0%,_#030712_75%)]" />
       
       <Canvas
         shadows
-        camera={{ position: [0.5, 0.8, 8], fov: 32 }}
+        camera={{ position: [0, 1.0, 9], fov: 38 }}
         gl={{ preserveDrawingBuffer: true, antialias: true, alpha: true, toneMapping: 3 }}
         className="h-full w-full"
       >
@@ -39,13 +39,13 @@ export const HeroCanvas = () => {
 
           {/* ── Studio Lighting Rig ── */}
 
-          {/* Global fill — brighter than before for studio-grade illumination */}
-          <ambientLight intensity={0.8} color="#d4e5ff" />
+          {/* Global fill — studio-grade ambient light */}
+          <ambientLight intensity={0.9} color="#e0eeff" />
 
-          {/* Primary Key Light — warm white overhead to naturally light the desk */}
+          {/* Primary Key Light — overhead warm white light */}
           <directionalLight 
-            position={[5, 10, 8]} 
-            intensity={2} 
+            position={[0, 10, 8]} 
+            intensity={2.2} 
             color="#ffffff" 
             castShadow 
             shadow-mapSize={2048}
@@ -56,35 +56,35 @@ export const HeroCanvas = () => {
             shadow-camera-bottom={-10}
           />
 
-          {/* Targeted Cyan Spotlight — focused on the main desk setup */}
+          {/* Targeted Cyan Spotlight — focused on center workstation */}
           <spotLight
-            position={[5, 8, 5]}
-            angle={0.5}
+            position={[0, 8, 6]}
+            angle={0.6}
             penumbra={0.8}
             intensity={5}
             color="#00f0ff"
             castShadow
             shadow-mapSize={1024}
-            target-position={[2, -1, 0]}
+            target-position={[0, -1.8, 0]}
           />
 
-          {/* Magenta/Purple Backlight — rim lighting along edges */}
+          {/* Magenta/Purple Rim Backlight */}
           <pointLight
-            position={[-5, 5, -5]}
+            position={[-4, 4, -4]}
             intensity={3}
             color="#a855f7"
             distance={20}
           />
 
-          {/* Subtle cyan fill from below for dramatic underbelly glow */}
+          {/* Cyan fill from below */}
           <pointLight
-            position={[3, -2, 2]}
+            position={[0, -2, 2]}
             intensity={1.5}
             color="#22d3ee"
             distance={8}
           />
 
-          {/* ── 3D Workstation ── */}
+          {/* ── Centered 3D Workstation ── */}
           <WorkstationScene />
 
           {/* ── Atmospheric Particles ── */}

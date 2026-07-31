@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useRef, useEffect, useMemo } from "react";
-import { useFrame } from "@react-three/fiber";
+import React, { useRef, useEffect } from "react";
+import { useFrame, useThree } from "@react-three/fiber";
 import { useGLTF, Float } from "@react-three/drei";
 import * as THREE from "three";
 
@@ -12,7 +12,7 @@ const CLUTTER_KEYWORDS = [
   "discord", "twitch", "plant", "cactus", "cat", "pet",
   "trophy", "cup", "bottle", "food", "snack", "pizza",
   "headphone_stand", "gamepad", "controller", "joystick",
-  "rubik", "cube_toy", "action_figure", "funko",
+  "rubik", "cube_toy", "action_figure", "funko", "dumbell", "weights"
 ];
 
 // Imported Local Workstation Component with mesh filtering
@@ -33,12 +33,11 @@ const WorkstationModel = (props: any) => {
         return;
       }
 
-      // Boost monitor screen emission for glow-onto-desk effect
+      // Boost monitor screen emission for glow effect
       if (child instanceof THREE.Mesh && child.material) {
         const mat = child.material as THREE.MeshStandardMaterial;
         const nameCheck = name;
 
-        // Detect screen/monitor/display meshes and boost their emissive output
         if (
           nameCheck.includes("screen") ||
           nameCheck.includes("monitor") ||
@@ -50,7 +49,6 @@ const WorkstationModel = (props: any) => {
           if (mat.emissive) {
             mat.emissiveIntensity = Math.max(mat.emissiveIntensity, 2.5);
           }
-          // Make screens contribute light to the scene
           mat.toneMapped = false;
         }
 
@@ -66,13 +64,22 @@ const WorkstationModel = (props: any) => {
 
 export const WorkstationScene = () => {
   const groupRef = useRef<THREE.Group>(null);
+  const { viewport } = useThree();
+
+  // Responsive scale and position calculations based on R3F viewport width
+  const isMobile = viewport.width < 6;
+  const isTablet = viewport.width >= 6 && viewport.width < 10;
+
+  const scale = isMobile ? 0.95 : isTablet ? 1.2 : 1.45;
+  const posY = isMobile ? -1.6 : -2.0;
+  const posX = 0; // Center horizontally as requested
 
   useFrame((state) => {
     if (!groupRef.current) return;
 
     // Subtle parallax tracking — gentle tilt on mouse movement
-    const targetY = state.pointer.x * 0.12;
-    const targetX = -state.pointer.y * 0.06;
+    const targetY = state.pointer.x * 0.1;
+    const targetX = -state.pointer.y * 0.05;
 
     groupRef.current.rotation.y += (targetY - groupRef.current.rotation.y) * 0.03;
     groupRef.current.rotation.x += (targetX - groupRef.current.rotation.x) * 0.03;
@@ -80,12 +87,12 @@ export const WorkstationScene = () => {
 
   return (
     <group ref={groupRef}>
-      <Float speed={1} rotationIntensity={0.05} floatIntensity={0.2}>
-        {/* Positioned right, angled for cinematic 3/4 view */}
+      <Float speed={1} rotationIntensity={0.04} floatIntensity={0.15}>
+        {/* Centered & positioned at bottom for clean viewport composition */}
         <group
-          position={[2, -1, 0]}
-          scale={2.2}
-          rotation={[0.05, -Math.PI * 0.72, 0]}
+          position={[posX, posY, -1]}
+          scale={scale}
+          rotation={[0.08, -Math.PI * 0.75, 0]}
         >
           <WorkstationModel />
         </group>
