@@ -26,67 +26,74 @@ const CanvasLoader = () => {
 export const HeroCanvas = () => {
   return (
     <div className="absolute inset-0 z-0 h-full w-full bg-[#030712]">
-      {/* Radial background centered behind 3D workstation */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_65%,_rgba(15,23,42,0.85)_0%,_#030712_75%)]" />
-      
+      {/* Radial background centered behind lower 3D workstation */}
+      {/* Dark radial glow on the right side where the workstation sits */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_80%_55%,_rgba(15,23,42,0.9)_0%,_#030712_65%)]" />
+
       <Canvas
         shadows
-        camera={{ position: [0, 1.5, 12.5], fov: 35 }}
+        camera={{ position: [1, 1, 10], fov: 36 }}
         gl={{ preserveDrawingBuffer: true, antialias: true, alpha: true, toneMapping: 3 }}
         className="h-full w-full"
       >
         <Suspense fallback={<CanvasLoader />}>
 
-          {/* ── Studio Lighting Rig ── */}
+          {/* Dark atmospheric ambient — keeps left side pitch black */}
+          <ambientLight intensity={0.35} color="#94a3b8" />
 
-          {/* Bright ambient fill for native texture clarity */}
-          <ambientLight intensity={1.2} color="#ffffff" />
-
-          {/* Primary Key Light — warm overhead light for desk setup */}
-          <directionalLight 
-            position={[0, 10, 8]} 
-            intensity={2.2} 
-            color="#ffffff" 
-            castShadow 
+          {/* Key Light aimed at the right-side workstation */}
+          <directionalLight
+            position={[8, 10, 6]}
+            intensity={1.8}
+            color="#ffffff"
+            castShadow
             shadow-mapSize={2048}
             shadow-camera-far={30}
           />
 
-          {/* Targeted Cyan Accent Spotlight on the workstation */}
+          {/* Sharp Cyan Spotlight focused on the desk */}
           <spotLight
-            position={[0, 8, 6]}
-            angle={0.6}
-            penumbra={0.8}
-            intensity={4}
+            position={[5, 8, 5]}
+            angle={0.45}
+            penumbra={0.6}
+            intensity={6}
             color="#00f0ff"
             castShadow
             shadow-mapSize={1024}
-            target-position={[0, -1.5, 0]}
+            target-position={[3.5, -1.5, -1]}
           />
 
-          {/* Magenta Rim Backlight for edge separation */}
+          {/* Purple rim backlight for edge separation */}
           <pointLight
-            position={[-4, 4, -4]}
-            intensity={3}
+            position={[-3, 5, -5]}
+            intensity={2.5}
             color="#a855f7"
-            distance={20}
+            distance={18}
           />
 
-          {/* ── Centered Front-Facing 3D Workstation ── */}
+          {/* Cyan underglow on the desk */}
+          <pointLight
+            position={[3.5, -2, 1]}
+            intensity={1.5}
+            color="#22d3ee"
+            distance={6}
+          />
+
+          {/* ── Right-Shifted 3D Workstation ── */}
           <WorkstationScene />
 
-          {/* ── Atmospheric Particles ── */}
-          <Sparkles count={60} scale={10} size={1.2} speed={0.3} opacity={0.25} color="#22d3ee" />
-          <Sparkles count={30} scale={12} size={2} speed={0.15} opacity={0.15} color="#a855f7" />
+          {/* ── Subtle Background Glow Particles ── */}
+          <Sparkles count={50} scale={12} size={1} speed={0.2} opacity={0.2} color="#00f0ff" />
+          <Sparkles count={25} scale={14} size={1.8} speed={0.1} opacity={0.12} color="#a855f7" />
 
-          {/* ── Floor Shadow ── */}
-          <ContactShadows 
-            position={[0, -2.2, 0]} 
-            opacity={0.5} 
-            scale={25} 
-            blur={2.5} 
-            far={6} 
-            color="#0a1628" 
+          {/* ── Deep Shadow Floor ── */}
+          <ContactShadows
+            position={[3.5, -2.5, -1]}
+            opacity={0.6}
+            scale={20}
+            blur={2}
+            far={5}
+            color="#030712"
           />
 
         </Suspense>
