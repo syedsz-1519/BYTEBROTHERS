@@ -79,6 +79,14 @@ export const HeroCanvas = () => {
             distance={6}
           />
 
+          {/* Monitor screen emissive spill — grounds keyboard / mousepad */}
+          <pointLight
+            position={[3.5, 0.2, 0.5]}
+            intensity={2}
+            color="#00f0ff"
+            distance={7}
+          />
+
           {/* ── Right-Shifted 3D Workstation ── */}
           <WorkstationScene />
 

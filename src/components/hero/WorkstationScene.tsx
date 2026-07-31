@@ -1,22 +1,67 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useMemo, useRef, useLayoutEffect } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import { useGLTF, Float } from "@react-three/drei";
 import * as THREE from "three";
+import { createMonitorCanvasTexture } from "./monitorTexture";
+import {
+  cloneSceneGraph,
+  configureSceneMaterials,
+  createBrushedMetalTexture,
+} from "./sceneMaterials";
 
-// Imported Local Workstation Component — rendering native textures & materials
-const WorkstationModel = (props: any) => {
-  const { scene } = useGLTF("/workstation/programmer_desk_setup__stylized_3d_room.glb") as any;
+const WorkstationModel = (props: React.ComponentProps<"group">) => {
+  const { scene } = useGLTF("/workstation/programmer_desk_setup__stylized_3d_room.glb") as {
+    scene: THREE.Group;
+  };
 
-  return <primitive object={scene} {...props} dispose={null} />;
+  const monitorAnim = useMemo(() => createMonitorCanvasTexture(), []);
+  const brushedMetalMap = useMemo(() => createBrushedMetalTexture(), []);
+
+  const clonedScene = useMemo(() => {
+    const clone = cloneSceneGraph(scene);
+    configureSceneMaterials(clone, monitorAnim.texture, brushedMetalMap);
+    return clone;
+  }, [scene, monitorAnim.texture, brushedMetalMap]);
+
+  useFrame((state) => {
+    monitorAnim.draw(state.clock.elapsedTime);
+  });
+
+  return <primitive object={clonedScene} {...props} dispose={null} />;
+};
+
+const MonitorGlowLights = () => {
+  const spotRef = useRef<THREE.SpotLight>(null);
+
+  useLayoutEffect(() => {
+    if (spotRef.current) {
+      spotRef.current.target.position.set(0, -0.2, 0.4);
+      spotRef.current.parent?.add(spotRef.current.target);
+    }
+  }, []);
+
+  return (
+    <>
+      <spotLight
+        ref={spotRef}
+        position={[0, 1.4, 1.6]}
+        angle={0.65}
+        penumbra={0.8}
+        intensity={2}
+        color="#00f0ff"
+        distance={8}
+      />
+      <pointLight position={[0, 0.8, 1.2]} intensity={2} color="#00f0ff" distance={5} />
+    </>
+  );
 };
 
 export const WorkstationScene = () => {
   const groupRef = useRef<THREE.Group>(null);
   const { viewport } = useThree();
 
-  // Responsive scale and vertical positioning (anchored to lower floor to prevent text collision)
   const width = viewport.width;
   const isMobile = width < 6;
   const isTablet = width >= 6 && width < 10;
@@ -37,18 +82,13 @@ export const WorkstationScene = () => {
   return (
     <group ref={groupRef}>
       <Float speed={0.8} rotationIntensity={0.02} floatIntensity={0.1}>
-        {/* RIGHT side of screen: position [3.5, -1.5, -1] on desktop */}
-        <group
-          position={[posX, posY, posZ]}
-          scale={scale}
-          rotation={[0.12, 0, 0]}
-        >
+        <group position={[posX, posY, posZ]} scale={scale} rotation={[0.12, 0, 0]}>
           <WorkstationModel />
+          <MonitorGlowLights />
         </group>
       </Float>
     </group>
   );
 };
 
-// Preload the GLTF to avoid pop-in
 useGLTF.preload("/workstation/programmer_desk_setup__stylized_3d_room.glb");
