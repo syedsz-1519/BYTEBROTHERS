@@ -1,280 +1,406 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { Menu, X, Terminal, Sparkles, Command } from "lucide-react";
+
+// ─── Types ───────────────────────────────────────────────────────────────────
 
 export interface NavItem {
   label: string;
-  href: string;
-  badge?: string;
+  tab: string;
 }
 
 export interface NavbarProps {
-  /** Current active path. Defaults to '/' */
-  activePath?: string;
-  /** Navigation items list */
-  items?: NavItem[];
-  /** Callback when RFQ / Terminal button or ⌘K is pressed */
-  onOpenRfq?: () => void;
-  /** Custom logo text */
+  activeTab?: string;
+  setActiveTab?: (tab: string) => void;
+  onOpenAiEstimator?: () => void;
+  onOpenContactModal?: () => void;
   logoText?: string;
-  /** Availability status text */
   statusText?: string;
-  /** Custom class name for top wrapper */
   className?: string;
 }
 
-const DEFAULT_NAV_ITEMS: NavItem[] = [
-  { label: "Home", href: "/" },
-  { label: "Services", href: "/services" },
-  { label: "Work", href: "/work" },
-  { label: "About", href: "/about" },
+// ─── Constants ────────────────────────────────────────────────────────────────
+
+const NAV_ITEMS: NavItem[] = [
+  { label: "Work",     tab: "portfolio" },
+  { label: "Services", tab: "services"  },
+  { label: "Studio",   tab: "about"     },
+  { label: "Contact",  tab: "contact"   },
 ];
 
+// ─── Animated menu icon (two-line morphing) ───────────────────────────────────
+
+const MenuIcon: React.FC<{ open: boolean }> = ({ open }) => (
+  <svg
+    width="20"
+    height="20"
+    viewBox="0 0 20 20"
+    fill="none"
+    aria-hidden="true"
+    className="transition-all duration-300"
+  >
+    {/* top line */}
+    <motion.line
+      x1="3" y1="7" x2="17" y2="7"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      animate={open ? { x1: 4, y1: 4, x2: 16, y2: 16 } : { x1: 3, y1: 7, x2: 17, y2: 7 }}
+      transition={{ duration: 0.25, ease: "easeInOut" }}
+    />
+    {/* bottom line */}
+    <motion.line
+      x1="3" y1="13" x2="17" y2="13"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      animate={open ? { x1: 4, y1: 16, x2: 16, y2: 4 } : { x1: 3, y1: 13, x2: 17, y2: 13 }}
+      transition={{ duration: 0.25, ease: "easeInOut" }}
+    />
+  </svg>
+);
+
+// ─── Component ────────────────────────────────────────────────────────────────
+
 export const Navbar: React.FC<NavbarProps> = ({
-  activePath = "/",
-  items = DEFAULT_NAV_ITEMS,
-  onOpenRfq,
+  activeTab = "home",
+  setActiveTab,
+  onOpenContactModal,
   logoText = "BYTEBROTHERS",
-  statusText = "AVAILABLE FOR Q3/Q4",
+  statusText = "Available for Q3/Q4",
   className = "",
 }) => {
-  const [scrolled, setScrolled] = useState<boolean>(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
-  const [currentPath, setCurrentPath] = useState<string>(activePath);
+  const [scrolled, setScrolled]         = useState(false);
+  const [mobileOpen, setMobileOpen]     = useState(false);
+  const [hovered, setHovered]           = useState<string | null>(null);
+  const mobileRef                       = useRef<HTMLDivElement>(null);
 
-  // Sync internal path state if prop changes
+  // ── Scroll opacity transition ──────────────────────────────────────────────
   useEffect(() => {
-    setCurrentPath(activePath);
-  }, [activePath]);
-
-  // Handle scroll detection for dynamic glassmorphic pill contraction
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 20) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Handle ⌘K / Ctrl+K keyboard shortcut trigger for Terminal RFQ
-  const handleKeyDown = useCallback(
-    (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
-        e.preventDefault();
-        if (onOpenRfq) {
-          onOpenRfq();
-        }
+  // ── Close mobile menu on outside click ────────────────────────────────────
+  useEffect(() => {
+    if (!mobileOpen) return;
+    const handler = (e: MouseEvent) => {
+      if (mobileRef.current && !mobileRef.current.contains(e.target as Node)) {
+        setMobileOpen(false);
       }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [mobileOpen]);
+
+  const navigate = useCallback(
+    (tab: string) => {
+      setActiveTab?.(tab);
+      setMobileOpen(false);
+      window.scrollTo({ top: 0, behavior: "smooth" });
     },
-    [onOpenRfq]
+    [setActiveTab]
   );
 
-  useEffect(() => {
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [handleKeyDown]);
+  const handleCta = useCallback(() => {
+    setMobileOpen(false);
+    if (onOpenContactModal) {
+      onOpenContactModal();
+    } else {
+      setActiveTab?.("contact");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }, [onOpenContactModal, setActiveTab]);
 
-  const handleNavClick = (href: string, e?: React.MouseEvent) => {
-    setCurrentPath(href);
-    setMobileMenuOpen(false);
-  };
+  // ── Navbar bg opacity driven by scroll ────────────────────────────────────
+  const bgOpacity  = scrolled ? "88" : "60"; // hex opacity suffix on --void
+  const blurClass  = scrolled ? "backdrop-blur-xl" : "backdrop-blur-md";
+  const shadowClass = scrolled
+    ? "shadow-[0_8px_32px_rgba(0,0,0,0.75),0_0_0_1px_rgba(255,255,255,0.04)]"
+    : "shadow-[0_4px_20px_rgba(0,0,0,0.5)]";
 
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-50 flex justify-center px-4 pt-4 sm:pt-6 pointer-events-none transition-all duration-300 ${className}`}
-    >
-      <motion.nav
-        initial={{ y: -50, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-        className={`pointer-events-auto w-full transition-all duration-300 ease-out rounded-full border ${
-          scrolled
-            ? "max-w-4xl bg-zinc-950/85 backdrop-blur-xl border-zinc-800/90 shadow-[0_10px_35px_rgba(0,0,0,0.8),0_0_15px_rgba(34,211,238,0.08)] py-2 px-4 sm:px-5"
-            : "max-w-5xl bg-zinc-950/70 backdrop-blur-md border-zinc-800/80 shadow-[0_8px_30px_rgba(0,0,0,0.6)] py-3 px-5 sm:px-6"
-        }`}
-        aria-label="Main Navigation"
+    <>
+      {/* ── CSS variables injected once ─────────────────────────────────── */}
+      <style>{`
+        :root {
+          --void:           #0a0a0d;
+          --surface-glass:  rgba(255,255,255,0.03);
+          --signal-cyan:    #00e5ff;
+          --signal-violet:  #8b5cf6;
+          --text-hi:        #f4f4f5;
+          --text-lo:        #8b8b93;
+        }
+        .nav-link-hover:hover {
+          color: var(--signal-cyan);
+          text-shadow: 0 0 12px rgba(0,229,255,0.45);
+        }
+        .nav-link-active::after {
+          content: '';
+          display: block;
+          position: absolute;
+          bottom: -2px;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 80%;
+          height: 1.5px;
+          background: var(--signal-cyan);
+          box-shadow: 0 0 8px var(--signal-cyan);
+          border-radius: 2px;
+        }
+        .cta-btn {
+          background: linear-gradient(135deg, var(--signal-cyan) 0%, var(--signal-violet) 100%);
+          color: #060608;
+          font-weight: 600;
+        }
+        .cta-btn:hover {
+          filter: brightness(1.08) saturate(1.1);
+          box-shadow: 0 0 20px rgba(0,229,255,0.35), 0 0 40px rgba(139,92,246,0.15);
+        }
+      `}</style>
+
+      <header
+        className={`fixed top-0 left-0 right-0 z-50 flex justify-center px-4 pt-4 pointer-events-none ${className}`}
+        role="banner"
       >
-        <div className="flex items-center justify-between gap-4">
-          {/* Brand Logo */}
-          <a
-            href="/"
-            onClick={(e) => handleNavClick("/", e)}
-            className="group flex items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 rounded-lg p-1"
-            aria-label="ByteBrothers Homepage"
-          >
-            <div className="flex items-center gap-2">
-              <div className="relative flex h-7 w-7 items-center justify-center rounded-lg bg-zinc-900 border border-zinc-800 group-hover:border-zinc-700 transition-colors">
-                <span className="font-mono text-xs font-black text-zinc-100 group-hover:text-white transition-colors">
+        <motion.nav
+          initial={{ y: -40, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+          className={`
+            pointer-events-auto w-full transition-all duration-500 ease-out
+            rounded-2xl border-b
+            ${blurClass} ${shadowClass}
+          `}
+          style={{
+            backgroundColor: `rgba(10,10,13,${scrolled ? 0.88 : 0.60})`,
+            borderColor: "var(--surface-glass)",
+            maxWidth: scrolled ? "900px" : "1040px",
+          }}
+          aria-label="Main navigation"
+        >
+          <div className="flex items-center justify-between px-5 py-3">
+
+            {/* ── Logo ──────────────────────────────────────────────────── */}
+            <button
+              onClick={() => navigate("home")}
+              className="group flex items-center gap-2.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--signal-cyan)] rounded-lg"
+              aria-label="ByteBrothers — go to homepage"
+            >
+              {/* Mark — subtle cyan→violet ambient glow */}
+              <div
+                className="relative flex h-7 w-7 items-center justify-center rounded-lg transition-all duration-300"
+                style={{
+                  background: "rgba(255,255,255,0.04)",
+                  border: "1px solid rgba(255,255,255,0.08)",
+                  boxShadow: "0 0 0 0 transparent",
+                }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLDivElement).style.boxShadow =
+                    "0 0 14px rgba(0,229,255,0.25), 0 0 28px rgba(139,92,246,0.12)";
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLDivElement).style.boxShadow = "0 0 0 0 transparent";
+                }}
+              >
+                <span
+                  className="font-mono text-[11px] font-black tracking-tight"
+                  style={{ color: "var(--text-hi)" }}
+                >
                   BB
                 </span>
               </div>
-              <span className="font-mono font-bold tracking-tight text-sm text-zinc-100 group-hover:text-white transition-colors flex items-center gap-1.5">
+
+              {/* Wordmark */}
+              <span
+                className="font-display text-sm font-semibold tracking-tight transition-colors duration-200"
+                style={{ color: "var(--text-hi)", letterSpacing: "-0.02em" }}
+              >
                 {logoText}
               </span>
-            </div>
-          </a>
-
-          {/* Desktop Navigation Links */}
-          <div className="hidden md:flex items-center gap-1">
-            {items.map((item) => {
-              const isActive = currentPath === item.href;
-              return (
-                <a
-                  key={item.href}
-                  href={item.href}
-                  onClick={(e) => handleNavClick(item.href, e)}
-                  className={`relative px-4 py-1.5 rounded-full font-mono text-xs font-medium tracking-wide transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 ${
-                    isActive
-                      ? "text-cyan-400"
-                      : "text-zinc-400 hover:text-zinc-200 hover:bg-white/5"
-                  }`}
-                >
-                  {isActive && (
-                    <motion.span
-                      layoutId="active-nav-pill"
-                      className="absolute inset-0 rounded-full bg-white/5 border border-zinc-800"
-                      transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                    />
-                  )}
-                  <span className="relative z-10 flex items-center gap-1.5">
-                    {item.label}
-                    {item.badge && (
-                      <span className="px-1.5 py-0.2 text-[9px] rounded bg-cyan-500/20 text-cyan-400 font-mono">
-                        {item.badge}
-                      </span>
-                    )}
-                  </span>
-                </a>
-              );
-            })}
-          </div>
-
-          {/* Right Action Tools: Status Indicator & Terminal RFQ */}
-          <div className="hidden lg:flex items-center gap-3">
-            {/* Live Pulsing Status Badge */}
-            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-[10px] font-mono text-emerald-500/90 tracking-wide">
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-              <span>{statusText}</span>
-            </div>
-
-            {/* Terminal RFQ CTA Button */}
-            <button
-              onClick={onOpenRfq}
-              className="group relative inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-zinc-900/50 hover:bg-zinc-800 text-zinc-300 hover:text-cyan-400 border border-zinc-800 hover:border-cyan-500/50 hover:shadow-[0_0_15px_rgba(34,211,238,0.3)] text-xs font-mono font-medium tracking-wide transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 active:scale-95"
-              aria-label="Open Terminal RFQ (Shortcut Command K)"
-            >
-              <Terminal className="h-3.5 w-3.5 text-zinc-400 group-hover:text-cyan-400 group-hover:rotate-12 transition-all duration-200" />
-              <span>[ Terminal RFQ ]</span>
-              <kbd className="hidden sm:inline-flex items-center gap-0.5 px-1.5 py-0.5 text-[9px] font-mono font-medium rounded bg-zinc-800 text-zinc-400 border border-zinc-700 group-hover:border-cyan-500/30 group-hover:text-cyan-400 transition-colors">
-                <Command className="h-2.5 w-2.5" />K
-              </kbd>
-            </button>
-          </div>
-
-          {/* Mobile Right Controls */}
-          <div className="flex items-center gap-2 lg:hidden">
-            {/* Terminal RFQ CTA for Mobile */}
-            <button
-              onClick={onOpenRfq}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-zinc-900/50 text-zinc-300 border border-zinc-800 text-xs font-mono font-medium"
-              aria-label="Terminal RFQ"
-            >
-              <Terminal className="h-3.5 w-3.5 text-zinc-400" />
-              <span>RFQ</span>
             </button>
 
-            {/* Hamburger Toggle Button */}
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 rounded-full bg-zinc-900 text-zinc-300 hover:text-cyan-400 border border-zinc-800 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400"
-              aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
-              aria-expanded={mobileMenuOpen}
-            >
-              {mobileMenuOpen ? (
-                <X className="h-5 w-5 text-cyan-400" />
-              ) : (
-                <Menu className="h-5 w-5" />
-              )}
-            </button>
-          </div>
-        </div>
-      </motion.nav>
-
-      {/* Mobile Glassmorphic Overlay Drawer */}
-      <AnimatePresence>
-        {mobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -20, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -20, scale: 0.95 }}
-            transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-            className="pointer-events-auto absolute top-20 left-4 right-4 max-w-lg mx-auto rounded-3xl bg-zinc-950/95 backdrop-blur-2xl border border-zinc-800/90 p-6 shadow-[0_20px_50px_rgba(0,0,0,0.9),0_0_30px_rgba(34,211,238,0.1)] flex flex-col gap-5 z-50"
-          >
-            {/* Mobile Status Badge */}
-            <div className="flex items-center justify-between border-b border-zinc-800/80 pb-4">
-              <div className="flex items-center gap-2">
-                <Sparkles className="h-4 w-4 text-zinc-400" />
-                <span className="font-mono text-xs font-bold text-zinc-200">
-                  BYTEBROTHERS NAV
-                </span>
-              </div>
-              <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-[10px] font-mono text-emerald-500/90">
-                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                <span>{statusText}</span>
-              </div>
-            </div>
-
-            {/* Mobile Nav Links with Stagger */}
-            <div className="flex flex-col gap-2">
-              {items.map((item, index) => {
-                const isActive = currentPath === item.href;
+            {/* ── Desktop nav links ─────────────────────────────────────── */}
+            <div className="hidden md:flex items-center gap-1" role="list">
+              {NAV_ITEMS.map((item) => {
+                const isActive = activeTab === item.tab;
                 return (
-                  <motion.a
-                    key={item.href}
-                    href={item.href}
-                    onClick={(e) => handleNavClick(item.href, e)}
-                    initial={{ opacity: 0, x: -15 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.05, duration: 0.2 }}
-                    className={`flex items-center justify-between px-4 py-3 rounded-2xl font-mono text-sm font-medium transition-all ${
-                      isActive
-                        ? "bg-white/5 text-cyan-400 border border-zinc-800/50"
-                        : "text-zinc-400 hover:text-zinc-200 hover:bg-white/5 border border-transparent"
-                    }`}
+                  <button
+                    key={item.tab}
+                    onClick={() => navigate(item.tab)}
+                    onMouseEnter={() => setHovered(item.tab)}
+                    onMouseLeave={() => setHovered(null)}
+                    role="listitem"
+                    className={`
+                      relative px-4 py-1.5 text-[13px] font-display font-medium uppercase tracking-wide
+                      transition-all duration-200 rounded-lg focus-visible:outline-none
+                      focus-visible:ring-2 focus-visible:ring-[var(--signal-cyan)]
+                      nav-link-hover
+                      ${isActive ? "nav-link-active" : ""}
+                    `}
+                    style={{
+                      color: isActive
+                        ? "var(--signal-cyan)"
+                        : hovered === item.tab
+                        ? "var(--signal-cyan)"
+                        : "var(--text-hi)",
+                      letterSpacing: "0.06em",
+                    }}
+                    aria-current={isActive ? "page" : undefined}
                   >
-                    <span>{item.label}</span>
-                    {isActive && (
-                      <span className="h-2 w-2 rounded-full bg-cyan-400 shadow-[0_0_8px_#22d3ee]" />
-                    )}
-                  </motion.a>
+                    {item.label}
+                  </button>
                 );
               })}
             </div>
 
-            {/* Mobile CTA */}
-            <div className="pt-2 border-t border-zinc-800/80">
-              <button
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                  if (onOpenRfq) onOpenRfq();
-                }}
-                className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-2xl bg-cyan-500 hover:bg-cyan-400 text-zinc-950 font-mono text-xs font-bold uppercase tracking-wider transition-all shadow-[0_0_20px_rgba(34,211,238,0.4)] active:scale-98"
+            {/* ── Right side: status + CTA ──────────────────────────────── */}
+            <div className="hidden lg:flex items-center gap-4">
+              {/* Availability — mono, muted, ONE instance only */}
+              <span
+                className="font-mono text-[10px] tracking-widest"
+                style={{ color: "var(--text-lo)" }}
+                aria-label={`Studio status: ${statusText}`}
               >
-                <Terminal className="h-4 w-4" />
-                <span>Trigger [ Terminal RFQ ]</span>
+                {statusText}
+              </span>
+
+              {/* CTA — the only fully-saturated element */}
+              <button
+                onClick={handleCta}
+                className="cta-btn relative inline-flex items-center gap-2 px-4 py-1.5 rounded-xl text-[13px] font-display tracking-tight transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--signal-cyan)] active:scale-[0.97]"
+                aria-label="Book a discovery call"
+              >
+                Book Discovery Call
+                <span aria-hidden="true" className="opacity-70">→</span>
               </button>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </header>
+
+            {/* ── Mobile: CTA abbreviated + menu toggle ─────────────────── */}
+            <div className="flex items-center gap-2 lg:hidden">
+              <button
+                onClick={handleCta}
+                className="cta-btn inline-flex items-center px-3 py-1.5 rounded-xl text-[12px] font-display tracking-tight transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--signal-cyan)] active:scale-[0.97]"
+                aria-label="Book a discovery call"
+              >
+                Book a Call
+              </button>
+
+              <button
+                onClick={() => setMobileOpen((v) => !v)}
+                className="flex items-center justify-center w-9 h-9 rounded-xl transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--signal-cyan)]"
+                style={{
+                  background: "rgba(255,255,255,0.04)",
+                  border: "1px solid rgba(255,255,255,0.07)",
+                  color: mobileOpen ? "var(--signal-cyan)" : "var(--text-hi)",
+                }}
+                aria-label={mobileOpen ? "Close navigation menu" : "Open navigation menu"}
+                aria-expanded={mobileOpen}
+                aria-controls="mobile-menu"
+              >
+                <MenuIcon open={mobileOpen} />
+              </button>
+            </div>
+
+          </div>
+        </motion.nav>
+
+        {/* ── Mobile drawer ───────────────────────────────────────────────── */}
+        <AnimatePresence>
+          {mobileOpen && (
+            <motion.div
+              id="mobile-menu"
+              ref={mobileRef}
+              initial={{ opacity: 0, y: -12, scale: 0.97 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -12, scale: 0.97 }}
+              transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+              className="pointer-events-auto absolute top-[calc(100%+6px)] left-4 right-4 mx-auto rounded-2xl backdrop-blur-2xl p-5 flex flex-col gap-3"
+              style={{
+                maxWidth: "480px",
+                background: "rgba(10,10,13,0.96)",
+                border: "1px solid rgba(255,255,255,0.06)",
+                boxShadow: "0 20px 60px rgba(0,0,0,0.85), 0 0 0 1px rgba(0,229,255,0.04)",
+              }}
+              role="dialog"
+              aria-label="Mobile navigation"
+            >
+              {/* Header row */}
+              <div
+                className="flex items-center justify-between pb-3"
+                style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}
+              >
+                <span
+                  className="font-display text-xs font-semibold uppercase tracking-widest"
+                  style={{ color: "var(--text-lo)" }}
+                >
+                  Navigation
+                </span>
+                <span
+                  className="font-mono text-[10px] tracking-widest"
+                  style={{ color: "var(--text-lo)" }}
+                >
+                  {statusText}
+                </span>
+              </div>
+
+              {/* Nav links */}
+              <nav aria-label="Mobile navigation links">
+                {NAV_ITEMS.map((item, i) => {
+                  const isActive = activeTab === item.tab;
+                  return (
+                    <motion.button
+                      key={item.tab}
+                      onClick={() => navigate(item.tab)}
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: i * 0.04, duration: 0.18 }}
+                      className="w-full flex items-center justify-between px-3 py-3 rounded-xl text-left font-display text-sm font-medium tracking-wide transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--signal-cyan)]"
+                      style={{
+                        color: isActive ? "var(--signal-cyan)" : "var(--text-hi)",
+                        background: isActive ? "rgba(0,229,255,0.05)" : "transparent",
+                        border: isActive
+                          ? "1px solid rgba(0,229,255,0.12)"
+                          : "1px solid transparent",
+                        letterSpacing: "0.04em",
+                        textTransform: "uppercase",
+                      }}
+                      aria-current={isActive ? "page" : undefined}
+                    >
+                      <span>{item.label}</span>
+                      {isActive && (
+                        <span
+                          className="h-1.5 w-1.5 rounded-full"
+                          style={{
+                            background: "var(--signal-cyan)",
+                            boxShadow: "0 0 6px var(--signal-cyan)",
+                          }}
+                          aria-hidden="true"
+                        />
+                      )}
+                    </motion.button>
+                  );
+                })}
+              </nav>
+
+              {/* Mobile CTA */}
+              <div style={{ paddingTop: "4px", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+                <button
+                  onClick={handleCta}
+                  className="cta-btn w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-display text-sm tracking-tight transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--signal-cyan)] active:scale-[0.98]"
+                  aria-label="Book a discovery call"
+                >
+                  Book Discovery Call
+                  <span aria-hidden="true" className="opacity-70">→</span>
+                </button>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </header>
+    </>
   );
 };
 
