@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
+import logoSrc from "../../assets/logo.jpeg";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -189,9 +190,9 @@ export const Navbar: React.FC<NavbarProps> = ({
               className="group flex items-center gap-2.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--signal-cyan)] rounded-lg"
               aria-label="ByteBrothers — go to homepage"
             >
-              {/* Mark — subtle cyan→violet ambient glow */}
+              {/* Mark — circuit-B logo image with ambient glow on hover */}
               <div
-                className="relative flex h-7 w-7 items-center justify-center rounded-lg transition-all duration-300"
+                className="relative flex h-7 w-7 items-center justify-center rounded-lg overflow-hidden transition-all duration-300"
                 style={{
                   background: "rgba(255,255,255,0.04)",
                   border: "1px solid rgba(255,255,255,0.08)",
@@ -205,17 +206,17 @@ export const Navbar: React.FC<NavbarProps> = ({
                   (e.currentTarget as HTMLDivElement).style.boxShadow = "0 0 0 0 transparent";
                 }}
               >
-                <span
-                  className="font-mono text-[11px] font-black tracking-tight"
-                  style={{ color: "var(--text-hi)" }}
-                >
-                  BB
-                </span>
+                <img
+                  src={logoSrc}
+                  alt="ByteBrothers logo"
+                  className="h-full w-full object-cover"
+                  draggable={false}
+                />
               </div>
 
-              {/* Wordmark */}
+              {/* Wordmark — Space Grotesk, tight tracking */}
               <span
-                className="font-display text-sm font-semibold tracking-tight transition-colors duration-200"
+                className="font-display text-sm font-semibold transition-colors duration-200"
                 style={{ color: "var(--text-hi)", letterSpacing: "-0.02em" }}
               >
                 {logoText}
