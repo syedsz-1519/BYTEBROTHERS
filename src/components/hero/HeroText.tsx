@@ -2,114 +2,135 @@
 
 import React from "react";
 import { motion } from "motion/react";
-import { Terminal, ArrowRight } from "lucide-react";
 
 interface HeroTextProps {
-  onOpenRfq: () => void;
-  onExploreServices: () => void;
+  onBookCall: () => void;
+  onViewWork: () => void;
 }
 
-export const HeroText: React.FC<HeroTextProps> = ({ onOpenRfq, onExploreServices }) => {
-  // Stagger variants for the headline words
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.05,
-        delayChildren: 0.15,
-      },
-    },
-  };
+export const HeroText: React.FC<HeroTextProps> = ({ onBookCall, onViewWork }) => {
+  // Headline split into words with the "AI-NATIVE" highlight
+  const headline1 = "WE BUILD THE INFRASTRUCTURE BEHIND";
+  const headline2 = "AI-NATIVE PRODUCTS";
 
-  const wordVariants = {
-    hidden: { opacity: 0, y: 20, rotateX: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      rotateX: 0,
-      transition: { type: "spring", damping: 15, stiffness: 100 }
-    },
-  };
-
-  const headline = "WE ENGINEER HIGH-PERFORMANCE WEB SYSTEMS & AI PLATFORMS";
-  const words = headline.split(" ");
+  const baseDelay = 0.25;
 
   return (
-    <div className="pointer-events-none absolute inset-0 z-10 flex flex-col justify-center px-6 sm:px-10 lg:px-16">
-      <div className="max-w-[50%] space-y-5 lg:space-y-6">
+    <div className="flex flex-col justify-center h-full">
 
-        {/* Animated Eyebrow Badge */}
-        <motion.div
-          initial={{ opacity: 0, y: -15 }}
+      {/* ── Eyebrow label ──────────────────────────────────────────────── */}
+      <motion.p
+        initial={{ opacity: 0, y: -12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.45, delay: baseDelay, ease: "easeOut" }}
+        className="font-mono text-[11px] tracking-[0.2em] uppercase mb-6"
+        style={{ color: "var(--signal-cyan)" }}
+      >
+        ›_ systems, engineered.
+      </motion.p>
+
+      {/* ── H1 ─────────────────────────────────────────────────────────── */}
+      <motion.h1
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.1, delay: baseDelay + 0.05 }}
+        className="font-display font-bold leading-[1.04] tracking-tight mb-6"
+        style={{
+          fontSize: "clamp(2.4rem, 5vw, 4.25rem)",
+          color: "var(--text-hi)",
+          letterSpacing: "-0.02em",
+        }}
+      >
+        {/* Line 1 */}
+        <motion.span
+          className="block"
+          initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-          className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-950/60 border border-cyan-500/40 text-[10px] sm:text-xs font-mono text-cyan-300 backdrop-blur-md shadow-[0_0_20px_rgba(34,211,238,0.2)]"
+          transition={{ duration: 0.55, delay: baseDelay + 0.1, ease: [0.16, 1, 0.3, 1] }}
         >
-          <div className="h-1.5 w-1.5 rounded-full bg-cyan-400 animate-pulse" />
-          <span>INITIALIZING DIGITAL ARCHITECTURE V2.0</span>
-        </motion.div>
+          {headline1}
+        </motion.span>
 
-        {/* Staggered Headline with High-Contrast Dropshadow */}
-        <motion.h1
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-          className="font-display text-3xl sm:text-5xl md:text-6xl font-bold tracking-tight text-white leading-[1.08] max-w-3xl drop-shadow-[0_8px_30px_rgba(3,7,18,0.95)]"
-          style={{ perspective: "1000px" }}
-        >
-          {words.map((word, i) => (
-            <motion.span
-              key={i}
-              variants={wordVariants}
-              className="inline-block mx-1 sm:mx-1.5 my-0.5"
-              style={{
-                color: word === "HIGH-PERFORMANCE" || word === "AI" ? "#22d3ee" : "inherit",
-              }}
-            >
-              {word}
-            </motion.span>
-          ))}
-        </motion.h1>
-
-        {/* Sub-headline */}
-        <motion.p
-          initial={{ opacity: 0, y: 15 }}
+        {/* Line 2 — AI-NATIVE highlighted */}
+        <motion.span
+          className="block"
+          initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.5 }}
-          className="text-xs sm:text-base md:text-lg text-zinc-300/95 leading-relaxed max-w-xl font-normal drop-shadow-[0_4px_16px_rgba(3,7,18,0.9)]"
+          transition={{ duration: 0.55, delay: baseDelay + 0.22, ease: [0.16, 1, 0.3, 1] }}
         >
-          Custom WebGL experiences, ultra-fast e-commerce builds, and automated AI infrastructure engineered for scale.
-        </motion.p>
+          <span style={{ color: "var(--signal-cyan)" }}>AI-NATIVE</span>
+          {" PRODUCTS"}
+        </motion.span>
+      </motion.h1>
 
-        {/* Action CTAs */}
-        <motion.div
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.7 }}
-          className="pointer-events-auto flex flex-col sm:flex-row items-center justify-center gap-3 pt-2 w-full sm:w-auto"
+      {/* ── Subhead ─────────────────────────────────────────────────────── */}
+      <motion.p
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: baseDelay + 0.38, ease: "easeOut" }}
+        className="text-[18px] leading-relaxed mb-10 max-w-[520px]"
+        style={{ color: "var(--text-lo)", fontWeight: 400 }}
+      >
+        Custom WebGL, full-stack systems, and AI platforms engineered for scale.
+      </motion.p>
+
+      {/* ── CTAs ────────────────────────────────────────────────────────── */}
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: baseDelay + 0.52, ease: "easeOut" }}
+        className="flex flex-wrap items-center gap-3"
+      >
+        {/* Primary — cyan→violet gradient */}
+        <button
+          onClick={onBookCall}
+          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-display text-[14px] font-semibold transition-all duration-200 active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--signal-cyan)]"
+          style={{
+            background: "linear-gradient(135deg, var(--signal-cyan) 0%, var(--signal-violet) 100%)",
+            color: "#060608",
+            letterSpacing: "-0.01em",
+            boxShadow: "0 0 24px rgba(0,229,255,0.2), 0 0 48px rgba(139,92,246,0.1)",
+          }}
+          onMouseEnter={(e) => {
+            (e.currentTarget as HTMLButtonElement).style.boxShadow =
+              "0 0 32px rgba(0,229,255,0.35), 0 0 60px rgba(139,92,246,0.2)";
+            (e.currentTarget as HTMLButtonElement).style.filter = "brightness(1.06)";
+          }}
+          onMouseLeave={(e) => {
+            (e.currentTarget as HTMLButtonElement).style.boxShadow =
+              "0 0 24px rgba(0,229,255,0.2), 0 0 48px rgba(139,92,246,0.1)";
+            (e.currentTarget as HTMLButtonElement).style.filter = "";
+          }}
         >
-          {/* Primary CTA */}
-          <button
-            onClick={onOpenRfq}
-            className="group relative w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-zinc-100 hover:bg-white text-zinc-950 font-mono text-xs font-bold uppercase tracking-wider transition-all duration-300 shadow-[0_0_25px_rgba(34,211,238,0.3)] hover:shadow-[0_0_35px_rgba(34,211,238,0.6)] active:scale-95"
-          >
-            <Terminal className="h-4 w-4 text-zinc-950" />
-            <span>[ Launch Project Terminal ]</span>
-            <div className="absolute inset-0 rounded-lg border border-transparent group-hover:border-cyan-400/50 transition-colors pointer-events-none" />
-          </button>
+          Book Discovery Call
+          <span aria-hidden="true" className="opacity-70">→</span>
+        </button>
 
-          {/* Secondary CTA */}
-          <button
-            onClick={onExploreServices}
-            className="group w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-zinc-950/80 hover:bg-zinc-900 text-zinc-200 hover:text-cyan-300 border border-zinc-700/80 hover:border-cyan-500/50 backdrop-blur-md font-mono text-xs font-medium transition-all duration-300 hover:shadow-[0_0_20px_rgba(34,211,238,0.2)] active:scale-95"
-          >
-            <span>[ Explore 3D Services ]</span>
-            <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
-          </button>
-        </motion.div>
-
-      </div>
+        {/* Secondary — ghost/outline */}
+        <button
+          onClick={onViewWork}
+          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-display text-[14px] font-medium transition-all duration-200 active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--signal-cyan)]"
+          style={{
+            color: "var(--text-hi)",
+            border: "1px solid rgba(244,244,245,0.15)",
+            background: "rgba(255,255,255,0.03)",
+            letterSpacing: "-0.01em",
+          }}
+          onMouseEnter={(e) => {
+            (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(0,229,255,0.4)";
+            (e.currentTarget as HTMLButtonElement).style.color = "var(--signal-cyan)";
+            (e.currentTarget as HTMLButtonElement).style.textShadow = "0 0 12px rgba(0,229,255,0.4)";
+          }}
+          onMouseLeave={(e) => {
+            (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(244,244,245,0.15)";
+            (e.currentTarget as HTMLButtonElement).style.color = "var(--text-hi)";
+            (e.currentTarget as HTMLButtonElement).style.textShadow = "";
+          }}
+        >
+          View Systems Built
+          <span aria-hidden="true">→</span>
+        </button>
+      </motion.div>
     </div>
   );
 };
