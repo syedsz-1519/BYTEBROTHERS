@@ -1,4 +1,4 @@
-// Byte Brothers Studio Backend Server - Updated for Zero-Dependency 3D Canvas Engine
+// ByteBrothers Studio Backend Server
 import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -19,8 +19,7 @@ const inquiriesQueue: any[] = [];
 app.get('/api/health', (req, res) => {
   res.json({
     status: 'ok',
-    studio: 'Byte Brothers',
-    founders: ['Syed', 'Hamid Kamal'],
+    studio: 'ByteBrothers',
     version: '4.0.2',
     timestamp: new Date().toISOString()
   });
@@ -29,7 +28,7 @@ app.get('/api/health', (req, res) => {
 app.post('/api/inquiry', (req, res) => {
   const inquiryData = req.body;
   inquiryData.receivedAt = new Date().toISOString();
-  inquiryData.status = 'Queued for Syed & Hamid Review';
+  inquiryData.status = 'Queued for ByteBrothers Review';
   inquiriesQueue.push(inquiryData);
 
   res.json({
@@ -86,14 +85,14 @@ app.post('/api/ai/estimate', async (req, res) => {
     }
 
     const ai = new GoogleGenAI({ apiKey });
-    const prompt = `You are the lead AI Architectural Advisor for "Byte Brothers", an elite boutique digital engineering studio founded by Syed (Front-end Craftsman, Webflow & single-file efficiency expert) and Hamid Kamal (Technical Systems Architect).
+    const prompt = `You are the lead AI Architectural Advisor for "ByteBrothers", an elite boutique digital engineering studio specializing in AI-native products, custom WebGL, and full-stack systems.
 
 Client Request Overview:
 - Project Type: ${projectType || 'Custom Business Web Application'}
 - Target Budget Range: ${budget || '$5,000 - $15,000'}
 - Details / Vision: ${details || 'High performance web app with responsive UI'}
 
-Special Studio Mastery: Byte Brothers are world-class Webflow Enterprise pioneers utilizing Client-First v2 (Finsweet), custom JS/GSAP extensions, Webflow CMS API, and 100/100 Lighthouse performance.
+Special Studio Mastery: ByteBrothers are world-class engineers utilizing Webflow Enterprise with Client-First v2 (Finsweet), custom JS/GSAP extensions, React 19, and 100/100 Lighthouse performance.
 
 Provide a JSON output matching this structure strictly (no markdown fence, raw JSON only):
 {
@@ -125,7 +124,7 @@ Provide a JSON output matching this structure strictly (no markdown fence, raw J
           'Phase 3: QA & Performance Benchmarking',
           'Phase 4: Production Deployment'
         ],
-        founderNote: 'Syed & Hamid will conduct a 1-on-1 discovery session to validate this proposal.'
+        founderNote: 'The ByteBrothers team will conduct a 1-on-1 discovery session to validate this proposal.'
       };
     }
 
@@ -148,7 +147,7 @@ Provide a JSON output matching this structure strictly (no markdown fence, raw J
           'Sprint 3: Real-time Notification Engine',
           'Sprint 4: Edge Deployment'
         ],
-        founderNote: 'Our founders Syed and Hamid will review your submission personally.'
+        founderNote: 'The ByteBrothers team will review your submission personally.'
       }
     });
   }
@@ -171,7 +170,7 @@ async function startServer() {
   }
 
   app.listen(PORT, '0.0.0.0', () => {
-    console.log(`[Byte Brothers] Server running on http://0.0.0.0:${PORT}`);
+    console.log(`[ByteBrothers] Server running on http://0.0.0.0:${PORT}`);
   });
 }
 

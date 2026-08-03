@@ -431,7 +431,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onOpenAiEstimator, att
           <div className="p-6 rounded-3xl border border-blue-500/20 bg-blue-500/5 space-y-3">
             <div className="flex items-center gap-2 font-mono text-xs text-blue-400 font-bold">
               <ShieldCheck className="h-4 w-4" />
-              <span>White Brothers Quality Protocol</span>
+              <span>ByteBrothers Quality Protocol</span>
             </div>
             <ul className="space-y-1.5 text-xs text-[var(--text-secondary)]">
               <li className="flex items-center gap-2">

@@ -18,11 +18,11 @@ export const Footer: React.FC<FooterProps> = ({ setActiveTab, onOpenContactModal
                 W
               </div>
               <span className="font-display font-bold tracking-tight text-lg text-[var(--text-primary)]">
-                WHITE BROTHERS
+                BYTEBROTHERS
               </span>
             </div>
             <p className="text-xs text-[var(--text-secondary)] leading-relaxed max-w-sm">
-              Boutique digital studio platform for high-performance web applications, single-file efficiency, and infinite cloud scalability. Founded by Syed & Hamid Kamal.
+              Boutique AI-native systems studio building custom WebGL, full-stack platforms, and AI infrastructure engineered for scale.
             </p>
             <div className="flex items-center gap-2 pt-2">
               <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-[10px] font-mono text-emerald-400">
@@ -100,7 +100,7 @@ export const Footer: React.FC<FooterProps> = ({ setActiveTab, onOpenContactModal
         {/* Bottom Bar */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-[11px] text-[var(--text-muted)]">
           <div>
-            © {new Date().getFullYear()} White Brothers Digital Architecture. All rights reserved.
+            © {new Date().getFullYear()} ByteBrothers. All rights reserved.
           </div>
           <div className="flex items-center gap-4">
             <span className="hover:text-[var(--text-secondary)] cursor-pointer">Offline Data Caching Protocol</span>

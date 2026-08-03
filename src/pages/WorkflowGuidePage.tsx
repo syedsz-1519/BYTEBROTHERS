@@ -62,7 +62,7 @@ export const WorkflowGuidePage: React.FC<WorkflowGuidePageProps> = ({
   const quote = getCalculatedQuote();
 
   const handleCopySnippet = () => {
-    const codeSnippet = `// WHITE BROTHERS - THREE.JS SCROLL TRIGGER ENGINE
+    const codeSnippet = `// BYTEBROTHERS - THREE.JS SCROLL TRIGGER ENGINE
 import * as THREE from 'three';
 import { GSAP } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -115,7 +115,7 @@ export default Cinematic3DEngine;`;
           How to Design &amp; Sell <span className="text-blue-500 underline decoration-blue-500/30">3D Websites</span> for Maximum Profit
         </h1>
         <p className="text-base text-[var(--text-secondary)] leading-relaxed">
-          A battle-tested operational guide created by White Brothers for web agencies, developers, and designers. Learn how to structure 3D asset pipelines, integrate WebGL &amp; Webflow Enterprise, land $15,000+ client projects, and establish high-margin recurring retainers.
+          A battle-tested operational guide created by ByteBrothers for web agencies, developers, and designers. Learn how to structure 3D asset pipelines, integrate WebGL &amp; Webflow Enterprise, land $15,000+ client projects, and establish high-margin recurring retainers.
         </p>
       </div>
 
@@ -499,7 +499,7 @@ export default Cinematic3DEngine;`;
           <div className="flex items-center justify-between">
             <div className="font-mono text-xs text-blue-400 font-bold flex items-center gap-2">
               <Terminal className="h-4 w-4" />
-              <span>WHITE BROTHERS - THREE.JS &amp; GSAP BOILERPLATE</span>
+              <span>BYTEBROTHERS - THREE.JS &amp; GSAP BOILERPLATE</span>
             </div>
             <button
               onClick={handleCopySnippet}
@@ -511,7 +511,7 @@ export default Cinematic3DEngine;`;
           </div>
 
           <pre className="p-6 rounded-2xl bg-[#08090a] text-zinc-300 font-mono text-xs overflow-x-auto border border-zinc-800 leading-relaxed">
-{`// WHITE BROTHERS - THREE.JS SCROLL TRIGGER ENGINE
+{`// BYTEBROTHERS - THREE.JS SCROLL TRIGGER ENGINE
 import * as THREE from 'three';
 import { GSAP } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';

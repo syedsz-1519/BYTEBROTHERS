@@ -61,7 +61,7 @@ export const FOUNDERS: Founder[] = [
     role: 'FOUNDER / CRAFTSMAN',
     subtitle: 'Single-file Efficiency Expert',
     avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80',
-    bio: 'Specializing in animation-heavy front end architecture, Syed pioneered the White Brothers\' approach to single-file HTML/CSS/JS craftsmanship and scalable React ecosystems. By reducing dependency overhead, he creates lightning-fast experiences that defy conventional performance limits.',
+    bio: 'Specializing in animation-heavy front end architecture, this founder pioneered the ByteBrothers approach to single-file HTML/CSS/JS craftsmanship and scalable React ecosystems. By reducing dependency overhead, lightning-fast experiences are created that defy conventional performance limits.',
     highlights: [
       'React Component Architecture',
       'Animation-Heavy UX Development',

@@ -47,7 +47,7 @@ function AppContent() {
       {/* 3D Wireframe Background Canvas */}
       <Background3dCanvas />
 
-      {/* White Brothers Preloader on initial load */}
+      {/* ByteBrothers Preloader on initial load */}
       {showPreloader && <Preloader onComplete={() => setShowPreloader(false)} />}
 
       {/* Scroll Progress Bar at top of viewport */}

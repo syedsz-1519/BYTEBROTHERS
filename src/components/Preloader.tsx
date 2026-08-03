@@ -62,7 +62,7 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
             >
               {/* Single Clear Line Title as requested */}
               <h1 className="font-display text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-white uppercase">
-                WHITE BROTHERS
+                BYTEBROTHERS
               </h1>
               
               {/* Single Clear Accent Line */}
@@ -101,7 +101,7 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
           <div className="w-full max-w-5xl flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] font-mono text-zinc-500 z-10 border-t border-zinc-800/80 pt-4">
             <div className="flex items-center gap-2">
               <ShieldCheck className="h-3.5 w-3.5 text-blue-400" />
-              <span>STUDIO DIRECTORS: SYED &amp; HAMID KAMAL</span>
+              <span>STUDIO DIRECTORS: BYTEBROTHERS TEAM</span>
             </div>
             <div>
               <span>PRECISION DIGITAL ENGINEERING © 2026</span>

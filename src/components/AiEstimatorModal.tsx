@@ -56,7 +56,7 @@ export const AiEstimatorModal: React.FC<AiEstimatorModalProps> = ({
                 AI Architectural Estimator
               </h2>
               <p className="font-mono text-[10px] text-[var(--text-muted)]">
-                Powered by Gemini AI Engine & White Brothers Design System
+                Powered by Gemini AI Engine &amp; ByteBrothers Design System
               </p>
             </div>
           </div>

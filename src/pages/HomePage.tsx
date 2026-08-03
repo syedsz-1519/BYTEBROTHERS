@@ -132,7 +132,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                 Bespoke Webflow Platforms &amp; Custom Web Applications
               </h2>
               <p className="text-xs sm:text-sm text-blue-100/80 leading-relaxed">
-                Whether you need a high-converting Webflow site built to Client-First v2 standards or a complex React/Node full-stack web app, White Brothers engineers end-to-end digital assets with zero compromise on performance or aesthetics.
+                Whether you need a high-converting Webflow site built to Client-First v2 standards or a complex React/Node full-stack web app, ByteBrothers engineers end-to-end digital assets with zero compromise on performance or aesthetics.
               </p>
             </div>
 
@@ -329,7 +329,7 @@ export const HomePage: React.FC<HomePageProps> = ({
               </div>
               <div>
                 <h3 className="font-display font-bold text-base text-[var(--text-primary)]">
-                  White Brothers System Diagnostics
+                  ByteBrothers System Diagnostics
                 </h3>
                 <p className="text-xs text-[var(--text-muted)] font-mono">
                   Live status check &amp; Webflow Client-First v2 engine verification
@@ -386,7 +386,7 @@ export const HomePage: React.FC<HomePageProps> = ({
               Let's build something extraordinary together.
             </h2>
             <p className="text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed">
-              Book a direct technical discovery call with founders Syed and Hamid. No account managers, no junior handoffs.
+              Book a direct technical discovery call with the ByteBrothers team. No account managers, no junior handoffs.
             </p>
           </div>
 

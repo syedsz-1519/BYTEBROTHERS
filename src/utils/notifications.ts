@@ -25,7 +25,7 @@ const INITIAL_NOTIFICATIONS: StudioNotification[] = [
   {
     id: 'n2',
     title: 'New Client Inquiry Received',
-    body: 'Inquiry for custom logistics platform queued for Hamid & Syed review.',
+    body: 'New inquiry queued for ByteBrothers team review.',
     category: 'inquiry',
     timestamp: '1 hour ago',
     read: false
