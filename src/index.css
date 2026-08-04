@@ -26,6 +26,14 @@
     --text-muted: #71717A;
     --accent-blue: #3B82F6;
     --accent-glow: rgba(59, 130, 246, 0.15);
+
+    /* ── Navbar design tokens ── */
+    --void:          #0a0a0d;
+    --surface-glass: rgba(255,255,255,0.03);
+    --signal-cyan:   #00e5ff;
+    --signal-violet: #8b5cf6;
+    --text-hi:       #f4f4f5;
+    --text-lo:       #8b8b93;
   }
 
   html.light {

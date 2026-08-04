@@ -10,8 +10,8 @@ export interface StudioNotification {
   link?: string;
 }
 
-const NOTIFICATIONS_KEY = 'byte_brothers_notifications';
-const PUSH_ENABLED_KEY = 'byte_brothers_push_enabled';
+const NOTIFICATIONS_KEY = 'white_brothers_notifications';
+const PUSH_ENABLED_KEY = 'white_brothers_push_enabled';
 
 const INITIAL_NOTIFICATIONS: StudioNotification[] = [
   {
@@ -25,7 +25,7 @@ const INITIAL_NOTIFICATIONS: StudioNotification[] = [
   {
     id: 'n2',
     title: 'New Client Inquiry Received',
-    body: 'Inquiry for custom logistics platform queued for Hamid & Syed review.',
+    body: 'New inquiry queued for ByteBrothers team review.',
     category: 'inquiry',
     timestamp: '1 hour ago',
     read: false

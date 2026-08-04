@@ -182,7 +182,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose, on
                   </div>
                   <div className="space-y-2 p-4 rounded-xl border border-blue-500/20 bg-blue-500/5">
                     <h4 className="font-mono text-xs font-bold text-blue-400 uppercase tracking-wider">
-                      // The Byte Brothers Solution
+                      // The ByteBrothers Solution
                     </h4>
                     <p className="text-xs text-[var(--text-secondary)] leading-relaxed">
                       {project.details.solution}
