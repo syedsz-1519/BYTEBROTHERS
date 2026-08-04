@@ -21,7 +21,7 @@ interface ContactPageProps {
   attachedSpec?: string;
 }
 
-const DRAFT_STORAGE_KEY = 'bytebrothers_contact_draft';
+const DRAFT_STORAGE_KEY = 'whitebrothers_contact_draft';
 
 export const ContactPage: React.FC<ContactPageProps> = ({ onOpenAiEstimator, attachedSpec }) => {
   const isOnline = useOnlineStatus();
@@ -405,7 +405,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onOpenAiEstimator, att
                 <Mail className="h-4 w-4 text-blue-400" />
                 <div>
                   <div className="text-[10px] text-[var(--text-muted)]">Direct Email</div>
-                  <div className="text-[var(--text-primary)] font-bold">hello@bytebrothers.dev</div>
+                  <div className="text-[var(--text-primary)] font-bold">hello@whitebrothers.dev</div>
                 </div>
               </div>
 
@@ -413,7 +413,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onOpenAiEstimator, att
                 <Phone className="h-4 w-4 text-emerald-400" />
                 <div>
                   <div className="text-[10px] text-[var(--text-muted)]">WhatsApp Studio Sync</div>
-                  <div className="text-[var(--text-primary)] font-bold">+1 (800) BYTE-DEV</div>
+                  <div className="text-[var(--text-primary)] font-bold">+1 (800) WHITE-DEV</div>
                 </div>
               </div>
 
@@ -431,7 +431,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onOpenAiEstimator, att
           <div className="p-6 rounded-3xl border border-blue-500/20 bg-blue-500/5 space-y-3">
             <div className="flex items-center gap-2 font-mono text-xs text-blue-400 font-bold">
               <ShieldCheck className="h-4 w-4" />
-              <span>Byte Brothers Quality Protocol</span>
+              <span>ByteBrothers Quality Protocol</span>
             </div>
             <ul className="space-y-1.5 text-xs text-[var(--text-secondary)]">
               <li className="flex items-center gap-2">

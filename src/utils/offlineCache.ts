@@ -12,8 +12,8 @@ export interface PendingInquiry {
   timestamp: number;
 }
 
-const INQUIRY_QUEUE_KEY = 'byte_brothers_pending_inquiries';
-const BOOKMARKS_KEY = 'byte_brothers_bookmarked_projects';
+const INQUIRY_QUEUE_KEY = 'white_brothers_pending_inquiries';
+const BOOKMARKS_KEY = 'white_brothers_bookmarked_projects';
 
 export function registerServiceWorker() {
   if ('serviceWorker' in navigator && process.env.NODE_ENV === 'production') {
