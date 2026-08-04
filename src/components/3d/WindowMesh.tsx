@@ -114,11 +114,6 @@ export const WindowMesh = React.memo(
       return { frameMat, glassMat };
     }, [frameColor, glassColor]);
 
-    useEffect(() => {
-      frameMatRef.current = materials.frameMat;
-      glassMatRef.current = materials.glassMat;
-    }, [materials]);
-
     // Handle click detection
     const handlePointerDown = (e: THREE.Event & { stopPropagation?: () => void }) => {
       e.stopPropagation?.();

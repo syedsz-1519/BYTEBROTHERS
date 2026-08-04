@@ -1,10 +1,11 @@
 import React, { useEffect } from "react";
 import { HomeScrollPanels } from "../components/home/HomeScrollPanels";
 import { HomeMobileFallback } from "../components/home/HomeMobileFallback";
+import { Project } from "../data/studioData";
 
 interface HomePageProps {
   setActiveTab:       (tab: string) => void;
-  onSelectProject:    (project: unknown) => void;
+  onSelectProject:    (project: Project) => void;
   onOpenAiEstimator:  () => void;
   onOpenContactModal: () => void;
   use3DCorridor?:     boolean;  // passed from App — capability already computed
