@@ -20,7 +20,7 @@ const DEFAULT_PROJECTS: Project[] = [
     id: 'intro',
     title: 'Three-dimensional\nthinking, built for the web.',
     description: 'Scroll to walk down the corridor. Each room holds a piece of the work.',
-    role: 'White Brothers',
+    role: 'Byte Brothers',
     stack: 'R3F, Three.js',
     year: '2025',
   },
@@ -89,7 +89,7 @@ const ScrollPanels: React.FC<ScrollPanelsProps> = ({ projects = DEFAULT_PROJECTS
             transition={{ duration: 0.1 }}
           >
             <div className="font-space-grotesk text-xs letter-spacing-wide uppercase text-[#c9a876] mb-4">
-              {isIntro ? 'White Brothers' : isClosing ? 'Get in touch' : `Selected Work — ${index.toString().padStart(2, '0')}`}
+              {isIntro ? 'Byte Brothers' : isClosing ? 'Get in touch' : `Selected Work — ${index.toString().padStart(2, '0')}`}
             </div>
 
             <h1 className="font-space-grotesk font-semibold text-4xl md:text-6xl leading-tight max-w-[14ch] text-[#e8e6df] mb-6">

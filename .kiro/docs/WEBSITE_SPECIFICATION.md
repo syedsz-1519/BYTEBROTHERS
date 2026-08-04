@@ -4,7 +4,7 @@
 **Document Version:** 1.0  
 **Last Updated:** July 30, 2026  
 **Inspired by:** OFF+BRAND's award-winning Webflow approach  
-**Pre-loader Brand:** White Brothers (as requested)
+**Pre-loader Brand:** Byte Brothers (as requested)
 
 ---
 
@@ -30,7 +30,7 @@
 *The ultimate client conversion machine*
 
 #### **1.1 Pre-loader Section**
-- **Brand Display:** "White Brothers" (clean typography animation)
+- **Brand Display:** "Byte Brothers" (clean typography animation)
 - **Animation:** Single line text fade-in with letterspace expansion
 - **Duration:** 2-3 seconds
 - **Skip Option:** "Skip Intro" for returning visitors
