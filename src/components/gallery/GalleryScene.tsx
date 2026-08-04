@@ -1,9 +1,13 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, createContext, useContext } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 import { getScrollProgress } from '../../hooks/useScrollProgress';
 import Corridor from './Corridor';
 import Bay from './Bay';
+
+// Camera position context for Bay components
+const CameraPositionContext = createContext<THREE.Vector3 | null>(null);
+export const useCameraPosition = () => useContext(CameraPositionContext);
 
 interface GallerySceneInnerProps {
   baydepth?: number;
@@ -25,38 +29,50 @@ const GallerySceneInner: React.FC<GallerySceneInnerProps> = ({
   const targetZRef = useRef(4);
   const currentLookXRef = useRef(0);
   const bobPhaseRef = useRef(0);
+  const [, setCameraUpdate] = useState({});
 
   const CORRIDOR_LEN = baydepth * numBays;
   const START_Y = 1.55;
   const BOB_AMP = 0.03;
+  const LERP_SPEED = 0.08;
 
   useEffect(() => {
     camera.position.set(0, START_Y, 4);
+    
+    // Type-safe camera setup
+    if (camera instanceof THREE.PerspectiveCamera) {
+      camera.fov = 55;
+      camera.near = 0.1;
+      camera.far = 100;
+    }
+    
     camera.updateProjectionMatrix();
   }, [camera]);
 
   useFrame(() => {
-    // Update target Z from scroll progress
+    // Update target Z from scroll progress (read from ref, not setState)
     const scrollProg = getScrollProgress();
     targetZRef.current = 4 - scrollProg * (CORRIDOR_LEN - 6);
 
     // Smooth camera movement toward target Z
-    camera.position.z += (targetZRef.current - camera.position.z) * 0.08;
+    camera.position.z += (targetZRef.current - camera.position.z) * LERP_SPEED;
 
-    // Bob effect
+    // Bob effect (subtle vertical movement)
     bobPhaseRef.current += 0.011;
-    camera.position.y = START_Y + Math.sin(bobPhaseRef.current * 1.1) * BOB_AMP;
+    camera.position.y = START_Y + Math.sin(bobPhaseRef.current) * BOB_AMP;
 
-    // Mouse look (optional: you can add mouse tracking here)
-    // For now, keep it simple
-    camera.rotation.y = currentLookXRef.current * 0.35;
+    // Optional mouse look (disabled for now)
+    // camera.rotation.y = currentLookXRef.current * 0.35;
 
     // Store position for Bay distance calculations
     cameraRefRef.current.copy(camera.position);
+    
+    // Trigger re-render for dependent Bay components
+    setCameraUpdate({});
   });
 
   return (
-    <>
+    <CameraPositionContext.Provider value={cameraRefRef.current}>
       <Corridor baydepth={baydepth} numBays={numBays} halfWidth={halfWidth} height={height} />
 
       {/* Bays with frames */}
@@ -68,10 +84,9 @@ const GallerySceneInner: React.FC<GallerySceneInnerProps> = ({
           halfWidth={halfWidth}
           height={height}
           frameColor={frameColors[i % frameColors.length]}
-          cameraPosition={cameraRefRef.current}
         />
       ))}
-    </>
+    </CameraPositionContext.Provider>
   );
 };
 
@@ -93,6 +108,10 @@ export const GalleryScene: React.FC<GallerySceneProps> = ({
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    // SSR guard
+    if (typeof window === 'undefined') {
+      return;
+    }
     setIsLoading(false);
   }, []);
 
@@ -110,6 +129,7 @@ export const GalleryScene: React.FC<GallerySceneProps> = ({
         antialias: true,
         alpha: false,
         preserveDrawingBuffer: false,
+        powerPreference: 'high-performance',
       }}
       dpr={[1, 2]}
       camera={{

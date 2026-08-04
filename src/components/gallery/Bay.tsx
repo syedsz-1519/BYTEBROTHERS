@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
+import { useCameraPosition } from './GalleryScene';
 
 export interface BayProps {
   index: number;
@@ -8,7 +9,6 @@ export interface BayProps {
   halfWidth?: number;
   height?: number;
   frameColor?: number;
-  cameraPosition?: THREE.Vector3 | null;
 }
 
 const Bay: React.FC<BayProps> = ({
@@ -17,11 +17,11 @@ const Bay: React.FC<BayProps> = ({
   halfWidth = 5.2,
   height = 6.5,
   frameColor = 0xc9a876,
-  cameraPosition,
 }) => {
   const groupRef = useRef<THREE.Group>(null);
   const spotRef = useRef<THREE.SpotLight>(null);
   const panelMatRef = useRef<THREE.MeshStandardMaterial>(null);
+  const cameraPosition = useCameraPosition();
 
   const z = -(baydepth * (index + 1) + baydepth / 2);
   const side = index % 2 === 0 ? -1 : 1;
@@ -35,10 +35,17 @@ const Bay: React.FC<BayProps> = ({
   useFrame(() => {
     if (!spotRef.current || !panelMatRef.current || !cameraPosition) return;
 
+    // Calculate distance from camera to this bay (along Z axis)
     const dist = Math.abs(cameraPosition.z - z);
-    const intensity = Math.max(0, 1 - dist / 6.5);
+    
+    // Intensity peaks when camera is closest, drops off as distance increases
+    const maxDistance = 6.5;
+    const intensity = Math.max(0, 1 - dist / maxDistance);
 
+    // Update spotlight intensity
     spotRef.current.intensity = intensity * 4.5;
+    
+    // Update emissive intensity on the panel material
     panelMatRef.current.emissiveIntensity = intensity * 0.6;
   });
 
@@ -54,13 +61,14 @@ const Bay: React.FC<BayProps> = ({
           metalness={0.3}
           emissive={frameColor}
           emissiveIntensity={0}
+          toneMapped={true}
         />
       </mesh>
 
       {/* Frame Border (line segments) */}
       <lineSegments>
         <edgesGeometry args={[new THREE.PlaneGeometry(3.5, 2.2)]} />
-        <lineBasicMaterial color={frameColor} />
+        <lineBasicMaterial color={frameColor} linewidth={1} />
       </lineSegments>
 
       {/* Spotlight */}
