@@ -21,7 +21,7 @@ export const HomeMobileFallback: React.FC<Props> = ({ onContact, onWork, onPortf
   const glass  = { background: "rgba(18,18,22,0.9)", border: "1px solid rgba(47,123,255,0.10)" };
 
   return (
-    <div className="min-h-screen" style={{ background: "#050608", color: hi }}>
+    <div className="min-h-screen" style={{ background: "#f8fafc", color: "#0d1117" }}>
       {/* ── Hero ── */}
       <section className="px-6 pt-28 pb-20 max-w-2xl">
         <p className="font-mono text-[11px] tracking-[0.22em] uppercase mb-5" style={{ color: cyan }}>
