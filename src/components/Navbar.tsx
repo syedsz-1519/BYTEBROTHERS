@@ -27,6 +27,7 @@ const NAV_ITEMS: NavItem[] = [
   { label: "Work",     tab: "portfolio" },
   { label: "Services", tab: "services"  },
   { label: "Studio",   tab: "about"     },
+  { label: "Gallery",  tab: "gallery"   },
   { label: "Contact",  tab: "contact"   },
 ];
 

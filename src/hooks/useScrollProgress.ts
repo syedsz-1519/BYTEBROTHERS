@@ -19,16 +19,17 @@ export function useScrollProgress() {
       const scrollTrackEl = document.getElementById('scroll-track');
       if (!scrollTrackEl) {
         scrollProgressRef.current = 0;
+        setProgress(0);
         return;
       }
 
-      // Get the actual scrollable height (document height - viewport height)
-      const scrollTrackRect = scrollTrackEl.getBoundingClientRect();
-      const documentHeight = scrollTrackRect.bottom + window.scrollY;
-      const maxScroll = documentHeight - window.innerHeight;
+      // Calculate based on document scroll position
+      const documentHeight = document.documentElement.scrollHeight;
+      const viewportHeight = window.innerHeight;
+      const maxScroll = documentHeight - viewportHeight;
       const currentScroll = window.scrollY;
       
-      // Calculate progress: 0 at top, 1 when scroll-track is fully scrolled
+      // Calculate progress: 0 at top, 1 when fully scrolled
       const newProgress = maxScroll > 0 ? Math.min(Math.max(currentScroll / maxScroll, 0), 1) : 0;
 
       scrollProgressRef.current = newProgress;
@@ -37,10 +38,15 @@ export function useScrollProgress() {
     };
 
     // Initial calculation
-    handleScroll();
+    setTimeout(handleScroll, 0);
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener('resize', handleScroll, { passive: true });
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
+    };
   }, []);
 
   return progress;

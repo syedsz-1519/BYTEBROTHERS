@@ -55,20 +55,18 @@ const GallerySceneInner: React.FC<GallerySceneInnerProps> = ({
     targetZRef.current = 4 - scrollProg * (CORRIDOR_LEN - 6);
 
     // Smooth camera movement toward target Z
-    camera.position.z += (targetZRef.current - camera.position.z) * LERP_SPEED;
+    const zDiff = targetZRef.current - camera.position.z;
+    camera.position.z += zDiff * LERP_SPEED;
 
     // Bob effect (subtle vertical movement)
     bobPhaseRef.current += 0.011;
     camera.position.y = START_Y + Math.sin(bobPhaseRef.current) * BOB_AMP;
 
-    // Optional mouse look (disabled for now)
-    // camera.rotation.y = currentLookXRef.current * 0.35;
-
     // Store position for Bay distance calculations
     cameraRefRef.current.copy(camera.position);
     
-    // Trigger re-render for dependent Bay components
-    setCameraUpdate({});
+    // Trigger re-render for dependent Bay components (forces animation update)
+    setCameraUpdate(prev => ({ ...prev }));
   });
 
   return (
