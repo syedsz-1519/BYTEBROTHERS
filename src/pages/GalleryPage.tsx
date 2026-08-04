@@ -1,11 +1,16 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import GalleryScene from '../components/gallery/GalleryScene';
 import ScrollPanels from '../components/gallery/ScrollPanels';
 
 export const GalleryPage: React.FC = () => {
+  const isFirstLoad = useRef(true);
+
   useEffect(() => {
-    // Reset scroll position to top when page loads
-    window.scrollTo(0, 0);
+    // Only reset scroll on first load, not on tab switches
+    if (isFirstLoad.current) {
+      window.scrollTo(0, 0);
+      isFirstLoad.current = false;
+    }
   }, []);
 
   return (

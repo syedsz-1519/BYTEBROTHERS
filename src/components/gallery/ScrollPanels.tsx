@@ -53,7 +53,7 @@ const DEFAULT_PROJECTS: Project[] = [
     title: "Let's build the next room.",
     description: 'Open for freelance and studio collaborations.',
     role: 'Get in touch',
-    stack: 'studio@whitebrothers.dev',
+    stack: 'studio@bytebrothers.dev',
     year: '',
   },
 ];
