@@ -13,6 +13,7 @@ import { PortfolioPage } from './pages/PortfolioPage';
 import { ServicesPage } from './pages/ServicesPage';
 import { ContactPage } from './pages/ContactPage';
 import { WorkflowGuidePage } from './pages/WorkflowGuidePage';
+import { GalleryPage } from './pages/GalleryPage';
 import { Project } from './data/studioData';
 import { registerServiceWorker, useOnlineStatus } from './utils/offlineCache';
 import { WifiOff } from 'lucide-react';
@@ -110,6 +111,10 @@ function AppContent() {
             }}
             onOpenAiEstimator={() => setAiEstimatorOpen(true)}
           />
+        )}
+
+        {activeTab === 'gallery' && (
+          <GalleryPage />
         )}
 
         {activeTab === 'contact' && (

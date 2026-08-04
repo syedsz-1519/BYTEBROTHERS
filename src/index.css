@@ -34,6 +34,15 @@
     --signal-violet: #8b5cf6;
     --text-hi:       #f4f4f5;
     --text-lo:       #8b8b93;
+
+    /* ── Gallery corridor tokens ── */
+    --gallery-void: #05070a;
+    --gallery-wall: #12161c;
+    --gallery-floor: #0d1014;
+    --gallery-brass: #c9a876;
+    --gallery-steel: #4a6fa5;
+    --gallery-ink: #e8e6df;
+    --gallery-ink-dim: #8b8f96;
   }
 
   html.light {
@@ -93,3 +102,30 @@
     linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
 }
 
+/* ── Gallery Corridor Styles ── */
+.gallery-container {
+  position: relative;
+  z-index: 10;
+  min-h-screen;
+  background-color: var(--gallery-void);
+}
+
+.font-space-grotesk {
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+.font-inter {
+  font-family: 'Inter', sans-serif;
+}
+
+.letter-spacing-wide {
+  letter-spacing: 0.28em;
+}
+
+.letter-spacing-wider {
+  letter-spacing: 0.2em;
+}
+
+.letter-spacing-widest {
+  letter-spacing: 0.3em;
+}
