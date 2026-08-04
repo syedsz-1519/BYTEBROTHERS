@@ -128,16 +128,22 @@ export const Navbar: React.FC<NavbarProps> = ({
       {/* ── CSS variables injected once ─────────────────────────────────── */}
       <style>{`
         :root {
-          --void:           #0a0a0d;
-          --surface-glass:  rgba(255,255,255,0.03);
-          --signal-cyan:    #00e5ff;
-          --signal-violet:  #8b5cf6;
-          --text-hi:        #f4f4f5;
-          --text-lo:        #8b8b93;
+          --void:          #050608;
+          --surface:       #0c0e12;
+          --line:          rgba(255,255,255,0.08);
+          --blue:          #2f7bff;
+          --blue-bright:   #5ea1ff;
+          --white:         #f5f7fa;
+          --gray:          #8b93a1;
+          /* legacy aliases */
+          --signal-cyan:   #2f7bff;
+          --signal-violet: #5ea1ff;
+          --text-hi:       #f5f7fa;
+          --text-lo:       #8b93a1;
         }
         .nav-link-hover:hover {
-          color: var(--signal-cyan);
-          text-shadow: 0 0 12px rgba(0,229,255,0.45);
+          color: var(--blue);
+          text-shadow: 0 0 12px rgba(47,123,255,0.5);
         }
         .nav-link-active::after {
           content: '';
@@ -148,18 +154,18 @@ export const Navbar: React.FC<NavbarProps> = ({
           transform: translateX(-50%);
           width: 80%;
           height: 1.5px;
-          background: var(--signal-cyan);
-          box-shadow: 0 0 8px var(--signal-cyan);
+          background: var(--blue);
+          box-shadow: 0 0 8px var(--blue);
           border-radius: 2px;
         }
         .cta-btn {
-          background: linear-gradient(135deg, var(--signal-cyan) 0%, var(--signal-violet) 100%);
-          color: #060608;
+          background: linear-gradient(135deg, var(--blue) 0%, var(--blue-bright) 100%);
+          color: #f5f7fa;
           font-weight: 600;
         }
         .cta-btn:hover {
-          filter: brightness(1.08) saturate(1.1);
-          box-shadow: 0 0 20px rgba(0,229,255,0.35), 0 0 40px rgba(139,92,246,0.15);
+          filter: brightness(1.12) saturate(1.1);
+          box-shadow: 0 0 20px rgba(47,123,255,0.45), 0 0 40px rgba(94,161,255,0.2);
         }
       `}</style>
 
@@ -177,8 +183,8 @@ export const Navbar: React.FC<NavbarProps> = ({
             ${blurClass} ${shadowClass}
           `}
           style={{
-            backgroundColor: `rgba(10,10,13,${scrolled ? 0.88 : 0.60})`,
-            borderColor: "var(--surface-glass)",
+            backgroundColor: `rgba(5,6,8,${scrolled ? 0.92 : 0.65})`,
+            borderColor: "var(--line)",
             maxWidth: scrolled ? "900px" : "1040px",
           }}
           aria-label="Main navigation"
@@ -188,7 +194,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             {/* ── Logo ──────────────────────────────────────────────────── */}
             <button
               onClick={() => navigate("home")}
-              className="group flex items-center gap-2.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--signal-cyan)] rounded-lg"
+              className="group flex items-center gap-2.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--blue)] rounded-lg"
               aria-label="ByteBrothers — go to homepage"
             >
               {/* Mark — circuit-B logo image with ambient glow on hover */}
@@ -201,7 +207,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 }}
                 onMouseEnter={(e) => {
                   (e.currentTarget as HTMLDivElement).style.boxShadow =
-                    "0 0 14px rgba(0,229,255,0.25), 0 0 28px rgba(139,92,246,0.12)";
+                    "0 0 14px rgba(47,123,255,0.3), 0 0 28px rgba(94,161,255,0.15)";
                 }}
                 onMouseLeave={(e) => {
                   (e.currentTarget as HTMLDivElement).style.boxShadow = "0 0 0 0 transparent";
@@ -238,16 +244,16 @@ export const Navbar: React.FC<NavbarProps> = ({
                     className={`
                       relative px-4 py-1.5 text-[13px] font-display font-medium uppercase tracking-wide
                       transition-all duration-200 rounded-lg focus-visible:outline-none
-                      focus-visible:ring-2 focus-visible:ring-[var(--signal-cyan)]
+                      focus-visible:ring-2 focus-visible:ring-[var(--blue)]
                       nav-link-hover
                       ${isActive ? "nav-link-active" : ""}
                     `}
                     style={{
                       color: isActive
-                        ? "var(--signal-cyan)"
+                        ? "var(--blue)"
                         : hovered === item.tab
-                        ? "var(--signal-cyan)"
-                        : "var(--text-hi)",
+                        ? "var(--blue)"
+                        : "var(--white)",
                       letterSpacing: "0.06em",
                     }}
                     aria-current={isActive ? "page" : undefined}
@@ -272,7 +278,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               {/* CTA — the only fully-saturated element */}
               <button
                 onClick={handleCta}
-                className="cta-btn relative inline-flex items-center gap-2 px-4 py-1.5 rounded-xl text-[13px] font-display tracking-tight transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--signal-cyan)] active:scale-[0.97]"
+                className="cta-btn relative inline-flex items-center gap-2 px-4 py-1.5 rounded-xl text-[13px] font-display tracking-tight transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--blue)] active:scale-[0.97]"
                 aria-label="Book a discovery call"
               >
                 Book Discovery Call
@@ -284,7 +290,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             <div className="flex items-center gap-2 lg:hidden">
               <button
                 onClick={handleCta}
-                className="cta-btn inline-flex items-center px-3 py-1.5 rounded-xl text-[12px] font-display tracking-tight transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--signal-cyan)] active:scale-[0.97]"
+                className="cta-btn inline-flex items-center px-3 py-1.5 rounded-xl text-[12px] font-display tracking-tight transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--blue)] active:scale-[0.97]"
                 aria-label="Book a discovery call"
               >
                 Book a Call
@@ -292,11 +298,11 @@ export const Navbar: React.FC<NavbarProps> = ({
 
               <button
                 onClick={() => setMobileOpen((v) => !v)}
-                className="flex items-center justify-center w-9 h-9 rounded-xl transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--signal-cyan)]"
+                className="flex items-center justify-center w-9 h-9 rounded-xl transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--blue)]"
                 style={{
                   background: "rgba(255,255,255,0.04)",
                   border: "1px solid rgba(255,255,255,0.07)",
-                  color: mobileOpen ? "var(--signal-cyan)" : "var(--text-hi)",
+                  color: mobileOpen ? "var(--blue)" : "var(--white)",
                 }}
                 aria-label={mobileOpen ? "Close navigation menu" : "Open navigation menu"}
                 aria-expanded={mobileOpen}
@@ -322,9 +328,9 @@ export const Navbar: React.FC<NavbarProps> = ({
               className="pointer-events-auto absolute top-[calc(100%+6px)] left-4 right-4 mx-auto rounded-2xl backdrop-blur-2xl p-5 flex flex-col gap-3"
               style={{
                 maxWidth: "480px",
-                background: "rgba(10,10,13,0.96)",
-                border: "1px solid rgba(255,255,255,0.06)",
-                boxShadow: "0 20px 60px rgba(0,0,0,0.85), 0 0 0 1px rgba(0,229,255,0.04)",
+                background: "rgba(5,6,8,0.97)",
+                border: "1px solid rgba(255,255,255,0.07)",
+                boxShadow: "0 20px 60px rgba(0,0,0,0.9), 0 0 0 1px rgba(47,123,255,0.06)",
               }}
               role="dialog"
               aria-label="Mobile navigation"
@@ -359,12 +365,12 @@ export const Navbar: React.FC<NavbarProps> = ({
                       initial={{ opacity: 0, x: -10 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: i * 0.04, duration: 0.18 }}
-                      className="w-full flex items-center justify-between px-3 py-3 rounded-xl text-left font-display text-sm font-medium tracking-wide transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--signal-cyan)]"
+                      className="w-full flex items-center justify-between px-3 py-3 rounded-xl text-left font-display text-sm font-medium tracking-wide transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--blue)]"
                       style={{
-                        color: isActive ? "var(--signal-cyan)" : "var(--text-hi)",
-                        background: isActive ? "rgba(0,229,255,0.05)" : "transparent",
+                        color: isActive ? "var(--blue)" : "var(--white)",
+                        background: isActive ? "rgba(47,123,255,0.06)" : "transparent",
                         border: isActive
-                          ? "1px solid rgba(0,229,255,0.12)"
+                          ? "1px solid rgba(47,123,255,0.14)"
                           : "1px solid transparent",
                         letterSpacing: "0.04em",
                         textTransform: "uppercase",
@@ -376,8 +382,8 @@ export const Navbar: React.FC<NavbarProps> = ({
                         <span
                           className="h-1.5 w-1.5 rounded-full"
                           style={{
-                            background: "var(--signal-cyan)",
-                            boxShadow: "0 0 6px var(--signal-cyan)",
+                            background: "var(--blue)",
+                            boxShadow: "0 0 6px var(--blue)",
                           }}
                           aria-hidden="true"
                         />
@@ -391,7 +397,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               <div style={{ paddingTop: "4px", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
                 <button
                   onClick={handleCta}
-                  className="cta-btn w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-display text-sm tracking-tight transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--signal-cyan)] active:scale-[0.98]"
+                  className="cta-btn w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-display text-sm tracking-tight transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--blue)] active:scale-[0.98]"
                   aria-label="Book a discovery call"
                 >
                   Book Discovery Call

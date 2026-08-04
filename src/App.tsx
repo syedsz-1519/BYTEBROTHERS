@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { ThemeProvider } from './context/ThemeContext';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
@@ -7,6 +7,7 @@ import { Background3dCanvas } from './components/Background3dCanvas';
 import { ScrollProgressBar } from './components/ScrollProgressBar';
 import { ProjectModal } from './components/ProjectModal';
 import { AiEstimatorModal } from './components/AiEstimatorModal';
+import { HomeCorridor } from './components/home/HomeCorridor';
 import { HomePage } from './pages/HomePage';
 import { AboutPage } from './pages/AboutPage';
 import { PortfolioPage } from './pages/PortfolioPage';
@@ -27,6 +28,27 @@ function AppContent() {
 
   const isOnline = useOnlineStatus();
 
+  // Capability check — only run once
+  const use3DCorridor = useMemo(() => {
+    if (typeof window === "undefined") return false;
+    if (window.innerWidth < 768) return false;
+    if ((navigator.hardwareConcurrency ?? 4) <= 2) return false;
+    const hasCoarse = window.matchMedia("(pointer: coarse)").matches;
+    const hasFine   = window.matchMedia("(pointer: fine)").matches;
+    if (hasCoarse && !hasFine) return false;
+    try {
+      const c = document.createElement("canvas");
+      const gl = c.getContext("webgl") as WebGLRenderingContext | null;
+      if (!gl) return false;
+    } catch { return false; }
+    return true;
+  }, []);
+
+  const reducedMotion = useMemo(() =>
+    typeof window !== "undefined"
+      ? window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      : false, []);
+
   useEffect(() => {
     registerServiceWorker();
   }, []);
@@ -44,15 +66,26 @@ function AppContent() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[var(--bg-primary)] text-[var(--text-primary)] transition-colors duration-300 relative">
-      {/* 3D Wireframe Background Canvas */}
-      <Background3dCanvas />
+    <div
+      className={`text-[var(--text-primary)] transition-colors duration-300 relative ${activeTab === 'home' ? '' : 'min-h-screen flex flex-col'}`}
+      style={{ background: activeTab === 'home' ? '#05070a' : 'var(--bg-primary)' }}
+    >
+      {/* 3D Wireframe Background Canvas — hidden on home tab */}
+      {activeTab !== 'home' && <Background3dCanvas />}
+
+      {/* Corridor — always mounted, visible only on home tab */}
+      {use3DCorridor && (
+        <HomeCorridor
+          visible={activeTab === 'home'}
+          reducedMotion={reducedMotion}
+        />
+      )}
 
       {/* ByteBrothers Preloader on initial load */}
       {showPreloader && <Preloader onComplete={() => setShowPreloader(false)} />}
 
-      {/* Scroll Progress Bar at top of viewport */}
-      <ScrollProgressBar />
+      {/* Scroll Progress Bar — hidden on home tab (corridor has its own HUD) */}
+      {activeTab !== 'home' && <ScrollProgressBar />}
 
       {/* Non-intrusive Offline Banner */}
       {!isOnline && (
@@ -74,7 +107,7 @@ function AppContent() {
       />
 
       {/* View Containers */}
-      <main className="flex-1">
+      <main className={`${activeTab === 'home' ? 'block' : 'flex-1 relative'}`}>
         {activeTab === 'home' && (
           <HomePage
             setActiveTab={setActiveTab}
@@ -84,6 +117,7 @@ function AppContent() {
               setActiveTab('contact');
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
+            use3DCorridor={use3DCorridor}
           />
         )}
 
@@ -125,14 +159,16 @@ function AppContent() {
         )}
       </main>
 
-      {/* Footer */}
-      <Footer
-        setActiveTab={setActiveTab}
-        onOpenContactModal={() => {
-          setActiveTab('contact');
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }}
-      />
+      {/* Footer — hidden on home tab (corridor has its own CTA bay) */}
+      {activeTab !== 'home' && (
+        <Footer
+          setActiveTab={setActiveTab}
+          onOpenContactModal={() => {
+            setActiveTab('contact');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+        />
+      )}
 
       {/* Modals */}
       <ProjectModal

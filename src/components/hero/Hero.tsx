@@ -13,7 +13,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenRfq, onExploreServices }) => {
   return (
     <section
       className="relative w-full overflow-hidden"
-      style={{ minHeight: "100svh", backgroundColor: "var(--void, #0a0a0d)" }}
+      style={{ minHeight: "100svh", backgroundColor: "var(--void, #050608)" }}
       aria-label="Hero — ByteBrothers"
     >
       {/* ── 3D circuit — absolute, fills entire viewport ─────────────────── */}
@@ -33,9 +33,9 @@ export const Hero: React.FC<HeroProps> = ({ onOpenRfq, onExploreServices }) => {
           zIndex: 1,
           background: [
             // Dense dark veil behind text column
-            "radial-gradient(ellipse 55% 70% at 28% 48%, rgba(10,10,13,0.82) 0%, rgba(10,10,13,0.45) 55%, transparent 80%)",
+            "radial-gradient(ellipse 55% 70% at 28% 48%, rgba(5,6,8,0.82) 0%, rgba(5,6,8,0.45) 55%, transparent 80%)",
             // Soft bottom fade into next section
-            "linear-gradient(to bottom, transparent 60%, rgba(10,10,13,0.95) 100%)",
+            "linear-gradient(to bottom, transparent 60%, rgba(5,6,8,0.95) 100%)",
           ].join(", "),
         }}
         aria-hidden="true"

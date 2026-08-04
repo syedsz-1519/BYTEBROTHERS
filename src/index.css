@@ -27,13 +27,21 @@
     --accent-blue: #3B82F6;
     --accent-glow: rgba(59, 130, 246, 0.15);
 
-    /* ── Navbar design tokens ── */
-    --void:          #0a0a0d;
+    /* ── Navbar / home design tokens ── */
+    --void:          #050608;
+    --surface:       #0c0e12;
+    --line:          rgba(255,255,255,0.08);
+    --blue:          #2f7bff;
+    --blue-bright:   #5ea1ff;
+    --white:         #f5f7fa;
+    --gray:          #8b93a1;
+
+    /* ── Legacy aliases (keep for non-reskinned pages) ── */
     --surface-glass: rgba(255,255,255,0.03);
-    --signal-cyan:   #00e5ff;
-    --signal-violet: #8b5cf6;
-    --text-hi:       #f4f4f5;
-    --text-lo:       #8b8b93;
+    --signal-cyan:   #2f7bff;
+    --signal-violet: #5ea1ff;
+    --text-hi:       #f5f7fa;
+    --text-lo:       #8b93a1;
 
     /* ── Gallery corridor tokens ── */
     --gallery-void: #05070a;

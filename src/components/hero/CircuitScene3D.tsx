@@ -19,10 +19,10 @@ function isLowEnd(): boolean {
 }
 
 // ─── Colours ──────────────────────────────────────────────────────────────────
-const CYAN        = new THREE.Color(0x00e5ff);
-const VIOLET      = new THREE.Color(0x8b5cf6);
-const TRACE_BASE  = new THREE.Color(0x002233);
-const FOG_COLOR   = new THREE.Color(0x0a0a0d);
+const CYAN        = new THREE.Color(0x2f7bff);   // --blue
+const VIOLET      = new THREE.Color(0x5ea1ff);   // --blue-bright
+const TRACE_BASE  = new THREE.Color(0x071428);   // dim trace base
+const FOG_COLOR   = new THREE.Color(0x050608);   // --void
 
 // ─── Layout ───────────────────────────────────────────────────────────────────
 // World space:  x ∈ [-8, 8],  y ∈ [-4.2, 4.2],  z ∈ [-1.2, 0.8]
@@ -379,13 +379,13 @@ export const CircuitScene3D: React.FC<CircuitScene3DProps> = ({ className = "" }
         frameloop="always"
       >
         <SceneSetup lowEnd={lowEnd} />
-        <ambientLight intensity={0.10} color="#080818" />
-        {/* Cyan key — upper right front */}
-        <pointLight position={[7, 4, 8]}  intensity={lowEnd ? 35 : 22} color="#00e5ff" distance={28} decay={2} />
-        {/* Violet fill — left rear */}
-        <pointLight position={[-7, 2, -6]} intensity={lowEnd ? 18 : 12} color="#8b5cf6" distance={22} decay={2} />
+        <ambientLight intensity={0.10} color="#05080e" />
+        {/* Blue key — upper right front */}
+        <pointLight position={[7, 4, 8]}  intensity={lowEnd ? 35 : 22} color="#2f7bff" distance={28} decay={2} />
+        {/* Blue-bright fill — left rear */}
+        <pointLight position={[-7, 2, -6]} intensity={lowEnd ? 18 : 12} color="#5ea1ff" distance={22} decay={2} />
         {/* Top bounce for terminal highlights */}
-        <pointLight position={[0, 8, 3]}  intensity={7}               color="#00ffcc" distance={20} decay={2} />
+        <pointLight position={[0, 8, 3]}  intensity={7}               color="#7ab8ff" distance={20} decay={2} />
         <CircuitGroup reducedMotion={reducedMotion} lowEnd={lowEnd} />
         <BloomComposer lowEnd={lowEnd} />
       </Canvas>
