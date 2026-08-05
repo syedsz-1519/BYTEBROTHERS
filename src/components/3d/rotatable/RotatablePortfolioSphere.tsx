@@ -1,11 +1,6 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import {
-  PerspectiveCamera,
-  OrbitControls,
-  Sphere,
-  Lights,
-} from '@react-three/drei';
+import { Sphere } from '@react-three/drei';
 import * as THREE from 'three';
 import {
   RotatablePortfolioSphereProps,
