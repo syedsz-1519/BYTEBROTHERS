@@ -65,50 +65,39 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
                 <svg
                   width="140"
                   height="140"
-                  viewBox="0 0 160 160"
+                  viewBox="0 0 200 200"
                   xmlns="http://www.w3.org/2000/svg"
                   className="drop-shadow-2xl"
                 >
                   <defs>
-                    {/* Teal gradient */}
-                    <linearGradient id="tealGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" style={{ stopColor: '#4DADB8', stopOpacity: 1 }} />
-                      <stop offset="100%" style={{ stopColor: '#2F9BA8', stopOpacity: 1 }} />
+                    {/* Dark blue gradient */}
+                    <linearGradient id="darkBlueBB" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" style={{ stopColor: '#0B4F6B', stopOpacity: 1 }} />
+                      <stop offset="100%" style={{ stopColor: '#094557', stopOpacity: 1 }} />
                     </linearGradient>
-                    
+                    {/* Teal gradient */}
+                    <linearGradient id="tealBB" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" style={{ stopColor: '#147A8F', stopOpacity: 1 }} />
+                      <stop offset="100%" style={{ stopColor: '#0F5F72', stopOpacity: 1 }} />
+                    </linearGradient>
                     {/* Cyan gradient */}
-                    <linearGradient id="cyanGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" style={{ stopColor: '#5FC9D6', stopOpacity: 1 }} />
-                      <stop offset="100%" style={{ stopColor: '#2FB6C8', stopOpacity: 1 }} />
+                    <linearGradient id="cyanBB" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" style={{ stopColor: '#17A2B8', stopOpacity: 1 }} />
+                      <stop offset="100%" style={{ stopColor: '#138A9C', stopOpacity: 1 }} />
                     </linearGradient>
                   </defs>
-
-                  {/* Rounded square container background */}
-                  <rect x="10" y="10" width="140" height="140" rx="16" fill="#6BA8B4" opacity="0.3" />
-
-                  {/* Left vertical bar - teal */}
-                  <rect x="20" y="35" width="18" height="90" rx="4" fill="url(#tealGradient)" />
-
-                  {/* Top left small square */}
-                  <rect x="45" y="35" width="18" height="18" rx="3" fill="url(#cyanGradient)" />
-
-                  {/* Top right small square */}
-                  <rect x="68" y="35" width="18" height="18" rx="3" fill="url(#cyanGradient)" />
-
-                  {/* Top right extension */}
-                  <rect x="93" y="35" width="18" height="18" rx="3" fill="url(#cyanGradient)" />
-
-                  {/* Right vertical bar - cyan */}
-                  <rect x="122" y="35" width="18" height="90" rx="4" fill="url(#cyanGradient)" />
-
-                  {/* Center middle square - large */}
-                  <rect x="56" y="62" width="28" height="28" rx="4" fill="url(#cyanGradient)" />
-
-                  {/* Bottom left medium square */}
-                  <rect x="45" y="107" width="18" height="18" rx="3" fill="url(#tealGradient)" />
-
-                  {/* Bottom middle small square */}
-                  <rect x="68" y="107" width="18" height="18" rx="3" fill="url(#cyanGradient)" />
+                  {/* LEFT B */}
+                  <rect x="30" y="40" width="35" height="120" rx="4" fill="url(#darkBlueBB)" />
+                  <rect x="38" y="50" width="15" height="100" rx="2" fill="white" />
+                  <rect x="60" y="40" width="25" height="35" rx="2" fill="url(#tealBB)" />
+                  <rect x="60" y="125" width="25" height="35" rx="2" fill="url(#tealBB)" />
+                  {/* RIGHT B */}
+                  <rect x="125" y="40" width="35" height="120" rx="4" fill="url(#cyanBB)" />
+                  <rect x="133" y="50" width="15" height="100" rx="2" fill="white" />
+                  <rect x="100" y="40" width="25" height="35" rx="2" fill="url(#cyanBB)" />
+                  <rect x="100" y="125" width="25" height="35" rx="2" fill="url(#cyanBB)" />
+                  {/* CENTER SQUARE */}
+                  <rect x="92" y="80" width="16" height="16" rx="2" fill="url(#tealBB)" />
                 </svg>
               </motion.div>
             </motion.div>
