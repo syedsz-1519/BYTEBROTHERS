@@ -50,7 +50,7 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
           className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-white text-zinc-900 p-8 sm:p-12 select-none overflow-hidden"
         >
           {/* Center Logo Only with Blinking Effect */}
-          <div className="flex flex-col items-center justify-center space-y-12 z-10">
+          <div className="flex flex-col items-center justify-center space-y-16 z-10">
             {/* ByteBrothers Logo with 3s Blink Cycle */}
             <motion.div
               initial={{ scale: 0.8, opacity: 0 }}
@@ -63,54 +63,96 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
                 transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
               >
                 <svg
-                  width="120"
-                  height="120"
-                  viewBox="0 0 200 200"
+                  width="160"
+                  height="160"
+                  viewBox="0 0 400 400"
                   xmlns="http://www.w3.org/2000/svg"
-                  className="drop-shadow-lg"
+                  className="drop-shadow-2xl"
                 >
-                  {/* Define gradient for 3D effect */}
                   <defs>
-                    <linearGradient id="gradientDark" x1="0%" y1="0%" x2="100%" y2="100%">
+                    {/* Dark blue gradient for left side */}
+                    <linearGradient id="darkBlueGrad" x1="0%" y1="0%" x2="100%" y2="100%">
                       <stop offset="0%" style={{ stopColor: '#0B4F6B', stopOpacity: 1 }} />
-                      <stop offset="50%" style={{ stopColor: '#147A8F', stopOpacity: 1 }} />
-                      <stop offset="100%" style={{ stopColor: '#0A3A4A', stopOpacity: 1 }} />
+                      <stop offset="100%" style={{ stopColor: '#094557', stopOpacity: 1 }} />
                     </linearGradient>
-                    <linearGradient id="gradientLight" x1="0%" y1="0%" x2="100%" y2="100%">
+
+                    {/* Teal gradient for middle */}
+                    <linearGradient id="tealGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" style={{ stopColor: '#147A8F', stopOpacity: 1 }} />
+                      <stop offset="100%" style={{ stopColor: '#0F5F72', stopOpacity: 1 }} />
+                    </linearGradient>
+
+                    {/* Bright cyan gradient for right side */}
+                    <linearGradient id="cyanGrad" x1="0%" y1="0%" x2="100%" y2="100%">
                       <stop offset="0%" style={{ stopColor: '#17A2B8', stopOpacity: 1 }} />
-                      <stop offset="50%" style={{ stopColor: '#20C997', stopOpacity: 1 }} />
-                      <stop offset="100%" style={{ stopColor: '#138496', stopOpacity: 1 }} />
+                      <stop offset="100%" style={{ stopColor: '#138A9C', stopOpacity: 1 }} />
                     </linearGradient>
+
+                    {/* Light teal for accents */}
+                    <linearGradient id="lightTealGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" style={{ stopColor: '#20C997', stopOpacity: 1 }} />
+                      <stop offset="100%" style={{ stopColor: '#1BA98E', stopOpacity: 1 }} />
+                    </linearGradient>
+
+                    {/* Shadow filter for 3D depth */}
+                    <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+                      <feDropShadow dx="2" dy="4" stdDeviation="3" floodOpacity="0.3" />
+                    </filter>
                   </defs>
 
-                  {/* Left B */}
-                  <g id="leftB">
-                    <rect x="30" y="40" width="35" height="120" fill="url(#gradientDark)" stroke="#0B4F6B" strokeWidth="2" rx="4" />
-                    <rect x="38" y="50" width="15" height="100" fill="white" rx="2" />
-                    <rect x="60" y="40" width="25" height="35" fill="url(#gradientLight)" stroke="#138496" strokeWidth="2" rx="2" />
-                    <rect x="60" y="125" width="25" height="35" fill="url(#gradientLight)" stroke="#138496" strokeWidth="2" rx="2" />
-                  </g>
+                  {/* LEFT B SHAPE */}
+                  {/* Outer left frame (dark blue) */}
+                  <rect x="50" y="80" width="70" height="240" rx="8" fill="url(#darkBlueGrad)" filter="url(#shadow)" />
 
-                  {/* Right B (mirrored and offset) */}
-                  <g id="rightB" transform="translate(85, 0)">
-                    <rect x="30" y="40" width="35" height="120" fill="url(#gradientDark)" stroke="#0B4F6B" strokeWidth="2" rx="4" />
-                    <rect x="38" y="50" width="15" height="100" fill="white" rx="2" />
-                    <rect x="5" y="40" width="25" height="35" fill="url(#gradientLight)" stroke="#138496" strokeWidth="2" rx="2" />
-                    <rect x="5" y="125" width="25" height="35" fill="url(#gradientLight)" stroke="#138496" strokeWidth="2" rx="2" />
-                  </g>
+                  {/* Inner cutout (white) */}
+                  <rect x="70" y="110" width="30" height="180" rx="4" fill="white" />
 
-                  {/* Center accent square */}
-                  <rect x="92" y="85" width="16" height="16" fill="#17A2B8" stroke="#0B4F6B" strokeWidth="1.5" rx="2" />
+                  {/* Top right extension (teal) */}
+                  <rect x="115" y="80" width="50" height="70" rx="6" fill="url(#tealGrad)" filter="url(#shadow)" />
+
+                  {/* Top right inner (white) */}
+                  <rect x="130" y="95" width="25" height="40" rx="3" fill="white" />
+
+                  {/* Bottom right extension (teal) */}
+                  <rect x="115" y="250" width="50" height="70" rx="6" fill="url(#tealGrad)" filter="url(#shadow)" />
+
+                  {/* Bottom right inner (white) */}
+                  <rect x="130" y="265" width="25" height="40" rx="3" fill="white" />
+
+                  {/* RIGHT B SHAPE (offset and mirrored) */}
+                  {/* Outer right frame (cyan) */}
+                  <rect x="200" y="80" width="70" height="240" rx="8" fill="url(#cyanGrad)" filter="url(#shadow)" />
+
+                  {/* Inner cutout (white) */}
+                  <rect x="220" y="110" width="30" height="180" rx="4" fill="white" />
+
+                  {/* Top left extension (light teal) */}
+                  <rect x="145" y="80" width="50" height="70" rx="6" fill="url(#lightTealGrad)" filter="url(#shadow)" />
+
+                  {/* Top left inner (white) */}
+                  <rect x="160" y="95" width="25" height="40" rx="3" fill="white" />
+
+                  {/* Bottom left extension (light teal) */}
+                  <rect x="145" y="250" width="50" height="70" rx="6" fill="url(#lightTealGrad)" filter="url(#shadow)" />
+
+                  {/* Bottom left inner (white) */}
+                  <rect x="160" y="265" width="25" height="40" rx="3" fill="white" />
+
+                  {/* CENTER ACCENT SQUARE */}
+                  <rect x="170" y="170" width="32" height="32" rx="3" fill="url(#tealGrad)" filter="url(#shadow)" />
+
+                  {/* Center square inner highlight */}
+                  <rect x="175" y="175" width="22" height="22" rx="2" fill="#20C997" opacity="0.6" />
                 </svg>
               </motion.div>
             </motion.div>
 
             {/* Progress Bar Section */}
-            <div className="w-full max-w-xs space-y-4">
+            <div className="w-full max-w-xs space-y-6">
               {/* Progress Percentage */}
               <div className="flex justify-center items-center">
                 <motion.span 
-                  className="font-bold text-2xl text-teal-600"
+                  className="font-bold text-3xl text-teal-600"
                   key={Math.floor(progress)}
                 >
                   {Math.floor(progress)}%
@@ -118,16 +160,16 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
               </div>
 
               {/* Progress Bar */}
-              <div className="h-1.5 w-full bg-gray-200 rounded-full overflow-hidden border border-gray-300 shadow-sm">
+              <div className="h-2 w-full bg-gray-200 rounded-full overflow-hidden border border-gray-300 shadow-sm">
                 <motion.div
-                  className="h-full bg-gradient-to-r from-teal-500 via-cyan-500 to-blue-500 rounded-full shadow-md"
+                  className="h-full bg-gradient-to-r from-teal-500 via-cyan-500 to-blue-600 rounded-full shadow-md"
                   style={{ width: `${progress}%` }}
                   transition={{ type: "tween", duration: 0.1 }}
                 />
               </div>
 
               {/* Loading Status */}
-              <div className="text-center text-xs font-mono text-gray-500">
+              <div className="text-center text-sm font-mono text-gray-500">
                 <motion.span
                   animate={{ opacity: [0.5, 1, 0.5] }}
                   transition={{ duration: 1.5, repeat: Infinity }}
