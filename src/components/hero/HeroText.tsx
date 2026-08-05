@@ -10,20 +10,20 @@ interface HeroTextProps {
 
 // ── New blue-theme text-shadow extrusions ─────────────────────────────────────
 const H1_SHADOW = [
+  "0 2px 4px rgba(0,0,0,0.9)",
+  "0 4px 16px rgba(0,0,0,0.8)",
   "1px 1px 0 rgba(47,123,255,0.22)",
   "2px 2px 0 rgba(47,123,255,0.15)",
-  "3px 3px 0 rgba(47,123,255,0.09)",
-  "4px 4px 0 rgba(47,123,255,0.05)",
-  "0 0 32px rgba(47,123,255,0.14)",
-  "0 0 64px rgba(94,161,255,0.08)",
+  "0 0 32px rgba(47,123,255,0.18)",
+  "0 0 64px rgba(94,161,255,0.10)",
 ].join(", ");
 
 const ACCENT_SHADOW = [
+  "0 2px 8px rgba(0,0,0,0.95)",
   "1px 1px 0 rgba(94,161,255,0.4)",
   "2px 2px 0 rgba(94,161,255,0.25)",
-  "3px 3px 0 rgba(94,161,255,0.12)",
-  "0 0 24px rgba(94,161,255,0.5)",
-  "0 0 48px rgba(47,123,255,0.22)",
+  "0 0 24px rgba(94,161,255,0.6)",
+  "0 0 48px rgba(47,123,255,0.28)",
 ].join(", ");
 
 const baseDelay = 0.2;
@@ -67,7 +67,7 @@ export const HeroText: React.FC<HeroTextProps> = ({ onBookCall, onViewWork }) =>
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.45, delay: baseDelay, ease: "easeOut" }}
         className="font-mono text-[11px] tracking-[0.22em] uppercase mb-5"
-        style={{ color: "var(--blue)", textShadow: "0 0 16px rgba(47,123,255,0.55)" }}
+        style={{ color: "var(--blue-bright)", textShadow: "0 0 16px rgba(47,123,255,0.7), 0 2px 8px rgba(0,0,0,0.9)" }}
       >
         ›_ systems, engineered.
       </motion.p>
@@ -77,7 +77,7 @@ export const HeroText: React.FC<HeroTextProps> = ({ onBookCall, onViewWork }) =>
         className="font-display font-bold leading-[1.03] mb-6"
         style={{
           fontSize:      "clamp(2.6rem, 5.2vw, 4.5rem)",
-          color:         "var(--white)",
+          color:         "#ffffff",
           letterSpacing: "-0.025em",
           textShadow:    H1_SHADOW,
         }}
@@ -113,9 +113,9 @@ export const HeroText: React.FC<HeroTextProps> = ({ onBookCall, onViewWork }) =>
         transition={{ duration: 0.5, delay: baseDelay + 0.4, ease: "easeOut" }}
         style={{
           fontSize: "18px", lineHeight: 1.65,
-          color: "var(--gray)", fontWeight: 400,
+          color: "#c8cdd6", fontWeight: 400,
           maxWidth: "500px", marginBottom: "2.5rem",
-          textShadow: "0 2px 12px rgba(0,0,0,0.85)",
+          textShadow: "0 1px 8px rgba(0,0,0,1), 0 2px 20px rgba(0,0,0,0.95)",
         }}
       >
         Custom WebGL, full-stack systems, and AI platforms engineered for scale.

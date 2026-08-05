@@ -10,10 +10,10 @@ const C = {
   blue:    "#2f7bff",
   blueBr:  "#5ea1ff",
   blueD:   "#1a4fa8",
-  black:   "#0d1117",
-  dark:    "#1e2432",
-  mid:     "#4a5568",
-  muted:   "#718096",
+  black:   "#0a0e17",
+  dark:    "#0d1117",
+  mid:     "#1e2432",
+  muted:   "#3a4557",
   white:   "#ffffff",
   offW:    "#f8fafc",
   card:    "rgba(255,255,255,0.92)",
@@ -236,8 +236,16 @@ export const HomeScrollPanels: React.FC<HomeScrollPanelsProps> = ({ onContact, o
 
   const opacities = PANELS.map((_, i) => {
     const centre = band * i + band / 2;
-    const dist   = Math.abs(scrollProgress - centre);
-    return Math.max(0, 1 - dist / (band * 0.65));
+    // For Bay 0: at scroll=0 we want full opacity, so clamp the effective scroll
+    // position to never be "before" Bay 0's visible window.
+    // For the last bay: same treatment at scroll=1.
+    const effectiveProgress = i === 0
+      ? Math.max(scrollProgress, centre)
+      : i === PANELS.length - 1
+        ? Math.min(scrollProgress, centre)
+        : scrollProgress;
+    const dist = Math.abs(effectiveProgress - centre);
+    return Math.max(0, 1 - dist / (band * 0.55));
   });
 
   const activeBay = opacities.reduce((best, op, i) => op > opacities[best] ? i : best, 0);

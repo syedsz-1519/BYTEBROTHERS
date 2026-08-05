@@ -32,10 +32,12 @@ export const Hero: React.FC<HeroProps> = ({ onOpenRfq, onExploreServices }) => {
         style={{
           zIndex: 1,
           background: [
-            // Dense dark veil behind text column
-            "radial-gradient(ellipse 55% 70% at 28% 48%, rgba(5,6,8,0.82) 0%, rgba(5,6,8,0.45) 55%, transparent 80%)",
+            // Dense dark veil behind text column — boosted opacity for readability
+            "radial-gradient(ellipse 65% 80% at 28% 48%, rgba(5,6,8,0.96) 0%, rgba(5,6,8,0.78) 55%, rgba(5,6,8,0.35) 80%)",
+            // Full-screen base tint so text is never lost against bright 3D scene
+            "linear-gradient(to right, rgba(5,6,8,0.72) 0%, rgba(5,6,8,0.35) 60%, rgba(5,6,8,0.10) 100%)",
             // Soft bottom fade into next section
-            "linear-gradient(to bottom, transparent 60%, rgba(5,6,8,0.95) 100%)",
+            "linear-gradient(to bottom, rgba(5,6,8,0.25) 0%, transparent 30%, transparent 60%, rgba(5,6,8,0.97) 100%)",
           ].join(", "),
         }}
         aria-hidden="true"
