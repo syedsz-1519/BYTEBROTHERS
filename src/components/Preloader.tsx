@@ -51,7 +51,7 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
         >
           {/* Center Logo Only with Blinking Effect */}
           <div className="flex flex-col items-center justify-center space-y-16 z-10">
-            {/* ByteBrothers Logo with 3s Blink Cycle */}
+            {/* ByteBrothers Original Logo with 3s Blink Cycle */}
             <motion.div
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
@@ -63,86 +63,52 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
                 transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
               >
                 <svg
-                  width="160"
-                  height="160"
-                  viewBox="0 0 400 400"
+                  width="140"
+                  height="140"
+                  viewBox="0 0 160 160"
                   xmlns="http://www.w3.org/2000/svg"
                   className="drop-shadow-2xl"
                 >
                   <defs>
-                    {/* Dark blue gradient for left side */}
-                    <linearGradient id="darkBlueGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" style={{ stopColor: '#0B4F6B', stopOpacity: 1 }} />
-                      <stop offset="100%" style={{ stopColor: '#094557', stopOpacity: 1 }} />
+                    {/* Teal gradient */}
+                    <linearGradient id="tealGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" style={{ stopColor: '#4DADB8', stopOpacity: 1 }} />
+                      <stop offset="100%" style={{ stopColor: '#2F9BA8', stopOpacity: 1 }} />
                     </linearGradient>
-
-                    {/* Teal gradient for middle */}
-                    <linearGradient id="tealGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" style={{ stopColor: '#147A8F', stopOpacity: 1 }} />
-                      <stop offset="100%" style={{ stopColor: '#0F5F72', stopOpacity: 1 }} />
+                    
+                    {/* Cyan gradient */}
+                    <linearGradient id="cyanGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" style={{ stopColor: '#5FC9D6', stopOpacity: 1 }} />
+                      <stop offset="100%" style={{ stopColor: '#2FB6C8', stopOpacity: 1 }} />
                     </linearGradient>
-
-                    {/* Bright cyan gradient for right side */}
-                    <linearGradient id="cyanGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" style={{ stopColor: '#17A2B8', stopOpacity: 1 }} />
-                      <stop offset="100%" style={{ stopColor: '#138A9C', stopOpacity: 1 }} />
-                    </linearGradient>
-
-                    {/* Light teal for accents */}
-                    <linearGradient id="lightTealGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" style={{ stopColor: '#20C997', stopOpacity: 1 }} />
-                      <stop offset="100%" style={{ stopColor: '#1BA98E', stopOpacity: 1 }} />
-                    </linearGradient>
-
-                    {/* Shadow filter for 3D depth */}
-                    <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
-                      <feDropShadow dx="2" dy="4" stdDeviation="3" floodOpacity="0.3" />
-                    </filter>
                   </defs>
 
-                  {/* LEFT B SHAPE */}
-                  {/* Outer left frame (dark blue) */}
-                  <rect x="50" y="80" width="70" height="240" rx="8" fill="url(#darkBlueGrad)" filter="url(#shadow)" />
+                  {/* Rounded square container background */}
+                  <rect x="10" y="10" width="140" height="140" rx="16" fill="#6BA8B4" opacity="0.3" />
 
-                  {/* Inner cutout (white) */}
-                  <rect x="70" y="110" width="30" height="180" rx="4" fill="white" />
+                  {/* Left vertical bar - teal */}
+                  <rect x="20" y="35" width="18" height="90" rx="4" fill="url(#tealGradient)" />
 
-                  {/* Top right extension (teal) */}
-                  <rect x="115" y="80" width="50" height="70" rx="6" fill="url(#tealGrad)" filter="url(#shadow)" />
+                  {/* Top left small square */}
+                  <rect x="45" y="35" width="18" height="18" rx="3" fill="url(#cyanGradient)" />
 
-                  {/* Top right inner (white) */}
-                  <rect x="130" y="95" width="25" height="40" rx="3" fill="white" />
+                  {/* Top right small square */}
+                  <rect x="68" y="35" width="18" height="18" rx="3" fill="url(#cyanGradient)" />
 
-                  {/* Bottom right extension (teal) */}
-                  <rect x="115" y="250" width="50" height="70" rx="6" fill="url(#tealGrad)" filter="url(#shadow)" />
+                  {/* Top right extension */}
+                  <rect x="93" y="35" width="18" height="18" rx="3" fill="url(#cyanGradient)" />
 
-                  {/* Bottom right inner (white) */}
-                  <rect x="130" y="265" width="25" height="40" rx="3" fill="white" />
+                  {/* Right vertical bar - cyan */}
+                  <rect x="122" y="35" width="18" height="90" rx="4" fill="url(#cyanGradient)" />
 
-                  {/* RIGHT B SHAPE (offset and mirrored) */}
-                  {/* Outer right frame (cyan) */}
-                  <rect x="200" y="80" width="70" height="240" rx="8" fill="url(#cyanGrad)" filter="url(#shadow)" />
+                  {/* Center middle square - large */}
+                  <rect x="56" y="62" width="28" height="28" rx="4" fill="url(#cyanGradient)" />
 
-                  {/* Inner cutout (white) */}
-                  <rect x="220" y="110" width="30" height="180" rx="4" fill="white" />
+                  {/* Bottom left medium square */}
+                  <rect x="45" y="107" width="18" height="18" rx="3" fill="url(#tealGradient)" />
 
-                  {/* Top left extension (light teal) */}
-                  <rect x="145" y="80" width="50" height="70" rx="6" fill="url(#lightTealGrad)" filter="url(#shadow)" />
-
-                  {/* Top left inner (white) */}
-                  <rect x="160" y="95" width="25" height="40" rx="3" fill="white" />
-
-                  {/* Bottom left extension (light teal) */}
-                  <rect x="145" y="250" width="50" height="70" rx="6" fill="url(#lightTealGrad)" filter="url(#shadow)" />
-
-                  {/* Bottom left inner (white) */}
-                  <rect x="160" y="265" width="25" height="40" rx="3" fill="white" />
-
-                  {/* CENTER ACCENT SQUARE */}
-                  <rect x="170" y="170" width="32" height="32" rx="3" fill="url(#tealGrad)" filter="url(#shadow)" />
-
-                  {/* Center square inner highlight */}
-                  <rect x="175" y="175" width="22" height="22" rx="2" fill="#20C997" opacity="0.6" />
+                  {/* Bottom middle small square */}
+                  <rect x="68" y="107" width="18" height="18" rx="3" fill="url(#cyanGradient)" />
                 </svg>
               </motion.div>
             </motion.div>
