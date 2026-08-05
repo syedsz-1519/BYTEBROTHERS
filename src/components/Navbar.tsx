@@ -28,6 +28,7 @@ const NAV_ITEMS: NavItem[] = [
   { label: "Services", tab: "services"  },
   { label: "Studio",   tab: "about"     },
   { label: "Gallery",  tab: "gallery"   },
+  { label: "3D View",  tab: "rotatable-portfolio" },
   { label: "Contact",  tab: "contact"   },
 ];
 

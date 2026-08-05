@@ -15,6 +15,7 @@ import { ServicesPage } from './pages/ServicesPage';
 import { ContactPage } from './pages/ContactPage';
 import { WorkflowGuidePage } from './pages/WorkflowGuidePage';
 import { GalleryPage } from './pages/GalleryPage';
+import { RotatablePortfolioPage } from './pages/RotatablePortfolioPage';
 import { Project } from './data/studioData';
 import { registerServiceWorker, useOnlineStatus } from './utils/offlineCache';
 import { WifiOff } from 'lucide-react';
@@ -149,6 +150,10 @@ function AppContent() {
 
         {activeTab === 'gallery' && (
           <GalleryPage />
+        )}
+
+        {activeTab === 'rotatable-portfolio' && (
+          <RotatablePortfolioPage />
         )}
 
         {activeTab === 'contact' && (

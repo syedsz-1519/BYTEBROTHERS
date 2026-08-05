@@ -12,7 +12,6 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
 
   useEffect(() => {
     // Progress bar increments: reaches 100% in 5-7 seconds (targeting 6 seconds)
-    // Total duration: 6000ms, with smooth easing
     const startTime = Date.now();
     const targetDuration = 6000; // 6 seconds
 
@@ -48,77 +47,70 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
           initial={{ opacity: 1 }}
           exit={{ opacity: 0, y: -20 }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="fixed inset-0 z-50 flex flex-col items-center justify-between bg-gradient-to-br from-[#08090a] via-[#0f0f12] to-[#08090a] text-white p-8 sm:p-12 select-none overflow-hidden"
+          className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-white text-zinc-900 p-8 sm:p-12 select-none overflow-hidden"
         >
-          {/* Subtle Grid Accent Background */}
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:4rem_4rem] pointer-events-none" />
-          
-          {/* Top Status */}
-          <div className="w-full max-w-5xl flex items-center justify-between text-xs font-mono text-zinc-500 z-10">
-            <div className="flex items-center gap-2">
-              <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
-              <span>SYSTEM INITIALIZATION</span>
-            </div>
-            <span>V8 3D ENGINE v5.2</span>
-          </div>
-
-          {/* Center Logo & Title */}
-          <div className="flex flex-col items-center justify-center text-center my-auto space-y-6 max-w-2xl z-10">
-            {/* Logo with Blinking Effect */}
+          {/* Center Logo Only with Blinking Effect */}
+          <div className="flex flex-col items-center justify-center space-y-12 z-10">
+            {/* ByteBrothers Logo with 3s Blink Cycle */}
             <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
+              initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ duration: 0.5 }}
-              className="space-y-6"
+              className="flex justify-center"
             >
-              {/* ByteBrothers Logo with 3s Blink Cycle */}
               <motion.div
-                className="flex justify-center"
-                animate={{ opacity: [1, 1, 1, 0.3, 0.3, 1] }}
+                animate={{ opacity: [1, 1, 1, 0.2, 0.2, 1] }}
                 transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
               >
-                <img
-                  src="/assets/logo.jpeg"
-                  alt="ByteBrothers Logo"
-                  className="h-24 w-auto drop-shadow-lg"
-                />
+                <svg
+                  width="120"
+                  height="120"
+                  viewBox="0 0 200 200"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="drop-shadow-lg"
+                >
+                  {/* Define gradient for 3D effect */}
+                  <defs>
+                    <linearGradient id="gradientDark" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" style={{ stopColor: '#0B4F6B', stopOpacity: 1 }} />
+                      <stop offset="50%" style={{ stopColor: '#147A8F', stopOpacity: 1 }} />
+                      <stop offset="100%" style={{ stopColor: '#0A3A4A', stopOpacity: 1 }} />
+                    </linearGradient>
+                    <linearGradient id="gradientLight" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" style={{ stopColor: '#17A2B8', stopOpacity: 1 }} />
+                      <stop offset="50%" style={{ stopColor: '#20C997', stopOpacity: 1 }} />
+                      <stop offset="100%" style={{ stopColor: '#138496', stopOpacity: 1 }} />
+                    </linearGradient>
+                  </defs>
+
+                  {/* Left B */}
+                  <g id="leftB">
+                    <rect x="30" y="40" width="35" height="120" fill="url(#gradientDark)" stroke="#0B4F6B" strokeWidth="2" rx="4" />
+                    <rect x="38" y="50" width="15" height="100" fill="white" rx="2" />
+                    <rect x="60" y="40" width="25" height="35" fill="url(#gradientLight)" stroke="#138496" strokeWidth="2" rx="2" />
+                    <rect x="60" y="125" width="25" height="35" fill="url(#gradientLight)" stroke="#138496" strokeWidth="2" rx="2" />
+                  </g>
+
+                  {/* Right B (mirrored and offset) */}
+                  <g id="rightB" transform="translate(85, 0)">
+                    <rect x="30" y="40" width="35" height="120" fill="url(#gradientDark)" stroke="#0B4F6B" strokeWidth="2" rx="4" />
+                    <rect x="38" y="50" width="15" height="100" fill="white" rx="2" />
+                    <rect x="5" y="40" width="25" height="35" fill="url(#gradientLight)" stroke="#138496" strokeWidth="2" rx="2" />
+                    <rect x="5" y="125" width="25" height="35" fill="url(#gradientLight)" stroke="#138496" strokeWidth="2" rx="2" />
+                  </g>
+
+                  {/* Center accent square */}
+                  <rect x="92" y="85" width="16" height="16" fill="#17A2B8" stroke="#0B4F6B" strokeWidth="1.5" rx="2" />
+                </svg>
               </motion.div>
-
-              {/* Title */}
-              <h1 className="font-display text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-white uppercase">
-                BYTEBROTHERS
-              </h1>
-              
-              {/* Accent Line */}
-              <div className="relative w-full h-[1px] bg-gradient-to-r from-transparent via-blue-500 to-transparent my-4">
-                <motion.div 
-                  className="absolute inset-0 bg-cyan-400 blur-sm"
-                  animate={{ opacity: [0.3, 0.9, 0.3] }}
-                  transition={{ duration: 1.5, repeat: Infinity }}
-                />
-              </div>
-
-              <p className="font-mono text-xs sm:text-sm text-zinc-400 tracking-wider uppercase">
-                3D Web Architecture • Webflow Enterprise • WebGL Systems
-              </p>
             </motion.div>
 
             {/* Progress Bar Section */}
-            <div className="w-full max-w-md space-y-3 pt-6 border-t border-zinc-700/50 mt-6">
-              {/* Progress Label and Percentage */}
-              <div className="flex justify-between items-center text-xs font-mono text-zinc-400">
-                <span className="flex items-center gap-2">
-                  <motion.span
-                    animate={{ rotate: 360 }}
-                    transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                    className="inline-block"
-                  >
-                    ⚙️
-                  </motion.span>
-                  <span>Loading Engine Assets</span>
-                </span>
+            <div className="w-full max-w-xs space-y-4">
+              {/* Progress Percentage */}
+              <div className="flex justify-center items-center">
                 <motion.span 
-                  className="font-bold text-cyan-400"
+                  className="font-bold text-2xl text-teal-600"
                   key={Math.floor(progress)}
                 >
                   {Math.floor(progress)}%
@@ -126,37 +118,26 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
               </div>
 
               {/* Progress Bar */}
-              <div className="h-2 w-full bg-zinc-800/80 rounded-full overflow-hidden border border-zinc-700/50 shadow-lg">
+              <div className="h-1.5 w-full bg-gray-200 rounded-full overflow-hidden border border-gray-300 shadow-sm">
                 <motion.div
-                  className="h-full bg-gradient-to-r from-blue-500 via-cyan-400 to-emerald-400 rounded-full shadow-md"
+                  className="h-full bg-gradient-to-r from-teal-500 via-cyan-500 to-blue-500 rounded-full shadow-md"
                   style={{ width: `${progress}%` }}
                   transition={{ type: "tween", duration: 0.1 }}
                 />
               </div>
 
               {/* Loading Status */}
-              <div className="text-center text-[11px] font-mono text-zinc-500">
+              <div className="text-center text-xs font-mono text-gray-500">
                 <motion.span
                   animate={{ opacity: [0.5, 1, 0.5] }}
                   transition={{ duration: 1.5, repeat: Infinity }}
                 >
-                  {progress < 30 && "Initializing WebGL..."}
-                  {progress >= 30 && progress < 60 && "Loading 3D Assets..."}
-                  {progress >= 60 && progress < 90 && "Compiling Shaders..."}
+                  {progress < 30 && "Initializing..."}
+                  {progress >= 30 && progress < 60 && "Loading..."}
+                  {progress >= 60 && progress < 90 && "Processing..."}
                   {progress >= 90 && "Finalizing..."}
                 </motion.span>
               </div>
-            </div>
-          </div>
-
-          {/* Bottom Footnote */}
-          <div className="w-full max-w-5xl flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] font-mono text-zinc-500 z-10 border-t border-zinc-800/80 pt-4">
-            <div className="flex items-center gap-2">
-              <ShieldCheck className="h-3.5 w-3.5 text-blue-400" />
-              <span>STUDIO DIRECTORS: BYTEBROTHERS TEAM</span>
-            </div>
-            <div>
-              <span>PRECISION DIGITAL ENGINEERING © 2026</span>
             </div>
           </div>
         </motion.div>
