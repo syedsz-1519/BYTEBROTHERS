@@ -12,8 +12,13 @@
 import React, { useRef, useMemo, useEffect } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
-import { CamRef, ROOM_DEPTH, ROOM_H, proximityFade } from "../DevRoomCorridor";
-import { buildRoomGeometry } from "../../../utils/devRoomUtils";
+import {
+  buildRoomGeometry,
+  proximityFade,
+  ROOM_DEPTH,
+  ROOM_H,
+  type CamRef,
+} from "../../../utils/devRoomUtils";
 
 // ─── Constants ─────────────────────────────────────────────────────────────
 
@@ -117,14 +122,14 @@ export const CafeRoom: React.FC<CafeRoomProps> = ({
   const tableTopGeo = useMemo(() => new THREE.BoxGeometry(1.5, 0.08, 1.0), []);
   const tableLegGeo = useMemo(() => new THREE.CylinderGeometry(0.04, 0.04, 0.7, 8), []);
   const tableMat    = useMemo(
-    () => new THREE.MeshStandardMaterial({ color: "#8b4513", roughness: 0.85, metalness: 0.05 }),
+    () => new THREE.MeshStandardMaterial({ color: "#c48b59", roughness: 0.65, metalness: 0.05 }),
     []
   );
 
   // ── Coffee cup geometry and material ──────────────────────────────────────
   const cupGeo = useMemo(() => new THREE.CylinderGeometry(0.08, 0.06, 0.15, 8), []);
   const cupMat = useMemo(
-    () => new THREE.MeshStandardMaterial({ color: "#3c1a0e", roughness: 0.7 }),
+    () => new THREE.MeshStandardMaterial({ color: "#ffffff", roughness: 0.3 }),
     []
   );
 

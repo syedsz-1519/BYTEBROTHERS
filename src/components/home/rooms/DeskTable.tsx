@@ -18,11 +18,11 @@ import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 
 import {
-  CamRef,
-  ROOM_DEPTH,
+  buildRoomGeometry,
   proximityFade,
-} from "../DevRoomCorridor";
-import { buildRoomGeometry } from "../../../utils/devRoomUtils";
+  ROOM_DEPTH,
+  type CamRef,
+} from "../../../utils/devRoomUtils";
 import { createMonitorTexture } from "../../hero/monitorTexture";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
@@ -55,7 +55,7 @@ export const DeskTable: React.FC<DeskTableProps> = ({ roomZ, camRef }) => {
   // ── Desk surface ───────────────────────────────────────────────────────────
   const deskGeo = useMemo(() => new THREE.BoxGeometry(4, 0.08, 2), []);
   const deskMat = useMemo(
-    () => new THREE.MeshStandardMaterial({ color: "#8b6914", roughness: 0.7 }),
+    () => new THREE.MeshStandardMaterial({ color: "#d4a373", roughness: 0.6 }),
     []
   );
 
@@ -63,9 +63,9 @@ export const DeskTable: React.FC<DeskTableProps> = ({ roomZ, camRef }) => {
   const stickyGeo = useMemo(() => new THREE.PlaneGeometry(0.4, 0.4), []);
   const stickyMats = useMemo(
     () => [
-      new THREE.MeshStandardMaterial({ color: "#ffeb3b", side: THREE.DoubleSide }),
-      new THREE.MeshStandardMaterial({ color: "#4caf50", side: THREE.DoubleSide }),
-      new THREE.MeshStandardMaterial({ color: "#2196f3", side: THREE.DoubleSide }),
+      new THREE.MeshStandardMaterial({ color: "#fef08a", side: THREE.DoubleSide }),
+      new THREE.MeshStandardMaterial({ color: "#bbf7d0", side: THREE.DoubleSide }),
+      new THREE.MeshStandardMaterial({ color: "#bfdbfe", side: THREE.DoubleSide }),
     ],
     []
   );
@@ -83,14 +83,14 @@ export const DeskTable: React.FC<DeskTableProps> = ({ roomZ, camRef }) => {
   // ── Coffee mug ─────────────────────────────────────────────────────────────
   const mugGeo = useMemo(() => new THREE.CylinderGeometry(0.12, 0.10, 0.3, 12), []);
   const mugMat = useMemo(
-    () => new THREE.MeshStandardMaterial({ color: "#1a1a2e", roughness: 0.5 }),
+    () => new THREE.MeshStandardMaterial({ color: "#ffffff", roughness: 0.3 }),
     []
   );
 
   // ── Keyboard base ──────────────────────────────────────────────────────────
   const kbBaseGeo = useMemo(() => new THREE.BoxGeometry(1.4, 0.05, 0.5), []);
   const kbBaseMat = useMemo(
-    () => new THREE.MeshStandardMaterial({ color: "#222233", roughness: 0.6 }),
+    () => new THREE.MeshStandardMaterial({ color: "#334155", roughness: 0.5 }),
     []
   );
 

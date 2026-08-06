@@ -22,44 +22,35 @@ import { Suspense } from "react";
 import * as THREE from "three";
 import { getScrollProgress } from "../../hooks/useScrollProgress";
 import { HomeMobileFallback } from "./HomeMobileFallback";
+// ─── Re-exports from utility module ──────────────────────────────────────────
+export {
+  smoothstep,
+  proximityFade,
+  roomProgressCalc,
+  ROOM_DEPTH,
+  ROOM_W,
+  ROOM_H,
+  NUM_ROOMS,
+  TOTAL_DEPTH,
+  START_Z,
+  END_Z,
+  ROOM_CENTRES,
+  PANELS_PER_ROOM,
+} from "../../utils/devRoomUtils";
+export type { RoomProgress, CamRef } from "../../utils/devRoomUtils";
+
 import { DevRoom } from "./rooms/DevRoom";
 import { DeskTable } from "./rooms/DeskTable";
 import { CafeRoom } from "./rooms/CafeRoom";
-
-// ─── Re-exports from utility module ──────────────────────────────────────────
-export { smoothstep, proximityFade, roomProgressCalc } from "../../utils/devRoomUtils";
-export type { RoomProgress } from "../../utils/devRoomUtils";
-
-// ─── Layout constants ─────────────────────────────────────────────────────────
-
-/** Depth of each themed room in world units. */
-export const ROOM_DEPTH = 20;
-
-/** Full room width in world units. */
-export const ROOM_W = 10;
-
-/** Room height in world units. */
-export const ROOM_H = 7;
-
-/** Total number of themed rooms. */
-export const NUM_ROOMS = 3;
-
-/** Total world-space length of the walkthrough (ROOM_DEPTH × NUM_ROOMS). */
-export const TOTAL_DEPTH = ROOM_DEPTH * NUM_ROOMS; // 60
-
-/** Camera world-space Z at scrollProgress = 0. */
-export const START_Z = 10;
-
-/**
- * Camera world-space Z at scrollProgress = 1.
- * Computed so the camera ends centred in the last room.
- */
-export const END_Z = START_Z - TOTAL_DEPTH + ROOM_DEPTH / 2;
-
-/** World-space Z centre for each room, indexed 0..NUM_ROOMS-1. */
-export const ROOM_CENTRES: number[] = [0, 1, 2].map(
-  (i) => START_Z - ROOM_DEPTH * i - ROOM_DEPTH / 2
-);
+import {
+  ROOM_DEPTH,
+  ROOM_H,
+  NUM_ROOMS,
+  TOTAL_DEPTH,
+  START_Z,
+  ROOM_CENTRES,
+  type CamRef,
+} from "../../utils/devRoomUtils";
 
 // ─── Animation constants ──────────────────────────────────────────────────────
 
@@ -71,9 +62,6 @@ export const LERP_FOV = 0.05;
 
 /** Vertical bobbing amplitude applied to camera.position.y. */
 export const BOB_AMP = 0.035;
-
-/** Number of scroll panels per room (drives scroll-track height). */
-export const PANELS_PER_ROOM = 3;
 
 // ─── RoomDefinition interface ─────────────────────────────────────────────────
 
@@ -107,11 +95,11 @@ export const ROOMS: RoomDefinition[] = [
     roomZ: ROOM_CENTRES[0],
     cameraY: 1.6,
     cameraFov: 58,
-    fogColor: 0x0a0f1e,
-    fogNear: 10,
-    fogFar: 55,
-    ambientColor: 0x1a3a6e,
-    ambientIntensity: 1.8,
+    fogColor: 0xf1f5f9,
+    fogNear: 15,
+    fogFar: 70,
+    ambientColor: 0xffffff,
+    ambientIntensity: 2.4,
   },
   {
     id: "desk-table",
@@ -119,11 +107,11 @@ export const ROOMS: RoomDefinition[] = [
     roomZ: ROOM_CENTRES[1],
     cameraY: 1.1,
     cameraFov: 50,
-    fogColor: 0x0d1520,
-    fogNear: 8,
-    fogFar: 40,
-    ambientColor: 0x0f2040,
-    ambientIntensity: 1.5,
+    fogColor: 0xf8fafc,
+    fogNear: 12,
+    fogFar: 65,
+    ambientColor: 0xffffff,
+    ambientIntensity: 2.2,
   },
   {
     id: "cafe-room",
@@ -131,21 +119,15 @@ export const ROOMS: RoomDefinition[] = [
     roomZ: ROOM_CENTRES[2],
     cameraY: 1.6,
     cameraFov: 58,
-    fogColor: 0x3d2010,
-    fogNear: 10,
-    fogFar: 50,
-    ambientColor: 0x7a4a1e,
-    ambientIntensity: 1.4,
+    fogColor: 0xfaf5ef,
+    fogNear: 15,
+    fogFar: 70,
+    ambientColor: 0xfff8f0,
+    ambientIntensity: 2.2,
   },
 ];
 
 // ─── Camera context ───────────────────────────────────────────────────────────
-
-/**
- * A mutable ref holding the camera's current world-space position.
- * Room sub-components read this to compute proximity-based effects.
- */
-export type CamRef = React.RefObject<THREE.Vector3>;
 
 /** React context carrying the shared CamRef. Defaults to START_Z position. */
 export const CamCtx = createContext<CamRef>({

@@ -10,21 +10,50 @@
  */
 
 import * as THREE from "three";
+import type React from "react";
 
-// ─── Mirrored layout constants (keeps this module circular-dependency-free) ───
-// These MUST match the exported constants in DevRoomCorridor.tsx.
+// ─── Shared layout constants (circular-dependency-free anchor) ─────────────────
 
-/** Must match NUM_ROOMS in DevRoomCorridor.tsx. */
-const _NUM_ROOMS = 3;
+/** Depth of each themed room in world units. */
+export const ROOM_DEPTH = 20;
 
-/** Must match ROOM_W in DevRoomCorridor.tsx. */
-const _ROOM_W = 10;
+/** Full room width in world units. */
+export const ROOM_W = 10;
 
-/** Must match ROOM_H in DevRoomCorridor.tsx. */
-const _ROOM_H = 7;
+/** Room height in world units. */
+export const ROOM_H = 7;
 
-/** Must match ROOM_DEPTH in DevRoomCorridor.tsx. */
-const _ROOM_DEPTH = 20;
+/** Total number of themed rooms. */
+export const NUM_ROOMS = 3;
+
+/** Total world-space length of the walkthrough (ROOM_DEPTH × NUM_ROOMS). */
+export const TOTAL_DEPTH = ROOM_DEPTH * NUM_ROOMS; // 60
+
+/** Camera world-space Z at scrollProgress = 0. */
+export const START_Z = 10;
+
+/**
+ * Camera world-space Z at scrollProgress = 1.
+ * Computed so the camera ends centred in the last room.
+ */
+export const END_Z = START_Z - TOTAL_DEPTH + ROOM_DEPTH / 2;
+
+/** World-space Z centre for each room, indexed 0..NUM_ROOMS-1. */
+export const ROOM_CENTRES: number[] = [0, 1, 2].map(
+  (i) => START_Z - ROOM_DEPTH * i - ROOM_DEPTH / 2
+);
+
+/** Number of scroll panels per room (drives scroll-track height). */
+export const PANELS_PER_ROOM = 3;
+
+/** Mutable ref holding camera world position for room sub-components. */
+export type CamRef = React.RefObject<THREE.Vector3>;
+
+// Internal aliases matching previous private names
+const _NUM_ROOMS = NUM_ROOMS;
+const _ROOM_W = ROOM_W;
+const _ROOM_H = ROOM_H;
+const _ROOM_DEPTH = ROOM_DEPTH;
 
 // ─── RoomDefinitionLike interface ─────────────────────────────────────────────
 /**
@@ -132,49 +161,34 @@ export function roomProgressCalc(scrollProgress: number): RoomProgress {
 
 /**
  * Per-room material colours, keyed by room id.
- * These are intentionally dark/muted to serve as background surfaces that
- * receive lighting rather than emit it.
+ * Bright, realistic white and light tones for realistic room experience.
  */
 const ROOM_WALL_COLOURS: Record<RoomDefinitionLike["id"], number> = {
-  "dev-room": 0x0a0f1e,
-  "desk-table": 0x0d1520,
-  "cafe-room": 0x3d2010,
+  "dev-room": 0xf1f5f9,
+  "desk-table": 0xf8fafc,
+  "cafe-room": 0xfaf5ef,
+};
+
+const ROOM_FLOOR_COLOURS: Record<RoomDefinitionLike["id"], number> = {
+  "dev-room": 0xe2e8f0,
+  "desk-table": 0xe2e8f0,
+  "cafe-room": 0xe6d7c3, // warm light wood floor
 };
 
 /**
  * Builds a `THREE.Group` containing the five bounding surfaces of a room:
  * floor, ceiling, left wall, right wall, and back wall.
- *
- * The group is positioned so its local origin is at
- * `[0, ROOM_H / 2, room.roomZ]`, meaning all mesh positions inside the
- * group are expressed relative to that centre point.
- *
- * Preconditions:
- *   - `room.id` is one of the three valid room identifiers
- *   - `ROOM_W`, `ROOM_H`, `ROOM_DEPTH` are all positive
- *
- * Postconditions:
- *   - Returns a `THREE.Group` with exactly 5 `THREE.Mesh` children
- *   - All meshes use `MeshStandardMaterial`
- *   - No NaN values in any mesh position
- *   - Does not throw for any valid `RoomDefinitionLike`
- *
- * @param room - A room descriptor (id + roomZ).  Accepts any object satisfying
- *               `RoomDefinitionLike`; the full `RoomDefinition` from
- *               `DevRoomCorridor.tsx` is a structural subtype and works directly.
- * @returns A `THREE.Group` ready to be added to a scene.
  */
 export function buildRoomGeometry(room: RoomDefinitionLike): THREE.Group {
-  const colour = ROOM_WALL_COLOURS[room.id] ?? 0x111111;
+  const wallColour = ROOM_WALL_COLOURS[room.id] ?? 0xf8fafc;
+  const floorColour = ROOM_FLOOR_COLOURS[room.id] ?? 0xe2e8f0;
 
   const W = _ROOM_W;
   const H = _ROOM_H;
   const D = _ROOM_DEPTH;
 
-  // ── Shared material factory ───────────────────────────────────────────────
-  // Each surface gets its own material instance so they can be individually
-  // disposed and potentially given different roughness/emissive values later.
-  const makeMat = (roughness = 0.9, metalness = 0.05) =>
+  // Shared material factory for walls and ceiling
+  const makeMat = (colour: number, roughness = 0.6, metalness = 0.05) =>
     new THREE.MeshStandardMaterial({ color: colour, roughness, metalness, side: THREE.FrontSide });
 
   // ── Floor ─────────────────────────────────────────────────────────────────
@@ -182,7 +196,7 @@ export function buildRoomGeometry(room: RoomDefinitionLike): THREE.Group {
   // it lies flat (Y = 0 in group-local space, which is ROOM_H/2 below the
   // group origin).
   const floorGeo = new THREE.PlaneGeometry(W, D);
-  const floorMesh = new THREE.Mesh(floorGeo, makeMat(0.95));
+  const floorMesh = new THREE.Mesh(floorGeo, makeMat(floorColour, 0.7, 0.1));
   floorMesh.rotation.x = -Math.PI / 2;
   floorMesh.position.set(0, -H / 2, 0); // y=0 in world (group at ROOM_H/2)
   floorMesh.name = "floor";
@@ -190,7 +204,7 @@ export function buildRoomGeometry(room: RoomDefinitionLike): THREE.Group {
   // ── Ceiling ───────────────────────────────────────────────────────────────
   // Rotate +90° around X so the face points downward toward the camera.
   const ceilGeo = new THREE.PlaneGeometry(W, D);
-  const ceilMesh = new THREE.Mesh(ceilGeo, makeMat(0.8));
+  const ceilMesh = new THREE.Mesh(ceilGeo, makeMat(0xffffff, 0.8, 0.0));
   ceilMesh.rotation.x = Math.PI / 2;
   ceilMesh.position.set(0, H / 2, 0); // y=ROOM_H in world
   ceilMesh.name = "ceiling";
@@ -198,7 +212,7 @@ export function buildRoomGeometry(room: RoomDefinitionLike): THREE.Group {
   // ── Left wall (x = -ROOM_W/2) ────────────────────────────────────────────
   // PlaneGeometry faces +Z; rotate +90° around Y so it faces +X (inward).
   const leftGeo = new THREE.PlaneGeometry(D, H);
-  const leftMesh = new THREE.Mesh(leftGeo, makeMat());
+  const leftMesh = new THREE.Mesh(leftGeo, makeMat(wallColour, 0.6, 0.02));
   leftMesh.rotation.y = Math.PI / 2;
   leftMesh.position.set(-W / 2, 0, 0);
   leftMesh.name = "left-wall";

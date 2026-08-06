@@ -19,11 +19,12 @@ import { useGLTF } from "@react-three/drei";
 import * as THREE from "three";
 
 import {
-  CamRef,
+  buildRoomGeometry,
+  proximityFade,
   ROOM_DEPTH,
   START_Z,
-} from "../DevRoomCorridor";
-import { buildRoomGeometry, proximityFade } from "../../../utils/devRoomUtils";
+  type CamRef,
+} from "../../../utils/devRoomUtils";
 import { createMonitorTexture } from "../../hero/monitorTexture";
 import { cloneSceneGraph } from "../../hero/sceneMaterials";
 
@@ -83,32 +84,32 @@ function DevRoomLighting({ roomZ, camRef }: DevRoomLightingProps) {
 
   return (
     <>
-      {/* Ambient fill — cool blue as per req 4.3 */}
-      <ambientLight color="#1a3a6e" intensity={1.8} />
+      {/* Ambient fill — bright daylight white */}
+      <ambientLight color="#ffffff" intensity={2.2} />
 
-      {/* Cyan point lights — positioned relative to roomZ */}
+      {/* Daylight point lights — positioned relative to roomZ */}
       <pointLight
         ref={pt1Ref}
-        position={[-2, 3, roomZ]}
-        color="#00f0ff"
+        position={[-2, 4, roomZ]}
+        color="#ffffff"
         intensity={MAX_POINT_INTENSITY}
-        distance={18}
+        distance={22}
         decay={2}
       />
       <pointLight
         ref={pt2Ref}
-        position={[2, 2, roomZ - 5]}
-        color="#00c8ff"
+        position={[2, 3, roomZ - 5]}
+        color="#f0f9ff"
         intensity={MAX_POINT_INTENSITY * 0.85}
-        distance={15}
+        distance={20}
         decay={2}
       />
       <pointLight
         ref={pt3Ref}
-        position={[0, 2.5, roomZ - 8]}
-        color="#0080ff"
-        intensity={MAX_POINT_INTENSITY * 0.5}
-        distance={12}
+        position={[0, 3, roomZ - 8]}
+        color="#0284c7"
+        intensity={MAX_POINT_INTENSITY * 0.4}
+        distance={18}
         decay={2}
       />
     </>

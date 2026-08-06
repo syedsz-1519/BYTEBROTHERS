@@ -49,20 +49,20 @@
   - Apply visibility culling and dispose all resources on unmount
   - _Requirements: 4.6–4.7, 8, 12, 14.2, 15_
 
-- [ ] 7. Wire rooms into `SceneInner` and update `HomeScrollPanels`
+- [x] 7. Wire rooms into `SceneInner` and update `HomeScrollPanels`
   - Import and render `DevRoom`, `DeskTable`, and `CafeRoom` inside `SceneInner` with `roomZ` from `ROOM_CENTRES[0..2]`, shared `camRef`, and `reducedMotion` passed to `CafeRoom`
   - Add per-room visibility culling at the `SceneInner` level: set each room group `visible = |camZ - roomCentreZ| <= ROOM_DEPTH`
   - In `HomeScrollPanels.tsx`, replace `NUM_BAYS` import with `NUM_ROOMS` and `ROOMS` from `DevRoomCorridor`; update `scroll-track` height to `${NUM_ROOMS * PANELS_PER_ROOM * 120}vh` (1080vh); update HUD to show room label from `ROOMS[activeRoomIndex].label`; replace 7 bay panels with 9 room-aware panels (3 per room: intro, detail, CTA per room)
   - _Requirements: 4.1, 11, 12.2_
 
-- [~] 8. Wire `DevRoomCorridor` into `App.tsx`
+- [x] 8. Wire `DevRoomCorridor` into `App.tsx`
   - Add `import { DevRoomCorridor } from './components/home/DevRoomCorridor'` to `App.tsx`
   - Replace the `<HomeCorridor ...>` JSX block with `<DevRoomCorridor visible={activeTab === 'home'} reducedMotion={reducedMotion} />` inside the existing `use3DCorridor` gate
   - Remove the `HomeCorridor` import from `App.tsx` after confirming no other references remain
   - Run `npm run build` (or `bun run build`) and confirm zero TypeScript errors
   - _Requirements: 1.2, 14.3_
 
-- [~] 9. Property-based tests for correctness properties
+- [x] 9. Property-based tests for correctness properties
   - Install `fast-check` as a dev dependency if not already present
   - Write PBT for Property 1 (Monotonic Z Travel): for all `s1 < s2 ∈ [0,1]`, `START_Z - s1 * TOTAL_DEPTH > START_Z - s2 * TOTAL_DEPTH`
   - Write PBT for Property 2 (`roomProgressCalc` output invariants): for all `s ∈ [0,1]`, `roomIndex ∈ {0,1,2}`, `blend ∈ [0,1]`, `localT ∈ [0,1]`

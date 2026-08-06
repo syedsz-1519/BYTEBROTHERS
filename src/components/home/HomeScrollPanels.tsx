@@ -115,10 +115,15 @@ const PANELS: PanelDef[] = [
           color:INK, letterSpacing:"-0.03em", lineHeight:1.06, margin:"0 0 28px" }}>
           OUR ENGINEERING<br />TENETS
         </h2>
-        <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"1px",
-          border:`1px solid ${TRIM}`, background:TRIM }}>
+        <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:12 }}>
           {TECHNICAL_TENETS.map(t => (
-            <div key={t.number} style={{ background:"rgba(248,250,252,0.92)", padding:"22px 24px" }}>
+            <div key={t.number} style={{
+              background:"rgba(255,255,255,0.95)",
+              border:`1px solid ${TRIM}`,
+              borderRadius:12,
+              padding:"22px 24px",
+              boxShadow:"0 4px 20px rgba(0,0,0,0.04)"
+            }}>
               <div style={{ fontFamily:mono, fontSize:18, fontWeight:800, color:BLUE, marginBottom:8 }}>{t.number}</div>
               <div style={{ fontFamily:sans, fontWeight:700, fontSize:13, color:INK, marginBottom:6 }}>{t.title}</div>
               <p style={{ fontFamily:sans, fontSize:12, lineHeight:1.65, color:MID, margin:0 }}>{t.description}</p>
@@ -239,10 +244,15 @@ const PANELS: PanelDef[] = [
           color:INK, letterSpacing:"-0.03em", lineHeight:1.06, margin:"0 0 28px" }}>
           MEET THE<br />FOUNDERS
         </h2>
-        <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"1px",
-          border:`1px solid ${TRIM}`, background:TRIM }}>
+        <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:12 }}>
           {FOUNDERS.map(f => (
-            <div key={f.id} style={{ background:"rgba(248,250,252,0.92)", padding:"24px" }}>
+            <div key={f.id} style={{
+              background:"rgba(255,255,255,0.95)",
+              border:`1px solid ${TRIM}`,
+              borderRadius:12,
+              padding:"24px",
+              boxShadow:"0 4px 20px rgba(0,0,0,0.04)"
+            }}>
               <div style={{ display:"flex", alignItems:"center", gap:14, marginBottom:14 }}>
                 <img src={f.avatar} alt={f.name} style={{ width:52, height:52, borderRadius:"50%",
                   objectFit:"cover", border:`2px solid ${BLUE}` }} />

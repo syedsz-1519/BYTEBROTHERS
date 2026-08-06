@@ -7,7 +7,7 @@ import { Background3dCanvas } from './components/Background3dCanvas';
 import { ScrollProgressBar } from './components/ScrollProgressBar';
 import { ProjectModal } from './components/ProjectModal';
 import { AiEstimatorModal } from './components/AiEstimatorModal';
-import { HomeCorridor } from './components/home/HomeCorridor';
+import { DevRoomCorridor } from './components/home/DevRoomCorridor';
 import { HomePage } from './pages/HomePage';
 import { AboutPage } from './pages/AboutPage';
 import { PortfolioPage } from './pages/PortfolioPage';
@@ -29,17 +29,13 @@ function AppContent() {
 
   const isOnline = useOnlineStatus();
 
-  // Capability check — only run once
+  // Capability check — enables 3D DevRoomCorridor on desktop viewports with WebGL
   const use3DCorridor = useMemo(() => {
     if (typeof window === "undefined") return false;
     if (window.innerWidth < 768) return false;
-    if ((navigator.hardwareConcurrency ?? 4) <= 2) return false;
-    const hasCoarse = window.matchMedia("(pointer: coarse)").matches;
-    const hasFine   = window.matchMedia("(pointer: fine)").matches;
-    if (hasCoarse && !hasFine) return false;
     try {
       const c = document.createElement("canvas");
-      const gl = c.getContext("webgl") as WebGLRenderingContext | null;
+      const gl = c.getContext("webgl") || c.getContext("experimental-webgl");
       if (!gl) return false;
     } catch { return false; }
     return true;
@@ -74,9 +70,9 @@ function AppContent() {
       {/* 3D Wireframe Background Canvas — hidden on home tab */}
       {activeTab !== 'home' && <Background3dCanvas />}
 
-      {/* Corridor — always mounted, visible only on home tab */}
+      {/* DevRoomCorridor — active walkthrough mounted on home tab */}
       {use3DCorridor && (
-        <HomeCorridor
+        <DevRoomCorridor
           visible={activeTab === 'home'}
           reducedMotion={reducedMotion}
         />
