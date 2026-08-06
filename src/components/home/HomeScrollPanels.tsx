@@ -156,7 +156,67 @@ function ProjectCarousel3D() {
   );
 }
 
-// ─── 4 Scroll Panels Definition ───────────────────────────────────────────────
+// ─── Glitch Typing Headline Component ─────────────────────────────────────────
+
+function GlitchTypingHeadline() {
+  const LINES = ["WE BUILD THE", "INFRASTRUCTURE", "BEHIND AI-NATIVE", "PRODUCTS"];
+  const TOTAL = LINES.reduce((acc, l) => acc + l.length, 0);
+  const [count, setCount] = useState(0);
+
+  React.useEffect(() => {
+    if (count >= TOTAL) return;
+    const t = setTimeout(() => setCount((c) => c + 1), 50);
+    return () => clearTimeout(t);
+  }, [count, TOTAL]);
+
+  // Build each line's visible text from rolling character count
+  let remaining = count;
+  const visible = LINES.map((line) => {
+    if (remaining <= 0) return "";
+    const show = Math.min(remaining, line.length);
+    remaining -= show;
+    return line.slice(0, show);
+  });
+
+  const done = (lineIdx: number) => visible[lineIdx].length === LINES[lineIdx].length;
+
+  return (
+    <h1
+      style={{
+        fontFamily: sans,
+        fontWeight: 900,
+        color: INK,
+        fontSize: "clamp(2.2rem, 4.5vw, 4.2rem)",
+        lineHeight: 1.08,
+        letterSpacing: "-0.03em",
+        margin: "0 0 20px",
+      }}
+    >
+      {visible[0]}
+      {done(0) && (
+        <>
+          <br />
+          <span style={{ color: AMBER }}>{visible[1]}</span>
+        </>
+      )}
+      {done(1) && (
+        <>
+          <br />
+          BEHIND <span style={{ color: BLUE }}>{visible[2].replace("BEHIND ", "")}</span>
+        </>
+      )}
+      {done(2) && (
+        <>
+          <br />
+          {visible[3]}
+        </>
+      )}
+      {count < TOTAL && (
+        <span style={{ color: AMBER, animation: "pulse 1s ease-in-out infinite" }}>▎</span>
+      )}
+    </h1>
+  );
+}
 
 type PanelDef = {
   id: string;
@@ -182,21 +242,7 @@ const PANELS: PanelDef[] = [
         }}
       >
         <Eyebrow>›_ BYTEBROTHERS TECH STUDIO</Eyebrow>
-        <h1
-          style={{
-            fontFamily: sans,
-            fontWeight: 900,
-            color: INK,
-            fontSize: "clamp(2.4rem, 4.8vw, 4.4rem)",
-            lineHeight: 1.05,
-            letterSpacing: "-0.03em",
-            margin: "0 0 20px",
-          }}
-        >
-          WE BUILD THE<br />
-          <span style={{ color: AMBER }}>INFRASTRUCTURE</span><br />
-          BEHIND <span style={{ color: BLUE }}>AI-NATIVE</span> PRODUCTS
-        </h1>
+        <GlitchTypingHeadline />
         <Rule />
         <p style={{ fontFamily: sans, fontSize: 15, lineHeight: 1.7, color: MID, maxWidth: 480, margin: "0 0 28px" }}>
           Custom WebGL engines, distributed full-stack systems, and AI platforms engineered for speed —

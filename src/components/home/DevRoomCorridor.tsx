@@ -39,9 +39,9 @@ export {
 } from "../../utils/devRoomUtils";
 export type { RoomProgress, CamRef } from "../../utils/devRoomUtils";
 
-import { DevRoom } from "./rooms/DevRoom";
-import { DeskTable } from "./rooms/DeskTable";
-import { CafeRoom } from "./rooms/CafeRoom";
+import SingleAgencyRoom from "./SingleAgencyRoom";
+import AmbientParticles from "./AmbientParticles";
+import { EntranceDoor } from "./EntranceDoor";
 import {
   ROOM_DEPTH,
   ROOM_H,
@@ -165,9 +165,7 @@ interface SceneInnerProps {
  * Inner R3F component that owns the per-frame camera animation loop and
  * fog / ambient-light cross-fade controller.
  */
-import SingleAgencyRoom from "./SingleAgencyRoom";
-import AmbientParticles from "./AmbientParticles";
-import EntranceDoor from "./EntranceDoor";
+
 
 function SceneInner({ reducedMotion, visible }: SceneInnerProps) {
   const { camera, scene } = useThree();

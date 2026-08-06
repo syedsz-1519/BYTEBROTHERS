@@ -18,6 +18,7 @@ import { useFrame } from "@react-three/fiber";
 import { useGLTF } from "@react-three/drei";
 import * as THREE from "three";
 import { cloneSceneGraph } from "../hero/sceneMaterials";
+import { FOUNDERS } from "../../data/studioData";
 
 const GLB_PATH = "/workstation/programmer_desk_setup__stylized_3d_room.glb";
 
@@ -198,6 +199,44 @@ function createTvShowcaseTexture(): { texture: THREE.CanvasTexture; update: (t: 
   return { texture: tex, update };
 }
 
+function createFounderPhotoTexture(name: string, role: string, avatarUrl: string): THREE.CanvasTexture {
+  const canvas = document.createElement("canvas");
+  canvas.width = 512;
+  canvas.height = 640;
+  const ctx = canvas.getContext("2d");
+  const tex = new THREE.CanvasTexture(canvas);
+
+  if (ctx) {
+    ctx.fillStyle = "#0f172a";
+    ctx.fillRect(0, 0, 512, 640);
+
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+    img.onload = () => {
+      ctx.drawImage(img, 36, 36, 440, 480);
+      ctx.fillStyle = "rgba(245, 158, 11, 0.2)";
+      ctx.fillRect(36, 530, 440, 74);
+      ctx.strokeStyle = "#d97706";
+      ctx.lineWidth = 2;
+      ctx.strokeRect(36, 530, 440, 74);
+
+      ctx.fillStyle = "#ffffff";
+      ctx.font = "bold 24px 'Space Grotesk', sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText(name, 256, 562);
+
+      ctx.fillStyle = "#fbbf24";
+      ctx.font = "14px 'JetBrains Mono', monospace";
+      ctx.fillText(role, 256, 588);
+
+      tex.needsUpdate = true;
+    };
+    img.src = avatarUrl;
+  }
+
+  return tex;
+}
+
 // ─── Waving Developer Figure Component ──────────────────────────────────────
 
 function WavingDeveloper({ position }: { position: [number, number, number] }) {
@@ -268,6 +307,9 @@ export function SingleAgencyRoom() {
   const skylineHandle = useMemo(() => createCitySkylineTexture(), []);
   const tvHandle = useMemo(() => createTvShowcaseTexture(), []);
 
+  const syedPhotoTex = useMemo(() => createFounderPhotoTexture("Syed", "FOUNDER / CRAFTSMAN", FOUNDERS[0].avatar), []);
+  const hamidPhotoTex = useMemo(() => createFounderPhotoTexture("Hamid Kamal", "FOUNDER / STRATEGIST", FOUNDERS[1].avatar), []);
+
   useFrame(({ clock }) => {
     skylineHandle.update(clock.elapsedTime);
     tvHandle.update(clock.elapsedTime);
@@ -278,8 +320,10 @@ export function SingleAgencyRoom() {
       whiteboardTex.dispose();
       skylineHandle.texture.dispose();
       tvHandle.texture.dispose();
+      syedPhotoTex.dispose();
+      hamidPhotoTex.dispose();
     };
-  }, [whiteboardTex, skylineHandle, tvHandle]);
+  }, [whiteboardTex, skylineHandle, tvHandle, syedPhotoTex, hamidPhotoTex]);
 
   return (
     <group>
@@ -354,6 +398,19 @@ export function SingleAgencyRoom() {
         <mesh><boxGeometry args={[5.8, 3.4, 0.12]} /><meshStandardMaterial color="#0f172a" roughness={0.2} metalness={0.8} /></mesh>
         <mesh position={[0, 0, 0.07]}><planeGeometry args={[5.6, 3.2]} /><meshStandardMaterial map={tvHandle.texture} emissiveMap={tvHandle.texture} emissive="#ffffff" emissiveIntensity={0.6} toneMapped={false} /></mesh>
         <pointLight color="#f59e0b" intensity={2.2} distance={10} position={[0, 0, 1.2]} />
+      </group>
+
+      {/* ── Framed 3D Founder Portraits on Back Wall ── */}
+      <group position={[-4.2, 3.2, BACK_Z + 0.25]}>
+        <mesh><boxGeometry args={[1.8, 2.3, 0.08]} /><meshStandardMaterial color="#78350f" roughness={0.4} /></mesh>
+        <mesh position={[0, 0, 0.05]}><planeGeometry args={[1.6, 2.1]} /><meshStandardMaterial map={syedPhotoTex} roughness={0.3} /></mesh>
+        <pointLight color="#f59e0b" intensity={1.5} distance={6} position={[0, 0, 0.5]} />
+      </group>
+
+      <group position={[4.2, 3.2, BACK_Z + 0.25]}>
+        <mesh><boxGeometry args={[1.8, 2.3, 0.08]} /><meshStandardMaterial color="#78350f" roughness={0.4} /></mesh>
+        <mesh position={[0, 0, 0.05]}><planeGeometry args={[1.6, 2.1]} /><meshStandardMaterial map={hamidPhotoTex} roughness={0.3} /></mesh>
+        <pointLight color="#f59e0b" intensity={1.5} distance={6} position={[0, 0, 0.5]} />
       </group>
 
       {/* ── Left Wall: Whiteboard & Left Oak Workstation with Waving Developer ─ */}

@@ -49,7 +49,7 @@ const MenuIcon: React.FC<{ open: boolean }> = ({ open }) => (
       stroke="currentColor"
       strokeWidth="1.5"
       strokeLinecap="round"
-      animate={open ? { x1: 4, y1: 4, x2: 16, y2: 16 } : { x1: 3, y1: 7, x2: 17, y2: 7 }}
+      animate={open ? { x1: "4", y1: "4", x2: "16", y2: "16" } : { x1: "3", y1: "7", x2: "17", y2: "7" }}
       transition={{ duration: 0.25, ease: "easeInOut" }}
     />
     {/* bottom line */}
@@ -58,7 +58,7 @@ const MenuIcon: React.FC<{ open: boolean }> = ({ open }) => (
       stroke="currentColor"
       strokeWidth="1.5"
       strokeLinecap="round"
-      animate={open ? { x1: 4, y1: 16, x2: 16, y2: 4 } : { x1: 3, y1: 13, x2: 17, y2: 13 }}
+      animate={open ? { x1: "4", y1: "16", x2: "16", y2: "4" } : { x1: "3", y1: "13", x2: "17", y2: "13" }}
       transition={{ duration: 0.25, ease: "easeInOut" }}
     />
   </svg>
