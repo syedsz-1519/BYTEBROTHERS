@@ -170,7 +170,7 @@ import AmbientParticles from "./AmbientParticles";
 import EntranceDoor from "./EntranceDoor";
 
 function SceneInner({ reducedMotion, visible }: SceneInnerProps) {
-  const { camera } = useThree();
+  const { camera, scene } = useThree();
   const camRef = useRef<THREE.Vector3>(new THREE.Vector3(0, 1.6, START_Z));
 
   useEffect(() => {
@@ -182,6 +182,13 @@ function SceneInner({ reducedMotion, visible }: SceneInnerProps) {
     }
     camera.updateProjectionMatrix();
   }, [camera]);
+
+  useEffect(() => {
+    scene.fog = new THREE.Fog(0xf7f3ed, 15, 75);
+    return () => {
+      scene.fog = null;
+    };
+  }, [scene]);
 
   useFrame(({ clock }) => {
     if (!visible) return;

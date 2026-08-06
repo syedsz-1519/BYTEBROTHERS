@@ -7,12 +7,12 @@ import { FOUNDERS, TECHNICAL_TENETS, PROJECTS } from "../../data/studioData";
 const mono = "'JetBrains Mono', monospace";
 const sans = "'Space Grotesk', sans-serif";
 
-const INK   = "#f8fafc";
-const MID   = "#cbd5e1";
-const MUTED = "#64748b";
-const AMBER = "#f59e0b";
-const BLUE  = "#3b82f6";
-const CYAN  = "#06b6d4";
+const INK   = "#1c1917";
+const MID   = "#44403c";
+const MUTED = "#78716c";
+const AMBER = "#d97706";
+const BLUE  = "#2563eb";
+const CYAN  = "#0284c7";
 
 const TagPill: React.FC<{ label: string; active?: boolean }> = ({ label, active }) => (
   <span
@@ -24,10 +24,10 @@ const TagPill: React.FC<{ label: string; active?: boolean }> = ({ label, active 
       fontSize: 10,
       textTransform: "uppercase",
       letterSpacing: "0.08em",
-      border: `1px solid ${active ? AMBER : "rgba(245, 158, 11, 0.3)"}`,
+      border: `1px solid ${active ? AMBER : "rgba(217, 119, 6, 0.3)"}`,
       color: active ? "#ffffff" : AMBER,
-      background: active ? AMBER : "rgba(245, 158, 11, 0.08)",
-      boxShadow: active ? "0 0 12px rgba(245, 158, 11, 0.4)" : "none",
+      background: active ? AMBER : "rgba(217, 119, 6, 0.08)",
+      boxShadow: active ? "0 0 12px rgba(217, 119, 6, 0.2)" : "none",
       transition: "all 0.2s ease",
     }}
   >
@@ -55,7 +55,7 @@ const Eyebrow: React.FC<{ children: React.ReactNode }> = ({ children }) => (
 );
 
 const Rule: React.FC = () => (
-  <div style={{ width: "100%", height: 1, background: "rgba(255, 255, 255, 0.12)", margin: "20px 0" }} />
+  <div style={{ width: "100%", height: 1, background: "rgba(120, 113, 108, 0.2)", margin: "20px 0" }} />
 );
 
 // ─── Interactive 3D Project Carousel Component inside Zone 2 ─────────────────
@@ -75,9 +75,9 @@ function ProjectCarousel3D() {
             style={{
               padding: "8px 16px",
               borderRadius: 8,
-              border: `1px solid ${activeProjIndex === idx ? AMBER : "rgba(255,255,255,0.15)"}`,
-              background: activeProjIndex === idx ? "rgba(245, 158, 11, 0.18)" : "rgba(15, 23, 42, 0.6)",
-              color: activeProjIndex === idx ? "#ffffff" : MID,
+              border: `1px solid ${activeProjIndex === idx ? AMBER : "rgba(120, 113, 108, 0.25)"}`,
+              background: activeProjIndex === idx ? "rgba(217, 119, 6, 0.15)" : "rgba(255, 253, 248, 0.8)",
+              color: activeProjIndex === idx ? AMBER : MID,
               fontFamily: sans,
               fontSize: 12,
               fontWeight: 700,
@@ -94,12 +94,12 @@ function ProjectCarousel3D() {
       {/* Main active project showcase card */}
       <div
         style={{
-          background: "rgba(15, 23, 42, 0.85)",
+          background: "rgba(255, 253, 248, 0.92)",
           backdropFilter: "blur(16px)",
-          border: `1px solid rgba(245, 158, 11, 0.3)`,
+          border: `1px solid rgba(217, 119, 6, 0.3)`,
           borderRadius: 16,
           padding: "24px",
-          boxShadow: "0 8px 32px rgba(0, 0, 0, 0.5), 0 0 20px rgba(245, 158, 11, 0.15)",
+          boxShadow: "0 10px 36px rgba(180, 83, 9, 0.12)",
           display: "grid",
           gridTemplateColumns: "1fr 1fr",
           gap: 24,
@@ -123,8 +123,8 @@ function ProjectCarousel3D() {
                 display: "inline-block",
                 padding: "6px 12px",
                 borderRadius: 6,
-                background: "rgba(6, 182, 212, 0.12)",
-                border: "1px solid rgba(6, 182, 212, 0.4)",
+                background: "rgba(2, 132, 199, 0.1)",
+                border: "1px solid rgba(2, 132, 199, 0.3)",
                 color: CYAN,
                 fontFamily: mono,
                 fontSize: 11,
@@ -144,18 +144,11 @@ function ProjectCarousel3D() {
         </div>
 
         {/* Project Thumbnail Image */}
-        <div style={{ position: "relative", borderRadius: 12, overflow: "hidden", border: "1px solid rgba(255,255,255,0.15)" }}>
+        <div style={{ position: "relative", borderRadius: 12, overflow: "hidden", border: "1px solid rgba(120, 113, 108, 0.2)" }}>
           <img
             src={project.image}
             alt={project.title}
             style={{ width: "100%", height: 210, objectFit: "cover", display: "block" }}
-          />
-          <div
-            style={{
-              position: "absolute",
-              inset: 0,
-              background: "linear-gradient(180deg, transparent 50%, rgba(15,23,42,0.9) 100%)",
-            }}
           />
         </div>
       </div>
@@ -177,26 +170,35 @@ const PANELS: PanelDef[] = [
     id: "hero",
     label: "Main Entrance",
     render: ({ onContact, onWork }) => (
-      <div>
+      <div
+        style={{
+          background: "rgba(255, 253, 248, 0.92)",
+          backdropFilter: "blur(14px)",
+          border: "1px solid rgba(217, 119, 6, 0.25)",
+          borderRadius: 20,
+          padding: "32px 40px",
+          boxShadow: "0 10px 36px rgba(180, 83, 9, 0.12)",
+          maxWidth: 680,
+        }}
+      >
         <Eyebrow>›_ BYTEBROTHERS TECH STUDIO</Eyebrow>
         <h1
           style={{
             fontFamily: sans,
             fontWeight: 900,
             color: INK,
-            fontSize: "clamp(2.8rem, 5.5vw, 5.2rem)",
-            lineHeight: 1.02,
+            fontSize: "clamp(2.4rem, 4.8vw, 4.4rem)",
+            lineHeight: 1.05,
             letterSpacing: "-0.03em",
-            margin: "0 0 24px",
-            textShadow: "0 4px 24px rgba(0,0,0,0.8)",
+            margin: "0 0 20px",
           }}
         >
           WE BUILD THE<br />
-          <span style={{ color: AMBER, textShadow: "0 0 20px rgba(245,158,11,0.5)" }}>INFRASTRUCTURE</span><br />
+          <span style={{ color: AMBER }}>INFRASTRUCTURE</span><br />
           BEHIND <span style={{ color: BLUE }}>AI-NATIVE</span> PRODUCTS
         </h1>
         <Rule />
-        <p style={{ fontFamily: sans, fontSize: 16, lineHeight: 1.7, color: MID, maxWidth: 440, margin: "0 0 32px" }}>
+        <p style={{ fontFamily: sans, fontSize: 15, lineHeight: 1.7, color: MID, maxWidth: 480, margin: "0 0 28px" }}>
           Custom WebGL engines, distributed full-stack systems, and AI platforms engineered for speed —
           by two founders, zero account managers.
         </p>
@@ -211,9 +213,9 @@ const PANELS: PanelDef[] = [
               fontFamily: sans,
               fontSize: 14,
               fontWeight: 800,
-              color: "#000000",
-              background: "linear-gradient(135deg, #f59e0b, #fbbf24)",
-              boxShadow: "0 4px 24px rgba(245,158,11,0.45)",
+              color: "#ffffff",
+              background: "linear-gradient(135deg, #d97706, #f59e0b)",
+              boxShadow: "0 4px 24px rgba(217, 119, 6, 0.35)",
               transition: "transform 0.15s, boxShadow 0.15s",
             }}
           >
@@ -229,9 +231,8 @@ const PANELS: PanelDef[] = [
               fontSize: 14,
               fontWeight: 700,
               color: INK,
-              background: "rgba(15, 23, 42, 0.6)",
-              backdropFilter: "blur(8px)",
-              border: "1.5px solid rgba(255,255,255,0.2)",
+              background: "transparent",
+              border: "1.5px solid rgba(120, 113, 108, 0.3)",
               transition: "border-color 0.15s",
             }}
           >
@@ -277,12 +278,12 @@ const PANELS: PanelDef[] = [
             <div
               key={f.id}
               style={{
-                background: "rgba(15, 23, 42, 0.85)",
+                background: "rgba(255, 253, 248, 0.92)",
                 backdropFilter: "blur(14px)",
-                border: "1px solid rgba(245, 158, 11, 0.25)",
+                border: "1px solid rgba(217, 119, 6, 0.25)",
                 borderRadius: 14,
                 padding: "20px",
-                boxShadow: "0 4px 20px rgba(0,0,0,0.4)",
+                boxShadow: "0 10px 36px rgba(180, 83, 9, 0.12)",
               }}
             >
               <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 12 }}>
@@ -314,8 +315,8 @@ const PANELS: PanelDef[] = [
             <div
               key={t.number}
               style={{
-                background: "rgba(15, 23, 42, 0.6)",
-                border: "1px solid rgba(255,255,255,0.1)",
+                background: "rgba(255, 253, 248, 0.85)",
+                border: "1px solid rgba(120, 113, 108, 0.2)",
                 borderRadius: 10,
                 padding: "12px",
               }}
@@ -335,26 +336,34 @@ const PANELS: PanelDef[] = [
     id: "cta",
     label: "Client Testimonials & Contact",
     render: ({ onContact }) => (
-      <div>
+      <div
+        style={{
+          background: "rgba(255, 253, 248, 0.92)",
+          backdropFilter: "blur(14px)",
+          border: "1px solid rgba(217, 119, 6, 0.25)",
+          borderRadius: 20,
+          padding: "32px 40px",
+          boxShadow: "0 10px 36px rgba(180, 83, 9, 0.12)",
+          maxWidth: 640,
+        }}
+      >
         <Eyebrow>04 — READY TO BUILD?</Eyebrow>
-        <h2 style={{ fontFamily: sans, fontWeight: 900, fontSize: "clamp(2.4rem, 4.5vw, 4rem)", color: INK, margin: "0 0 16px" }}>
+        <h2 style={{ fontFamily: sans, fontWeight: 900, fontSize: "clamp(2.2rem, 4vw, 3.6rem)", color: INK, margin: "0 0 16px" }}>
           LET'S BUILD <span style={{ color: AMBER }}>THE NEXT</span> SYSTEM.
         </h2>
         <Rule />
-        <p style={{ fontFamily: sans, fontSize: 15, lineHeight: 1.7, color: MID, maxWidth: "42ch", margin: "0 0 28px" }}>
+        <p style={{ fontFamily: sans, fontSize: 15, lineHeight: 1.7, color: MID, maxWidth: "42ch", margin: "0 0 24px" }}>
           Direct access to the founders — no account managers, no junior handoffs. High-performance software delivered on schedule.
         </p>
 
         {/* Availability Specs Table */}
         <div
           style={{
-            background: "rgba(15, 23, 42, 0.85)",
-            backdropFilter: "blur(14px)",
-            border: "1px solid rgba(245, 158, 11, 0.25)",
-            borderRadius: 14,
-            padding: "20px",
-            marginBottom: 28,
-            maxWidth: 420,
+            background: "rgba(247, 243, 237, 0.8)",
+            border: "1px solid rgba(217, 119, 6, 0.2)",
+            borderRadius: 12,
+            padding: "16px 20px",
+            marginBottom: 24,
           }}
         >
           {[
@@ -370,7 +379,7 @@ const PANELS: PanelDef[] = [
                 justifyContent: "space-between",
                 alignItems: "center",
                 padding: "8px 0",
-                borderBottom: "1px solid rgba(255,255,255,0.08)",
+                borderBottom: "1px solid rgba(120, 113, 108, 0.12)",
               }}
             >
               <span style={{ fontFamily: mono, fontSize: 10, color: MUTED, letterSpacing: "0.1em" }}>{label}</span>
@@ -392,9 +401,9 @@ const PANELS: PanelDef[] = [
             fontFamily: sans,
             fontSize: 16,
             fontWeight: 800,
-            color: "#000000",
-            background: "linear-gradient(135deg, #f59e0b, #fbbf24)",
-            boxShadow: "0 6px 32px rgba(245,158,11,0.5)",
+            color: "#ffffff",
+            background: "linear-gradient(135deg, #d97706, #f59e0b)",
+            boxShadow: "0 6px 32px rgba(217, 119, 6, 0.4)",
             transition: "transform 0.15s",
           }}
         >
@@ -412,7 +421,7 @@ interface HomeScrollPanelsProps {
 
 export const HomeScrollPanels: React.FC<HomeScrollPanelsProps> = ({ onContact, onWork }) => {
   const scrollProgress = useScrollProgress();
-  const TOTAL_PANELS = PANELS.length; // 4
+  const TOTAL_PANELS = PANELS.length;
   const band = 1 / TOTAL_PANELS;
 
   const opacities = PANELS.map((_, i) => {
@@ -430,7 +439,6 @@ export const HomeScrollPanels: React.FC<HomeScrollPanelsProps> = ({ onContact, o
 
   return (
     <div style={{ position: "relative", zIndex: 2, pointerEvents: "none" }}>
-      {/* Scroll track length: 550vh for smooth navigation inside room */}
       <div id="scroll-track" style={{ height: "550vh" }} />
 
       {PANELS.map((panel, i) => (
@@ -476,7 +484,7 @@ export const HomeScrollPanels: React.FC<HomeScrollPanelsProps> = ({ onContact, o
       >
         <span style={{ color: AMBER, fontWeight: 800 }}>ZONE 0{activePanelIndex + 1}</span>
         <span>/ 0{TOTAL_PANELS}</span>
-        <div style={{ width: 100, height: 2, background: "rgba(255,255,255,0.15)", position: "relative", overflow: "hidden" }}>
+        <div style={{ width: 100, height: 2, background: "rgba(120, 113, 108, 0.2)", position: "relative", overflow: "hidden" }}>
           <div
             style={{
               position: "absolute",
