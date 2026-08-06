@@ -25,7 +25,7 @@ function AppContent() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [aiEstimatorOpen, setAiEstimatorOpen] = useState<boolean>(false);
   const [attachedSpec, setAttachedSpec] = useState<string | undefined>(undefined);
-  const [showPreloader, setShowPreloader] = useState<boolean>(true);
+  const [showPreloader, setShowPreloader] = useState<boolean>(false);
 
   const isOnline = useOnlineStatus();
 

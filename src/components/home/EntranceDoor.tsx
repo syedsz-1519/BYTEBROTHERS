@@ -162,7 +162,7 @@ function DoorPanel({
         width: "50%",
         height: "100%",
         transformOrigin: isLeft ? "left center" : "right center",
-        animation: `${isLeft ? "doorSwingLeft" : "doorSwingRight"} 0.9s cubic-bezier(0.22,1,0.36,1) ${animDelay}s forwards`,
+        animation: `${isLeft ? "doorSwingLeft" : "doorSwingRight"} 1.8s cubic-bezier(0.16, 1, 0.3, 1) ${animDelay}s forwards`,
         transformStyle: "preserve-3d",
         backgroundImage: `
           linear-gradient(
@@ -283,8 +283,8 @@ export const EntranceDoor: React.FC<EntranceDoorProps> = ({ onDone }) => {
   useEffect(() => {
     injectKeyframes();
 
-    // Fire onDone after full animation duration (1.6 s to allow fade-out)
-    const timer = setTimeout(onDone, 1600);
+    // Fire onDone after full cinematic door animation completes (2.8s)
+    const timer = setTimeout(onDone, 2800);
     return () => clearTimeout(timer);
   }, [onDone]);
 
@@ -294,7 +294,7 @@ export const EntranceDoor: React.FC<EntranceDoorProps> = ({ onDone }) => {
       key={char}
       char={char}
       x={32 + i * 4.5}
-      delay={0.6 + i * 0.07}
+      delay={0.8 + i * 0.1}
     />
   ));
 
@@ -309,10 +309,8 @@ export const EntranceDoor: React.FC<EntranceDoorProps> = ({ onDone }) => {
         alignItems: "flex-end",
         justifyContent: "center",
         overflow: "hidden",
-        // Exterior dark stone/concrete wall background
         background: "linear-gradient(180deg, #0d0804 0%, #1a100a 60%, #0a0604 100%)",
-        // Fade out the whole overlay at 1.35s
-        animation: "overlayFadeOut 0.28s ease-in 1.32s forwards",
+        animation: "overlayFadeOut 0.45s ease-in 2.35s forwards",
       }}
     >
       {/* === Door Frame (structural outer box) === */}
@@ -329,7 +327,6 @@ export const EntranceDoor: React.FC<EntranceDoorProps> = ({ onDone }) => {
           boxShadow: "0 0 60px rgba(245,158,11,0.12), inset 0 0 40px rgba(0,0,0,0.5)",
           zIndex: 10,
           overflow: "hidden",
-          // Warm amber interior "glow" spilling through the gap
           background:
             "linear-gradient(180deg, #1c1208 0%, #251808 100%)",
         }}
@@ -347,12 +344,12 @@ export const EntranceDoor: React.FC<EntranceDoorProps> = ({ onDone }) => {
         />
 
         {/* Left door panel */}
-        <DoorPanel side="left" animDelay={0.2} />
+        <DoorPanel side="left" animDelay={0.3} />
 
         {/* Right door panel */}
-        <DoorPanel side="right" animDelay={0.2} />
+        <DoorPanel side="right" animDelay={0.3} />
 
-        {/* Amber light spill — grows as doors open */}
+        {/* Amber light spill — grows smoothly as doors open */}
         <div
           style={{
             position: "absolute",
@@ -363,7 +360,7 @@ export const EntranceDoor: React.FC<EntranceDoorProps> = ({ onDone }) => {
             width: 0,
             background:
               "radial-gradient(ellipse 100% 120% at 50% 50%, #f59e0b40 0%, #c9720810 60%, transparent 100%)",
-            animation: "spillGlow 0.85s cubic-bezier(0.22,1,0.36,1) 0.3s forwards",
+            animation: "spillGlow 1.6s cubic-bezier(0.16,1,0.3,1) 0.4s forwards",
             zIndex: 9,
             pointerEvents: "none",
           }}
@@ -378,7 +375,7 @@ export const EntranceDoor: React.FC<EntranceDoorProps> = ({ onDone }) => {
             transform: "translateX(-50%)",
             zIndex: 25,
             opacity: 0,
-            animation: "brandFadeIn 0.4s ease-out 1.05s forwards",
+            animation: "brandFadeIn 0.5s ease-out 1.7s forwards",
             whiteSpace: "nowrap",
             textAlign: "center",
           }}
