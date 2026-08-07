@@ -17,6 +17,16 @@ import React, { useMemo, useRef, useEffect } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { ProceduralDeveloperDesk } from "../3d/ProceduralDeveloperDesk";
+import {
+  FloatingSlateDesk,
+  ErgonomicMeshChair,
+  LoungeCouch,
+  GeometricCoffeeTable,
+  ServerRack,
+  FloatingWallShelves,
+  CyberPlant,
+  FloorLamp,
+} from "../3d/RoomFurniture";
 import { FOUNDERS } from "../../data/studioData";
 
 // Room Dimensions
@@ -410,15 +420,47 @@ export function SingleAgencyRoom() {
       {/* Seated Waving Developer Figure */}
       <WavingDeveloper position={[-3.8, 0, -13.2]} />
 
+      {/* Ergonomic Chair at left workstation */}
+      <ErgonomicMeshChair position={[-3.8, 0, -12.5]} rotation={[0, 0.15, 0]} />
+
       {/* ── Right Wall: 2nd Workstation (Custom Procedural Dev Desk) ─────── */}
 
       <ProceduralDeveloperDesk scale={0.78} position={[2.2, 0, -10]} rotation={[0, -0.25, 0]} />
+
+      {/* ── Floating Slate Desk — Back-Right Wall ──────────────────────── */}
+
+      <FloatingSlateDesk position={[1.5, 0, BACK_Z + 1.2]} />
+
+      {/* ── Server Rack — Far-Left Corner ─────────────────────────────── */}
+
+      <ServerRack position={[-W / 2 + 0.8, 0, BACK_Z + 1]} rotation={[0, 0.15, 0]} />
+
+      {/* ── Floating Wall Shelves — Left Wall Above Whiteboard ─────────── */}
+
+      <FloatingWallShelves position={[-W / 2 + 0.15, 3.5, -18]} rotation={[0, Math.PI / 2, 0]} />
+
+      {/* ── Breakout / Collaboration Zone — Right Foreground ──────────── */}
+
+      {/* Lounge Sofa */}
+      <LoungeCouch position={[2.5, 0, -4.5]} rotation={[0, -0.15, 0]} />
+
+      {/* Geometric Coffee Table in front of sofa */}
+      <GeometricCoffeeTable position={[2.5, 0, -3.2]} rotation={[0, 0.1, 0]} />
+
+      {/* Cyber Plant near lounge */}
+      <CyberPlant position={[4.2, 0, -5.2]} />
+
+      {/* Arc Floor Lamp beside sofa */}
+      <FloorLamp position={[0.6, 0, -4.8]} />
 
       {/* ── Bright Warm Daylight Lighting ───────────────────────────────── */}
 
       <ambientLight color="#ffffff" intensity={2.2} />
       <pointLight position={[0, H - 1.2, -6]} color="#fff8ed" intensity={3.0} distance={20} />
       <pointLight position={[0, H - 1.2, -18]} color="#fff8ed" intensity={3.0} distance={20} />
+
+      {/* Breakout lounge fill light — warm amber */}
+      <pointLight position={[2.5, 3, -4]} color="#fef3c7" intensity={1.8} distance={10} />
     </group>
   );
 }
