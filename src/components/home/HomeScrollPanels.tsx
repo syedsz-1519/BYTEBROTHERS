@@ -809,9 +809,6 @@ export const HomeScrollPanels: React.FC<HomeScrollPanelsProps> = ({ onContact, o
     const dist = Math.abs(eff - centre);
     return Math.max(0, 1 - dist / (band * 0.52));
   });
-
-  const activePanelIndex = opacities.reduce((best, op, i) => (op > opacities[best] ? i : best), 0);
-
   return (
     <div style={{ position: "relative", zIndex: 2, pointerEvents: "none" }}>
       <style>{SPATIAL_STYLES}</style>
@@ -839,48 +836,6 @@ export const HomeScrollPanels: React.FC<HomeScrollPanelsProps> = ({ onContact, o
           </div>
         </div>
       ))}
-
-      {/* Room HUD Bar */}
-      <div
-        style={{
-          position: "fixed",
-          bottom: "1.8rem",
-          left: "clamp(30px, 6vw, 90px)",
-          zIndex: 3,
-          display: "flex",
-          alignItems: "center",
-          gap: 14,
-          fontFamily: mono,
-          fontSize: 11,
-          letterSpacing: "0.15em",
-          textTransform: "uppercase",
-          color: MUTED,
-          pointerEvents: "none",
-          background: "rgba(10, 14, 23, 0.6)",
-          backdropFilter: "blur(8px)",
-          padding: "8px 16px",
-          borderRadius: 20,
-          border: "1px solid rgba(255, 255, 255, 0.1)",
-        }}
-      >
-        <span style={{ color: AMBER_BRIGHT, fontWeight: 800 }}>ZONE 0{activePanelIndex + 1}</span>
-        <span>/ 0{TOTAL_PANELS}</span>
-        <div style={{ width: 100, height: 2, background: "rgba(255, 255, 255, 0.2)", position: "relative", overflow: "hidden" }}>
-          <div
-            style={{
-              position: "absolute",
-              left: 0,
-              top: 0,
-              height: "100%",
-              width: `${scrollProgress * 100}%`,
-              background: AMBER_BRIGHT,
-              boxShadow: "0 0 10px #f59e0b",
-              transition: "width 0.1s linear",
-            }}
-          />
-        </div>
-        <span style={{ fontSize: 10, color: WHITE }}>{PANELS[activePanelIndex]?.label}</span>
-      </div>
 
       {/* Scroll indicator prompt */}
       <div
