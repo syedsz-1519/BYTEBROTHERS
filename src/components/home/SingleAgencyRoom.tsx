@@ -402,65 +402,88 @@ export function SingleAgencyRoom() {
         <pointLight color="#f59e0b" intensity={1.5} distance={6} position={[0, 0, 0.5]} />
       </group>
 
-      {/* ── Left Wall: Whiteboard & Left Oak Workstation with Waving Developer ─ */}
+      {/* ══════════════════════════════════════════════════════════════════
+           ROOM LAYOUT — centered hero composition:
 
-      {/* Whiteboard */}
-      <mesh position={[-W / 2 + 0.12, 3.8, -14]} rotation={[0, Math.PI / 2, 0]}>
-        <planeGeometry args={[6.0, 3.2]} />
-        <meshStandardMaterial map={whiteboardTex} roughness={0.2} />
-      </mesh>
+           ┌─────────────────────────────────────────────┐  BACK WALL
+           │ [ServerRack]   [TV+Portraits]   [StandDesk] │
+           │  (corner)       (back wall)      (corner)   │
+           │                                             │
+           │ [Whiteboard]                                │
+           │ [WallShelves]                               │
+           │                                             │
+           │       ★ DESKTOP SETUP + CHAIR ★             │
+           │       (CENTER — hero focal point)           │
+           │                                             │
+           │  [Shelf]                    [Sofa+Table]    │
+           │  (beside desk)             (opposite side)  │
+           │                                             │
+           │ [FloorLamp]                  [CyberPlant]   │
+           │  (front-left)               (front-right)   │
+           └─────────────────────────────────────────────┘  CAMERA
+         ══════════════════════════════════════════════════════════════════ */}
 
-      {/* Standing Oak Desk */}
-      <group position={[-3.8, 0, -14]}>
+      {/* ── CORNERS — Back Left: Server Rack ──────────────────────────────── */}
+      <ServerRack position={[-W / 2 + 0.8, 0, BACK_Z + 2]} rotation={[0, 0.3, 0]} />
+
+      {/* ── CORNERS — Back Right: Standing Desk + Waving Dev ─────────────── */}
+      <group position={[3.5, 0, BACK_Z + 2.5]}>
         <mesh position={[0, 0.75, 0]}><boxGeometry args={[3.2, 0.1, 1.5]} /><meshStandardMaterial color="#c29b68" roughness={0.4} /></mesh>
         <mesh position={[-0.7, 1.3, -0.2]} rotation={[0, 0.15, 0]}><boxGeometry args={[1.2, 0.7, 0.04]} /><meshStandardMaterial color="#0284c7" emissive="#0284c7" emissiveIntensity={0.4} /></mesh>
         <mesh position={[0.7, 1.3, -0.2]} rotation={[0, -0.15, 0]}><boxGeometry args={[1.2, 0.7, 0.04]} /><meshStandardMaterial color="#f59e0b" emissive="#f59e0b" emissiveIntensity={0.4} /></mesh>
       </group>
+      <WavingDeveloper position={[3.5, 0, BACK_Z + 3.8]} />
 
-      {/* Seated Waving Developer Figure */}
-      <WavingDeveloper position={[-3.8, 0, -13.2]} />
+      {/* ── BACK WALL — Floating Slate Desk ──────────────────────────────── */}
+      <FloatingSlateDesk position={[-1, 0, BACK_Z + 1.5]} />
 
-      {/* Ergonomic Chair at left workstation */}
-      <ErgonomicMeshChair position={[-3.8, 0, -12.5]} rotation={[0, 0.15, 0]} />
+      {/* ── LEFT WALL — Whiteboard ────────────────────────────────────────── */}
+      <mesh position={[-W / 2 + 0.12, 3.8, -16]} rotation={[0, Math.PI / 2, 0]}>
+        <planeGeometry args={[6.0, 3.2]} />
+        <meshStandardMaterial map={whiteboardTex} roughness={0.2} />
+      </mesh>
 
-      {/* ── Right Wall: 2nd Workstation (Custom Procedural Dev Desk) ─────── */}
+      {/* ── LEFT WALL — Wall Shelves above whiteboard ─────────────────────── */}
+      <FloatingWallShelves position={[-W / 2 + 0.15, 3.5, -20]} rotation={[0, Math.PI / 2, 0]} />
 
-      <ProceduralDeveloperDesk scale={0.78} position={[2.2, 0, -10]} rotation={[0, -0.25, 0]} />
+      {/* ════════════════════════════════════════════════════════════════════
+           ★  CENTER — Hero Desktop Setup + Ergonomic Chair  ★
+         ════════════════════════════════════════════════════════════════════ */}
 
-      {/* ── Floating Slate Desk — Back-Right Wall ──────────────────────── */}
+      {/* ProceduralDeveloperDesk — dead center of the room */}
+      <ProceduralDeveloperDesk scale={0.85} position={[0, 0, -12]} rotation={[0, 0, 0]} />
 
-      <FloatingSlateDesk position={[1.5, 0, BACK_Z + 1.2]} />
+      {/* Ergonomic Chair — in front of the center desk, facing desk */}
+      <ErgonomicMeshChair position={[0, 0, -10.5]} rotation={[0, Math.PI, 0]} />
 
-      {/* ── Server Rack — Far-Left Corner ─────────────────────────────── */}
+      {/* ── BESIDE DESK — Left: Shelf Unit (Floating Shelves, freestanding) ─ */}
+      <FloatingWallShelves position={[-3, 1.2, -12]} rotation={[0, 0, 0]} />
 
-      <ServerRack position={[-W / 2 + 0.8, 0, BACK_Z + 1]} rotation={[0, 0.15, 0]} />
+      {/* ── OPPOSITE SIDE — Right: Lounge Sofa + Coffee Table ────────────── */}
 
-      {/* ── Floating Wall Shelves — Left Wall Above Whiteboard ─────────── */}
+      {/* Sofa — right side, facing center desk */}
+      <LoungeCouch position={[4, 0, -12]} rotation={[0, -Math.PI / 2, 0]} />
 
-      <FloatingWallShelves position={[-W / 2 + 0.15, 3.5, -18]} rotation={[0, Math.PI / 2, 0]} />
+      {/* Coffee Table — between sofa and desk */}
+      <GeometricCoffeeTable position={[2.8, 0, -12]} rotation={[0, 0, 0]} />
 
-      {/* ── Breakout / Collaboration Zone — Right Foreground ──────────── */}
+      {/* ── CORNERS — Front Left: Floor Lamp ─────────────────────────────── */}
+      <FloorLamp position={[-4.5, 0, -6]} />
 
-      {/* Lounge Sofa */}
-      <LoungeCouch position={[2.5, 0, -4.5]} rotation={[0, -0.15, 0]} />
+      {/* ── CORNERS — Front Right: Cyber Plant ───────────────────────────── */}
+      <CyberPlant position={[4.5, 0, -6]} />
 
-      {/* Geometric Coffee Table in front of sofa */}
-      <GeometricCoffeeTable position={[2.5, 0, -3.2]} rotation={[0, 0.1, 0]} />
-
-      {/* Cyber Plant near lounge */}
-      <CyberPlant position={[4.2, 0, -5.2]} />
-
-      {/* Arc Floor Lamp beside sofa */}
-      <FloorLamp position={[0.6, 0, -4.8]} />
-
-      {/* ── Bright Warm Daylight Lighting ───────────────────────────────── */}
+      {/* ── Lighting ──────────────────────────────────────────────────────── */}
 
       <ambientLight color="#ffffff" intensity={2.2} />
-      <pointLight position={[0, H - 1.2, -6]} color="#fff8ed" intensity={3.0} distance={20} />
-      <pointLight position={[0, H - 1.2, -18]} color="#fff8ed" intensity={3.0} distance={20} />
-
-      {/* Breakout lounge fill light — warm amber */}
-      <pointLight position={[2.5, 3, -4]} color="#fef3c7" intensity={1.8} distance={10} />
+      {/* Center desk spotlight */}
+      <pointLight position={[0, H - 0.8, -12]} color="#fff8ed" intensity={3.5} distance={18} />
+      {/* Back zone fill */}
+      <pointLight position={[0, H - 1.2, -22]} color="#fff8ed" intensity={2.5} distance={20} />
+      {/* Lounge side warm fill */}
+      <pointLight position={[4, 3.5, -12]} color="#fef3c7" intensity={1.8} distance={10} />
+      {/* Front fill */}
+      <pointLight position={[0, H - 1.2, -6]} color="#fff8ed" intensity={2.0} distance={15} />
     </group>
   );
 }
