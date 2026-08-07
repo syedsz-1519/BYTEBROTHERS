@@ -40,26 +40,19 @@ const MenuIcon: React.FC<{ open: boolean }> = ({ open }) => (
     height="20"
     viewBox="0 0 20 20"
     fill="none"
+    stroke="currentColor"
+    strokeWidth="1.5"
+    strokeLinecap="round"
     aria-hidden="true"
     className="transition-all duration-300"
   >
-    {/* top line */}
-    <motion.line
-      x1="3" y1="7" x2="17" y2="7"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      animate={open ? { x1: "4", y1: "4", x2: "16", y2: "16" } : { x1: "3", y1: "7", x2: "17", y2: "7" }}
-      transition={{ duration: 0.25, ease: "easeInOut" }}
+    <path
+      d={open ? "M 4 4 L 16 16" : "M 3 7 L 17 7"}
+      className="transition-all duration-300 ease-in-out"
     />
-    {/* bottom line */}
-    <motion.line
-      x1="3" y1="13" x2="17" y2="13"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      animate={open ? { x1: "4", y1: "16", x2: "16", y2: "4" } : { x1: "3", y1: "13", x2: "17", y2: "13" }}
-      transition={{ duration: 0.25, ease: "easeInOut" }}
+    <path
+      d={open ? "M 4 16 L 16 4" : "M 3 13 L 17 13"}
+      className="transition-all duration-300 ease-in-out"
     />
   </svg>
 );

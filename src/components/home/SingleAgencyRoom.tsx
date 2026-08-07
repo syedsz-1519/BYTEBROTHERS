@@ -15,12 +15,9 @@
 
 import React, { useMemo, useRef, useEffect } from "react";
 import { useFrame } from "@react-three/fiber";
-import { useGLTF } from "@react-three/drei";
 import * as THREE from "three";
-import { cloneSceneGraph } from "../hero/sceneMaterials";
+import { ProceduralDeveloperDesk } from "../3d/ProceduralDeveloperDesk";
 import { FOUNDERS } from "../../data/studioData";
-
-const GLB_PATH = "/workstation/programmer_desk_setup__stylized_3d_room.glb";
 
 // Room Dimensions
 const W = 11.5;
@@ -300,9 +297,6 @@ function WavingDeveloper({ position }: { position: [number, number, number] }) {
 // ─── SingleAgencyRoom Main Component ─────────────────────────────────────────
 
 export function SingleAgencyRoom() {
-  const { scene: glbScene } = useGLTF(GLB_PATH) as { scene: THREE.Group };
-  const clonedGlb = useMemo(() => cloneSceneGraph(glbScene) as THREE.Group, [glbScene]);
-
   const whiteboardTex = useMemo(() => createWhiteboardTexture(), []);
   const skylineHandle = useMemo(() => createCitySkylineTexture(), []);
   const tvHandle = useMemo(() => createTvShowcaseTexture(), []);
@@ -416,9 +410,9 @@ export function SingleAgencyRoom() {
       {/* Seated Waving Developer Figure */}
       <WavingDeveloper position={[-3.8, 0, -13.2]} />
 
-      {/* ── Right Wall: 2nd Workstation ──────────────────────────────────── */}
+      {/* ── Right Wall: 2nd Workstation (Custom Procedural Dev Desk) ─────── */}
 
-      <primitive object={clonedGlb} scale={0.65} position={[2.5, 0, -10]} />
+      <ProceduralDeveloperDesk scale={0.78} position={[2.2, 0, -10]} rotation={[0, -0.25, 0]} />
 
       {/* ── Bright Warm Daylight Lighting ───────────────────────────────── */}
 
@@ -428,7 +422,5 @@ export function SingleAgencyRoom() {
     </group>
   );
 }
-
-useGLTF.preload(GLB_PATH);
 
 export default SingleAgencyRoom;

@@ -26,11 +26,6 @@ import {
   type CamRef,
 } from "../../../utils/devRoomUtils";
 import { createMonitorTexture } from "../../hero/monitorTexture";
-import { cloneSceneGraph } from "../../hero/sceneMaterials";
-
-// ─── Constants ────────────────────────────────────────────────────────────────
-
-const GLB_PATH = "/workstation/programmer_desk_setup__stylized_3d_room.glb";
 
 /** Scale for normal devices. */
 const SCALE_NORMAL = 0.65;
@@ -209,61 +204,13 @@ interface WorkstationMeshProps {
  *
  * Clone is stored in useMemo and disposed on unmount.
  */
+import { ProceduralDeveloperDesk } from "../../3d/ProceduralDeveloperDesk";
+
 function WorkstationMesh({ roomZ }: WorkstationMeshProps) {
-  const { scene } = useGLTF(GLB_PATH) as { scene: THREE.Group };
-
-  const isLowEnd = useMemo(
-    () => typeof navigator !== "undefined" && navigator.hardwareConcurrency <= 4,
-    [],
-  );
-
-  const scale = isLowEnd ? SCALE_LOWEND : SCALE_NORMAL;
-
-  // Clone the scene graph — never touch the original (req 9.1, 9.2)
-  const clonedScene = useMemo(() => {
-    const clone = cloneSceneGraph(scene) as THREE.Group;
-
-    if (isLowEnd) {
-      // Apply simplified materials on low-end devices (req 12.4)
-      clone.traverse((child) => {
-        if (child instanceof THREE.Mesh) {
-          const mats = Array.isArray(child.material)
-            ? child.material
-            : [child.material];
-          mats.forEach((mat) => {
-            if (mat instanceof THREE.MeshStandardMaterial) {
-              mat.roughness = 1;
-              mat.metalness = 0;
-            }
-          });
-        }
-      });
-    }
-
-    return clone;
-  }, [scene, isLowEnd]);
-
-  // Dispose cloned scene on unmount (req 9.3, 15.2)
-  useEffect(() => {
-    return () => {
-      clonedScene.traverse((child) => {
-        if (child instanceof THREE.Mesh) {
-          child.geometry?.dispose();
-          const mats = Array.isArray(child.material)
-            ? child.material
-            : [child.material];
-          mats.forEach((mat) => mat?.dispose());
-        }
-      });
-    };
-  }, [clonedScene]);
-
   return (
-    <primitive
-      object={clonedScene}
-      scale={scale}
+    <ProceduralDeveloperDesk
+      scale={0.7}
       position={[1.5, 0, roomZ]}
-      dispose={null}
     />
   );
 }
@@ -327,8 +274,5 @@ export function DevRoom({ roomZ, camRef }: DevRoomProps) {
     </group>
   );
 }
-
-// Preload the GLB so it is ready before the camera reaches Room 0 (req 9)
-useGLTF.preload(GLB_PATH);
 
 export default DevRoom;
