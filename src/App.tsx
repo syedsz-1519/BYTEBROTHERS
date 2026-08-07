@@ -65,7 +65,7 @@ function AppContent() {
   return (
     <div
       className={`text-[var(--text-primary)] transition-colors duration-300 relative ${activeTab === 'home' ? '' : 'min-h-screen flex flex-col'}`}
-      style={{ background: activeTab === 'home' ? '#f7f3ed' : 'var(--bg-primary)' }}
+      style={{ background: activeTab === 'home' ? '#0b0c10' : 'var(--bg-primary)' }}
     >
       {/* 3D Wireframe Background Canvas — hidden on home tab */}
       {activeTab !== 'home' && <Background3dCanvas />}

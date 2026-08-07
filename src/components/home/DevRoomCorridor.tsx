@@ -182,7 +182,7 @@ function SceneInner({ reducedMotion, visible }: SceneInnerProps) {
   }, [camera]);
 
   useEffect(() => {
-    scene.fog = new THREE.Fog(0xf7f3ed, 15, 75);
+    scene.fog = new THREE.Fog(0xd8c3a5, 25, 95);
     return () => {
       scene.fog = null;
     };

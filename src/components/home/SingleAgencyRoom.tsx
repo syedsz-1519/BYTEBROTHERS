@@ -327,44 +327,29 @@ export function SingleAgencyRoom() {
 
   return (
     <group>
-      {/* ── Foreground Partition Frame (Light Natural Oak Wood) ─────────── */}
-      <group position={[0, H / 2, 7]}>
-        <mesh position={[-W / 2, 0, 0]}><boxGeometry args={[0.2, H, 0.2]} /><meshStandardMaterial color="#78350f" roughness={0.4} /></mesh>
-        <mesh position={[W / 2, 0, 0]}><boxGeometry args={[0.2, H, 0.2]} /><meshStandardMaterial color="#78350f" roughness={0.4} /></mesh>
-        <mesh position={[0, H / 2, 0]}><boxGeometry args={[W, 0.2, 0.2]} /><meshStandardMaterial color="#78350f" roughness={0.4} /></mesh>
-        <mesh position={[0, -H / 2, 0]}><boxGeometry args={[W, 0.2, 0.2]} /><meshStandardMaterial color="#78350f" roughness={0.4} /></mesh>
-        <mesh position={[0, 0, 0]}><boxGeometry args={[0.12, H, 0.12]} /><meshStandardMaterial color="#78350f" roughness={0.4} /></mesh>
-      </group>
+      {/* ── Room Surfaces (Complete Warm Wooden Floor & Warm Room Palette) ── */}
 
-      {/* ── Room Surfaces (Light Warm Wood Palette) ──────────────────────── */}
-
-      {/* Floor: Light Natural Oak Wood Planks */}
+      {/* Floor: Complete Warm Polished Oak/Walnut Wood Floor */}
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, -D / 2 + 5]}>
-        <planeGeometry args={[W, D]} />
-        <meshStandardMaterial color="#d4be9c" roughness={0.4} metalness={0.05} />
-      </mesh>
-
-      {/* Cream Woven Rug */}
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.02, -14]}>
-        <planeGeometry args={[5.5, 12]} />
-        <meshStandardMaterial color="#f3ece0" roughness={0.9} />
+        <planeGeometry args={[W * 1.5, D * 1.2]} />
+        <meshStandardMaterial color="#965d25" roughness={0.35} metalness={0.08} />
       </mesh>
 
       {/* Ceiling: Clean Warm Off-White Cream */}
       <mesh rotation={[Math.PI / 2, 0, 0]} position={[0, H, -D / 2 + 5]}>
-        <planeGeometry args={[W, D]} />
+        <planeGeometry args={[W * 1.5, D * 1.2]} />
         <meshStandardMaterial color="#faf7f2" roughness={0.8} />
       </mesh>
 
       {/* Back Wall: Light Scandinavian Oak Wood Slats */}
       <mesh position={[0, H / 2, BACK_Z]}>
-        <planeGeometry args={[W, H]} />
+        <planeGeometry args={[W * 1.5, H]} />
         <meshStandardMaterial color="#e6d5c3" roughness={0.7} />
       </mesh>
 
       {/* Left Wall: Light Birch Wood Panels */}
       <mesh rotation={[0, Math.PI / 2, 0]} position={[-W / 2, H / 2, -D / 2 + 5]}>
-        <planeGeometry args={[D, H]} />
+        <planeGeometry args={[D * 1.2, H]} />
         <meshStandardMaterial color="#ebdccb" roughness={0.7} />
       </mesh>
 
@@ -402,13 +387,13 @@ export function SingleAgencyRoom() {
 
       {/* ── Framed 3D Founder Portraits on Back Wall ── */}
       <group position={[-4.2, 3.2, BACK_Z + 0.25]}>
-        <mesh><boxGeometry args={[1.8, 2.3, 0.08]} /><meshStandardMaterial color="#78350f" roughness={0.4} /></mesh>
+        <mesh><boxGeometry args={[1.8, 2.3, 0.08]} /><meshStandardMaterial color="#d97706" roughness={0.4} /></mesh>
         <mesh position={[0, 0, 0.05]}><planeGeometry args={[1.6, 2.1]} /><meshStandardMaterial map={syedPhotoTex} roughness={0.3} /></mesh>
         <pointLight color="#f59e0b" intensity={1.5} distance={6} position={[0, 0, 0.5]} />
       </group>
 
       <group position={[4.2, 3.2, BACK_Z + 0.25]}>
-        <mesh><boxGeometry args={[1.8, 2.3, 0.08]} /><meshStandardMaterial color="#78350f" roughness={0.4} /></mesh>
+        <mesh><boxGeometry args={[1.8, 2.3, 0.08]} /><meshStandardMaterial color="#d97706" roughness={0.4} /></mesh>
         <mesh position={[0, 0, 0.05]}><planeGeometry args={[1.6, 2.1]} /><meshStandardMaterial map={hamidPhotoTex} roughness={0.3} /></mesh>
         <pointLight color="#f59e0b" intensity={1.5} distance={6} position={[0, 0, 0.5]} />
       </group>
